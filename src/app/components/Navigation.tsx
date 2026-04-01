@@ -1,6 +1,7 @@
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Settings } from 'lucide-react';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Link } from 'react-router';
 
 interface NavigationProps {
   activeSection: string;
@@ -58,6 +59,17 @@ export function Navigation({ activeSection }: NavigationProps) {
         </motion.div>
       </nav>
 
+      {/* Admin Settings Button - Desktop */}
+      {/* COMMENT OUT THIS SECTION TO HIDE ADMIN ACCESS */}
+      <Link
+        to="/admin"
+        className="hidden md:block fixed top-8 right-8 z-50 bg-white/80 backdrop-blur-md rounded-full p-4 shadow-lg border border-gray-100 hover:bg-purple-50 hover:border-purple-200 transition-all group"
+        title="Admin Panel"
+      >
+        <Settings className="w-5 h-5 text-gray-600 group-hover:text-purple-600 group-hover:rotate-90 transition-all" />
+      </Link>
+      {/* END ADMIN BUTTON */}
+
       {/* Mobile Navigation Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -65,6 +77,17 @@ export function Navigation({ activeSection }: NavigationProps) {
       >
         {isOpen ? <X className="w-6 h-6 text-gray-800" /> : <Menu className="w-6 h-6 text-gray-800" />}
       </button>
+
+      {/* Admin Settings Button - Mobile */}
+      {/* COMMENT OUT THIS SECTION TO HIDE ADMIN ACCESS */}
+      <Link
+        to="/admin"
+        className="md:hidden fixed top-6 left-6 z-50 bg-white/80 backdrop-blur-md rounded-full p-4 shadow-lg border border-gray-100 hover:bg-purple-50 hover:border-purple-200 transition-all group"
+        title="Admin Panel"
+      >
+        <Settings className="w-5 h-5 text-gray-600 group-hover:text-purple-600 group-hover:rotate-90 transition-all" />
+      </Link>
+      {/* END ADMIN BUTTON */}
 
       {/* Mobile Navigation Menu */}
       <AnimatePresence>
