@@ -38,56 +38,19 @@ export interface Experience {
 // Initialize localStorage with default data if not exists
 const initializeData = () => {
   if (!localStorage.getItem('portfolio_projects')) {
-    const defaultProjects: Project[] = [
-      {
-        id: '1',
-        title: 'E-Commerce Platform Redesign',
-        category: 'websites',
-        description: 'Complete UX overhaul of an online shopping experience',
-        image: 'https://images.unsplash.com/photo-1758598303946-385680e4eabd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjB3ZWJzaXRlJTIwZGVzaWduJTIwaW50ZXJmYWNlfGVufDF8fHx8MTc3NTAzNjYxMXww&ixlib=rb-4.1.0&q=80&w=1080',
-        tags: ['UI Design', 'UX Research', 'Prototyping'],
-        fullDescription: 'A comprehensive redesign of a major e-commerce platform serving over 50,000 daily users.',
-        challenge: 'The existing platform had a 68% cart abandonment rate and users were struggling to find products efficiently.',
-        solution: 'I conducted extensive user research, including interviews with 50+ users and heat map analysis.',
-        results: ['Reduced cart abandonment by 32%', 'Increased conversion rate by 45%'],
-        timeline: '4 months',
-        client: 'ShopHub Inc.',
-        role: 'Lead UI/UX Designer',
-      },
-    ];
-    localStorage.setItem('portfolio_projects', JSON.stringify(defaultProjects));
+    // Import sample data
+    const { sampleProjects } = require('./sampleData');
+    localStorage.setItem('portfolio_projects', JSON.stringify(sampleProjects));
   }
 
   if (!localStorage.getItem('portfolio_testimonials')) {
-    const defaultTestimonials: Testimonial[] = [
-      {
-        id: '1',
-        name: 'Sarah Johnson',
-        role: 'Product Manager',
-        company: 'TechFlow Inc.',
-        content: 'Tehreem transformed our product with her exceptional design skills. Her attention to detail and user-centered approach resulted in a 40% increase in user engagement.',
-        rating: 5,
-      },
-    ];
-    localStorage.setItem('portfolio_testimonials', JSON.stringify(defaultTestimonials));
+    const { sampleTestimonials } = require('./sampleData');
+    localStorage.setItem('portfolio_testimonials', JSON.stringify(sampleTestimonials));
   }
 
   if (!localStorage.getItem('portfolio_experience')) {
-    const defaultExperience: Experience[] = [
-      {
-        id: '1',
-        company: 'anemoia.dev',
-        role: 'UI/UX & Graphics Designer',
-        period: '2023 - Present',
-        description: 'Leading design initiatives for innovative digital products',
-        current: true,
-        achievements: [
-          'Redesigned core product interface, improving user satisfaction by 45%',
-          'Established comprehensive design system used across 5+ products',
-        ],
-      },
-    ];
-    localStorage.setItem('portfolio_experience', JSON.stringify(defaultExperience));
+    const { sampleExperience } = require('./sampleData');
+    localStorage.setItem('portfolio_experience', JSON.stringify(sampleExperience));
   }
 };
 
