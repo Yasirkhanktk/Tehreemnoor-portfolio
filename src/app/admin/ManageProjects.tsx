@@ -9,6 +9,7 @@ export function ManageProjects() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<Partial<Project>>({
     title: '',
     category: 'websites',
@@ -32,8 +33,17 @@ export function ManageProjects() {
     loadProjects();
   }, []);
 
-  const loadProjects = () => {
-    setProjects(getProjects());
+  const loadProjects = async () => {
+    try {
+      setLoading(true);
+      const data = await getProjects();
+      setProjects(data);
+    } catch (error) {
+      console.error('Error loading projects:', error);
+      toast.error('Failed to load projects. Please check your Supabase connection.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const openModal = (project?: Project) => {
@@ -69,26 +79,43 @@ export function ManageProjects() {
     setGalleryInput('');
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (editingProject) {
-      updateProject(editingProject.id, formData);
-      toast.success('Project updated successfully!');
-    } else {
-      addProject(formData as Omit<Project, 'id'>);
-      toast.success('Project added successfully!');
+    try {
+      setLoading(true);
+      
+      if (editingProject) {
+        await updateProject(editingProject.id, formData);
+        toast.success('Project updated successfully!');
+      } else {
+        await addProject(formData as Omit<Project, 'id'>);
+        toast.success('Project added successfully!');
+      }
+      
+      await loadProjects();
+      closeModal();
+    } catch (error) {
+      console.error('Error saving project:', error);
+      toast.error('Failed to save project. Please try again.');
+    } finally {
+      setLoading(false);
     }
-    
-    loadProjects();
-    closeModal();
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this project?')) {
-      deleteProject(id);
-      loadProjects();
-      toast.success('Project deleted successfully!');
+      try {
+        setLoading(true);
+        await deleteProject(id);
+        await loadProjects();
+        toast.success('Project deleted successfully!');
+      } catch (error) {
+        console.error('Error deleting project:', error);
+        toast.error('Failed to delete project. Please try again.');
+      } finally {
+        setLoading(false);
+      }
     }
   };
 

@@ -1,4 +1,6 @@
-// Mock data store - will be replaced with Supabase
+import { supabase } from '../../lib/supabaseClient';
+
+// Data types
 export interface Project {
   id: string;
   title: string;
@@ -35,117 +37,272 @@ export interface Experience {
   current?: boolean;
 }
 
-// Initialize localStorage with default data if not exists
-const initializeData = () => {
-  if (!localStorage.getItem('portfolio_projects')) {
-    // Import sample data
-    const { sampleProjects } = require('./sampleData');
-    localStorage.setItem('portfolio_projects', JSON.stringify(sampleProjects));
-  }
+// Helper function to transform Supabase snake_case to camelCase
+const transformProject = (dbProject: any): Project => ({
+  id: dbProject.id,
+  title: dbProject.title,
+  category: dbProject.category,
+  description: dbProject.description,
+  image: dbProject.image,
+  tags: dbProject.tags || [],
+  fullDescription: dbProject.full_description || undefined,
+  challenge: dbProject.challenge || undefined,
+  solution: dbProject.solution || undefined,
+  results: dbProject.results || undefined,
+  timeline: dbProject.timeline || undefined,
+  client: dbProject.client || undefined,
+  role: dbProject.role || undefined,
+  gallery: dbProject.gallery || undefined,
+});
 
-  if (!localStorage.getItem('portfolio_testimonials')) {
-    const { sampleTestimonials } = require('./sampleData');
-    localStorage.setItem('portfolio_testimonials', JSON.stringify(sampleTestimonials));
-  }
+// Helper function to transform camelCase to Supabase snake_case
+const transformProjectForDB = (project: Partial<Project>): any => ({
+  title: project.title,
+  category: project.category,
+  description: project.description,
+  image: project.image,
+  tags: project.tags || [],
+  full_description: project.fullDescription || null,
+  challenge: project.challenge || null,
+  solution: project.solution || null,
+  results: project.results || null,
+  timeline: project.timeline || null,
+  client: project.client || null,
+  role: project.role || null,
+  gallery: project.gallery || null,
+});
 
-  if (!localStorage.getItem('portfolio_experience')) {
-    const { sampleExperience } = require('./sampleData');
-    localStorage.setItem('portfolio_experience', JSON.stringify(sampleExperience));
-  }
-};
+// ============================================
+// PROJECTS - Supabase API
+// ============================================
 
-// Projects
-export const getProjects = (): Project[] => {
-  initializeData();
-  return JSON.parse(localStorage.getItem('portfolio_projects') || '[]');
-};
-
-export const saveProjects = (projects: Project[]) => {
-  localStorage.setItem('portfolio_projects', JSON.stringify(projects));
-};
-
-export const addProject = (project: Omit<Project, 'id'>): Project => {
-  const projects = getProjects();
-  const newProject = { ...project, id: Date.now().toString() };
-  projects.push(newProject);
-  saveProjects(projects);
-  return newProject;
-};
-
-export const updateProject = (id: string, updates: Partial<Project>) => {
-  const projects = getProjects();
-  const index = projects.findIndex(p => p.id === id);
-  if (index !== -1) {
-    projects[index] = { ...projects[index], ...updates };
-    saveProjects(projects);
-  }
-};
-
-export const deleteProject = (id: string) => {
-  const projects = getProjects().filter(p => p.id !== id);
-  saveProjects(projects);
-};
-
-// Testimonials
-export const getTestimonials = (): Testimonial[] => {
-  initializeData();
-  return JSON.parse(localStorage.getItem('portfolio_testimonials') || '[]');
-};
-
-export const saveTestimonials = (testimonials: Testimonial[]) => {
-  localStorage.setItem('portfolio_testimonials', JSON.stringify(testimonials));
-};
-
-export const addTestimonial = (testimonial: Omit<Testimonial, 'id'>): Testimonial => {
-  const testimonials = getTestimonials();
-  const newTestimonial = { ...testimonial, id: Date.now().toString() };
-  testimonials.push(newTestimonial);
-  saveTestimonials(testimonials);
-  return newTestimonial;
-};
-
-export const updateTestimonial = (id: string, updates: Partial<Testimonial>) => {
-  const testimonials = getTestimonials();
-  const index = testimonials.findIndex(t => t.id === id);
-  if (index !== -1) {
-    testimonials[index] = { ...testimonials[index], ...updates };
-    saveTestimonials(testimonials);
+export const getProjects = async (): Promise<Project[]> => {
+  try {
+    const { data, error } = await supabase
+      .from('projects')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) {
+      console.error('Error fetching projects:', error);
+      throw error;
+    }
+    
+    return (data || []).map(transformProject);
+  } catch (error) {
+    console.error('Failed to get projects:', error);
+    throw error;
   }
 };
 
-export const deleteTestimonial = (id: string) => {
-  const testimonials = getTestimonials().filter(t => t.id !== id);
-  saveTestimonials(testimonials);
-};
-
-// Experience
-export const getExperience = (): Experience[] => {
-  initializeData();
-  return JSON.parse(localStorage.getItem('portfolio_experience') || '[]');
-};
-
-export const saveExperience = (experience: Experience[]) => {
-  localStorage.setItem('portfolio_experience', JSON.stringify(experience));
-};
-
-export const addExperience = (exp: Omit<Experience, 'id'>): Experience => {
-  const experience = getExperience();
-  const newExp = { ...exp, id: Date.now().toString() };
-  experience.push(newExp);
-  saveExperience(experience);
-  return newExp;
-};
-
-export const updateExperience = (id: string, updates: Partial<Experience>) => {
-  const experience = getExperience();
-  const index = experience.findIndex(e => e.id === id);
-  if (index !== -1) {
-    experience[index] = { ...experience[index], ...updates };
-    saveExperience(experience);
+export const addProject = async (project: Omit<Project, 'id'>): Promise<Project> => {
+  try {
+    const dbProject = transformProjectForDB(project);
+    
+    const { data, error } = await supabase
+      .from('projects')
+      .insert([dbProject])
+      .select()
+      .single();
+    
+    if (error) {
+      console.error('Error adding project:', error);
+      throw error;
+    }
+    
+    return transformProject(data);
+  } catch (error) {
+    console.error('Failed to add project:', error);
+    throw error;
   }
 };
 
-export const deleteExperience = (id: string) => {
-  const experience = getExperience().filter(e => e.id !== id);
-  saveExperience(experience);
+export const updateProject = async (id: string, updates: Partial<Project>): Promise<void> => {
+  try {
+    const dbUpdates = transformProjectForDB(updates);
+    
+    const { error } = await supabase
+      .from('projects')
+      .update(dbUpdates)
+      .eq('id', id);
+    
+    if (error) {
+      console.error('Error updating project:', error);
+      throw error;
+    }
+  } catch (error) {
+    console.error('Failed to update project:', error);
+    throw error;
+  }
+};
+
+export const deleteProject = async (id: string): Promise<void> => {
+  try {
+    const { error } = await supabase
+      .from('projects')
+      .delete()
+      .eq('id', id);
+    
+    if (error) {
+      console.error('Error deleting project:', error);
+      throw error;
+    }
+  } catch (error) {
+    console.error('Failed to delete project:', error);
+    throw error;
+  }
+};
+
+// ============================================
+// TESTIMONIALS - Supabase API
+// ============================================
+
+export const getTestimonials = async (): Promise<Testimonial[]> => {
+  try {
+    const { data, error } = await supabase
+      .from('testimonials')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) {
+      console.error('Error fetching testimonials:', error);
+      throw error;
+    }
+    
+    return data || [];
+  } catch (error) {
+    console.error('Failed to get testimonials:', error);
+    throw error;
+  }
+};
+
+export const addTestimonial = async (testimonial: Omit<Testimonial, 'id'>): Promise<Testimonial> => {
+  try {
+    const { data, error } = await supabase
+      .from('testimonials')
+      .insert([testimonial])
+      .select()
+      .single();
+    
+    if (error) {
+      console.error('Error adding testimonial:', error);
+      throw error;
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('Failed to add testimonial:', error);
+    throw error;
+  }
+};
+
+export const updateTestimonial = async (id: string, updates: Partial<Testimonial>): Promise<void> => {
+  try {
+    const { error } = await supabase
+      .from('testimonials')
+      .update(updates)
+      .eq('id', id);
+    
+    if (error) {
+      console.error('Error updating testimonial:', error);
+      throw error;
+    }
+  } catch (error) {
+    console.error('Failed to update testimonial:', error);
+    throw error;
+  }
+};
+
+export const deleteTestimonial = async (id: string): Promise<void> => {
+  try {
+    const { error } = await supabase
+      .from('testimonials')
+      .delete()
+      .eq('id', id);
+    
+    if (error) {
+      console.error('Error deleting testimonial:', error);
+      throw error;
+    }
+  } catch (error) {
+    console.error('Failed to delete testimonial:', error);
+    throw error;
+  }
+};
+
+// ============================================
+// EXPERIENCE - Supabase API
+// ============================================
+
+export const getExperience = async (): Promise<Experience[]> => {
+  try {
+    const { data, error } = await supabase
+      .from('experience')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) {
+      console.error('Error fetching experience:', error);
+      throw error;
+    }
+    
+    return data || [];
+  } catch (error) {
+    console.error('Failed to get experience:', error);
+    throw error;
+  }
+};
+
+export const addExperience = async (exp: Omit<Experience, 'id'>): Promise<Experience> => {
+  try {
+    const { data, error } = await supabase
+      .from('experience')
+      .insert([exp])
+      .select()
+      .single();
+    
+    if (error) {
+      console.error('Error adding experience:', error);
+      throw error;
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('Failed to add experience:', error);
+    throw error;
+  }
+};
+
+export const updateExperience = async (id: string, updates: Partial<Experience>): Promise<void> => {
+  try {
+    const { error } = await supabase
+      .from('experience')
+      .update(updates)
+      .eq('id', id);
+    
+    if (error) {
+      console.error('Error updating experience:', error);
+      throw error;
+    }
+  } catch (error) {
+    console.error('Failed to update experience:', error);
+    throw error;
+  }
+};
+
+export const deleteExperience = async (id: string): Promise<void> => {
+  try {
+    const { error } = await supabase
+      .from('experience')
+      .delete()
+      .eq('id', id);
+    
+    if (error) {
+      console.error('Error deleting experience:', error);
+      throw error;
+    }
+  } catch (error) {
+    console.error('Failed to delete experience:', error);
+    throw error;
+  }
 };

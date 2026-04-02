@@ -9,6 +9,7 @@ export function ManageExperience() {
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingExperience, setEditingExperience] = useState<Experience | null>(null);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<Partial<Experience>>({
     company: '',
     role: '',
@@ -23,8 +24,17 @@ export function ManageExperience() {
     loadExperiences();
   }, []);
 
-  const loadExperiences = () => {
-    setExperiences(getExperience());
+  const loadExperiences = async () => {
+    try {
+      setLoading(true);
+      const data = await getExperience();
+      setExperiences(data);
+    } catch (error) {
+      console.error('Error loading experiences:', error);
+      toast.error('Failed to load experiences. Please check your Supabase connection.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const openModal = (experience?: Experience) => {
@@ -51,26 +61,43 @@ export function ManageExperience() {
     setAchievementInput('');
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (editingExperience) {
-      updateExperience(editingExperience.id, formData);
-      toast.success('Experience updated successfully!');
-    } else {
-      addExperience(formData as Omit<Experience, 'id'>);
-      toast.success('Experience added successfully!');
+    try {
+      setLoading(true);
+      
+      if (editingExperience) {
+        await updateExperience(editingExperience.id, formData);
+        toast.success('Experience updated successfully!');
+      } else {
+        await addExperience(formData as Omit<Experience, 'id'>);
+        toast.success('Experience added successfully!');
+      }
+      
+      await loadExperiences();
+      closeModal();
+    } catch (error) {
+      console.error('Error saving experience:', error);
+      toast.error('Failed to save experience. Please try again.');
+    } finally {
+      setLoading(false);
     }
-    
-    loadExperiences();
-    closeModal();
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this experience?')) {
-      deleteExperience(id);
-      loadExperiences();
-      toast.success('Experience deleted successfully!');
+      try {
+        setLoading(true);
+        await deleteExperience(id);
+        await loadExperiences();
+        toast.success('Experience deleted successfully!');
+      } catch (error) {
+        console.error('Error deleting experience:', error);
+        toast.error('Failed to delete experience. Please try again.');
+      } finally {
+        setLoading(false);
+      }
     }
   };
 

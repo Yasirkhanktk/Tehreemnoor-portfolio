@@ -9,6 +9,7 @@ export function ManageTestimonials() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTestimonial, setEditingTestimonial] = useState<Testimonial | null>(null);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<Partial<Testimonial>>({
     name: '',
     role: '',
@@ -21,8 +22,17 @@ export function ManageTestimonials() {
     loadTestimonials();
   }, []);
 
-  const loadTestimonials = () => {
-    setTestimonials(getTestimonials());
+  const loadTestimonials = async () => {
+    try {
+      setLoading(true);
+      const data = await getTestimonials();
+      setTestimonials(data);
+    } catch (error) {
+      console.error('Error loading testimonials:', error);
+      toast.error('Failed to load testimonials. Please check your Supabase connection.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const openModal = (testimonial?: Testimonial) => {
@@ -47,26 +57,43 @@ export function ManageTestimonials() {
     setEditingTestimonial(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (editingTestimonial) {
-      updateTestimonial(editingTestimonial.id, formData);
-      toast.success('Testimonial updated successfully!');
-    } else {
-      addTestimonial(formData as Omit<Testimonial, 'id'>);
-      toast.success('Testimonial added successfully!');
+    try {
+      setLoading(true);
+      
+      if (editingTestimonial) {
+        await updateTestimonial(editingTestimonial.id, formData);
+        toast.success('Testimonial updated successfully!');
+      } else {
+        await addTestimonial(formData as Omit<Testimonial, 'id'>);
+        toast.success('Testimonial added successfully!');
+      }
+      
+      await loadTestimonials();
+      closeModal();
+    } catch (error) {
+      console.error('Error saving testimonial:', error);
+      toast.error('Failed to save testimonial. Please try again.');
+    } finally {
+      setLoading(false);
     }
-    
-    loadTestimonials();
-    closeModal();
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this testimonial?')) {
-      deleteTestimonial(id);
-      loadTestimonials();
-      toast.success('Testimonial deleted successfully!');
+      try {
+        setLoading(true);
+        await deleteTestimonial(id);
+        await loadTestimonials();
+        toast.success('Testimonial deleted successfully!');
+      } catch (error) {
+        console.error('Error deleting testimonial:', error);
+        toast.error('Failed to delete testimonial. Please try again.');
+      } finally {
+        setLoading(false);
+      }
     }
   };
 

@@ -1,55 +1,31 @@
+import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { Briefcase, Calendar } from 'lucide-react';
+import { getExperience, type Experience as ExperienceType } from '../admin/dataStore';
+import { toast } from 'sonner';
 
-interface ExperienceItem {
-  company: string;
-  role: string;
-  period: string;
-  description: string;
-  achievements: string[];
-  current?: boolean;
-}
+interface ExperienceItem extends ExperienceType {}
 
 export function Experience() {
-  const experiences: ExperienceItem[] = [
-    {
-      company: 'anemoia.dev',
-      role: 'UI/UX & Graphics Designer',
-      period: '2023 - Present',
-      description: 'Leading design initiatives for innovative digital products',
-      current: true,
-      achievements: [
-        'Redesigned core product interface, improving user satisfaction by 45%',
-        'Established comprehensive design system used across 5+ products',
-        'Led user research initiatives with 100+ participants',
-        'Collaborated with cross-functional teams on 15+ successful launches',
-      ],
-    },
-    {
-      company: 'Creative Studio Inc.',
-      role: 'Junior Designer',
-      period: '2022 - 2023',
-      description: 'Crafted visual designs for diverse client projects',
-      achievements: [
-        'Designed 30+ marketing campaigns for various industries',
-        'Created brand identities for 10+ startups',
-        'Collaborated with developers to ensure pixel-perfect implementations',
-        'Managed multiple client relationships with 98% satisfaction rate',
-      ],
-    },
-    {
-      company: 'Freelance',
-      role: 'Graphic Designer',
-      period: '2021 - 2022',
-      description: 'Built portfolio through diverse client work',
-      achievements: [
-        'Completed 50+ projects across branding, web, and social media',
-        'Developed strong client communication and project management skills',
-        'Built reputation for delivering high-quality work on time',
-        'Established foundation for professional design career',
-      ],
-    },
-  ];
+  const [experiences, setExperiences] = useState<ExperienceItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadExperience();
+  }, []);
+
+  const loadExperience = async () => {
+    try {
+      setLoading(true);
+      const data = await getExperience();
+      setExperiences(data);
+    } catch (error) {
+      console.error('Error loading experience:', error);
+      toast.error('Failed to load experience');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const skills = [
     'Figma',
