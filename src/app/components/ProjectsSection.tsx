@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import { ImageWithFallback } from './figma/ImageWithFallback'
+import { useIsMobile } from '../utils/useIsMobile'
 
 const LIME = '#C5F135'
 const DRAG_PURPLE = '#7C3AED'
@@ -63,6 +64,7 @@ const PROJECTS = [
 ]
 
 export function ProjectsSection() {
+  const isMobile = useIsMobile()
   const [activeCat, setActiveCat] = useState('All')
   const [cursor, setCursor] = useState({ x: 0, y: 0, show: false })
 
@@ -72,6 +74,8 @@ export function ProjectsSection() {
   const scrollOrigin = useRef(0)
 
   const filtered = activeCat === 'All' ? PROJECTS : PROJECTS.filter(p => p.cats.includes(activeCat))
+
+  const px = isMobile ? 20 : 52
 
   function onMouseDown(e: React.MouseEvent) {
     dragging.current = true
@@ -94,50 +98,54 @@ export function ProjectsSection() {
 
   return (
     <>
-      {/* ── Custom drag cursor (fixed, follows mouse) ── */}
-      <motion.div
-        animate={{
-          x: cursor.x - 46,
-          y: cursor.y - 46,
-          opacity: cursor.show ? 1 : 0,
-          scale: cursor.show ? 1 : 0.6,
-        }}
-        transition={{ type: 'spring', stiffness: 500, damping: 32, mass: 0.4 }}
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: 92,
-          height: 92,
-          borderRadius: '50%',
-          background: DRAG_PURPLE,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          pointerEvents: 'none',
-          zIndex: 9999,
-        }}
-      >
-        <span style={{
-          color: '#fff',
-          fontSize: 10.5,
-          fontWeight: 700,
-          letterSpacing: '0.22em',
-          fontFamily: FH,
-        }}>
-          DRAG
-        </span>
-      </motion.div>
+      {/* Custom drag cursor — desktop only */}
+      {!isMobile && (
+        <motion.div
+          animate={{
+            x: cursor.x - 46,
+            y: cursor.y - 46,
+            opacity: cursor.show ? 1 : 0,
+            scale: cursor.show ? 1 : 0.6,
+          }}
+          transition={{ type: 'spring', stiffness: 500, damping: 32, mass: 0.4 }}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: 92,
+            height: 92,
+            borderRadius: '50%',
+            background: DRAG_PURPLE,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            pointerEvents: 'none',
+            zIndex: 9999,
+          }}
+        >
+          <span style={{
+            color: '#fff',
+            fontSize: 10.5,
+            fontWeight: 700,
+            letterSpacing: '0.22em',
+            fontFamily: FH,
+          }}>
+            DRAG
+          </span>
+        </motion.div>
+      )}
 
-      <section style={{ paddingTop: 60, background: '#fff' }}>
+      <section style={{ paddingTop: isMobile ? 44 : 60, background: '#fff' }}>
 
         {/* ── Section header ── */}
         <div style={{
           display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row',
           justifyContent: 'space-between',
-          alignItems: 'flex-end',
-          padding: '0 52px',
-          marginBottom: 26,
+          alignItems: isMobile ? 'flex-start' : 'flex-end',
+          padding: `0 ${px}px`,
+          marginBottom: isMobile ? 18 : 26,
+          gap: isMobile ? 10 : 0,
         }}>
           <div>
             <p style={{
@@ -156,7 +164,7 @@ export function ProjectsSection() {
           </div>
           <h2 style={{
             margin: 0,
-            fontSize: 'clamp(42px, 5.5vw, 74px)',
+            fontSize: isMobile ? 'clamp(36px, 11vw, 52px)' : 'clamp(42px, 5.5vw, 74px)',
             fontWeight: 700,
             lineHeight: 1,
             letterSpacing: '-0.03em',
@@ -171,8 +179,8 @@ export function ProjectsSection() {
         <div style={{
           display: 'flex',
           gap: 7,
-          padding: '0 52px',
-          marginBottom: 30,
+          padding: `0 ${px}px`,
+          marginBottom: isMobile ? 22 : 30,
           flexWrap: 'wrap',
         }}>
           {CATS.map(cat => {
@@ -186,8 +194,8 @@ export function ProjectsSection() {
                   color: active ? '#0d0d0d' : '#888',
                   border: `1px solid ${active ? LIME : '#e2e2e2'}`,
                   borderRadius: 100,
-                  padding: '6px 18px',
-                  fontSize: 11.5,
+                  padding: isMobile ? '5px 14px' : '6px 18px',
+                  fontSize: isMobile ? 11 : 11.5,
                   fontWeight: active ? 600 : 400,
                   fontFamily: FH,
                   cursor: 'pointer',
@@ -212,13 +220,13 @@ export function ProjectsSection() {
           onMouseLeave={onMouseLeave}
           style={{
             display: 'flex',
-            gap: 4,
+            gap: isMobile ? 12 : 4,
             overflowX: 'scroll',
             scrollbarWidth: 'none',
-            cursor: 'none',
-            paddingLeft: 52,
-            paddingRight: 52,
-            paddingBottom: 64,
+            cursor: isMobile ? 'default' : 'none',
+            paddingLeft: px,
+            paddingRight: px,
+            paddingBottom: isMobile ? 44 : 64,
             userSelect: 'none',
           }}
         >
@@ -226,8 +234,8 @@ export function ProjectsSection() {
             <div
               key={p.id}
               style={{
-                minWidth: 378,
-                maxWidth: 378,
+                minWidth: isMobile ? 'min(300px, 82vw)' : 378,
+                maxWidth: isMobile ? 'min(300px, 82vw)' : 378,
                 borderRadius: 12,
                 overflow: 'hidden',
                 flexShrink: 0,
@@ -237,7 +245,7 @@ export function ProjectsSection() {
             >
               {/* Coloured image area */}
               <div style={{
-                height: 258,
+                height: isMobile ? 200 : 258,
                 background: p.bg,
                 position: 'relative',
                 overflow: 'hidden',
@@ -261,8 +269,7 @@ export function ProjectsSection() {
               </div>
 
               {/* Info area */}
-              <div style={{ padding: '18px 22px 24px' }}>
-                {/* Tags + year */}
+              <div style={{ padding: isMobile ? '14px 16px 20px' : '18px 22px 24px' }}>
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
@@ -288,10 +295,9 @@ export function ProjectsSection() {
                   <span style={{ fontSize: 11, color: '#ccc', fontFamily: FB }}>{p.year}</span>
                 </div>
 
-                {/* Project name */}
                 <p style={{
                   margin: '0 0 7px',
-                  fontSize: 20,
+                  fontSize: isMobile ? 18 : 20,
                   fontWeight: 700,
                   color: '#0d0d0d',
                   fontFamily: FH,
@@ -301,7 +307,6 @@ export function ProjectsSection() {
                   {p.name}
                 </p>
 
-                {/* Description */}
                 <p style={{
                   margin: 0,
                   fontSize: 12.5,
@@ -315,7 +320,6 @@ export function ProjectsSection() {
             </div>
           ))}
 
-          {/* Trailing spacer so last card doesn't hug the right edge */}
           <div style={{ minWidth: 4, flexShrink: 0 }} />
         </div>
       </section>

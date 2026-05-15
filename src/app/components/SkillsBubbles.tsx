@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import Matter from 'matter-js'
+import { useIsMobile } from '../utils/useIsMobile'
 
 const FH = "'Space Grotesk', sans-serif"
 const FB = "'Inter', sans-serif"
@@ -183,6 +184,7 @@ function setupPhysics(field: HTMLDivElement, elemRefs: React.MutableRefObject<(H
 
 // ─── Component ────────────────────────────────────────────────────────────
 export function SkillsBubbles() {
+  const isMobile   = useIsMobile()
   const fieldRef   = useRef<HTMLDivElement>(null)
   const elemRefs   = useRef<(HTMLDivElement | null)[]>([])
   const cleanupRef = useRef<(() => void) | undefined>(undefined)
@@ -210,11 +212,13 @@ export function SkillsBubbles() {
     }
   }, [])
 
+  const px = isMobile ? 20 : 52
+
   return (
     <section style={{
       background: '#F0F0EC',
       borderTop: '1px solid #e8e8e8',
-      padding: '52px 52px 0',
+      padding: `${isMobile ? 36 : 52}px ${px}px 0`,
       overflow: 'hidden',
     }}>
       {/* Intro text */}
@@ -230,7 +234,7 @@ export function SkillsBubbles() {
         ref={fieldRef}
         style={{
           position: 'relative',
-          height: 340,
+          height: isMobile ? 420 : 340,
           marginTop: 10,
           userSelect: 'none',
           touchAction: 'none',

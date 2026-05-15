@@ -1,5 +1,6 @@
 import { ArrowRight, ArrowUp } from 'lucide-react'
 import { motion } from 'motion/react'
+import { useIsMobile } from '../utils/useIsMobile'
 
 const LIME = '#C5F135'
 const FH = "'Space Grotesk', sans-serif"
@@ -8,7 +9,6 @@ const FB = "'Inter', sans-serif"
 const TICKER_TEXT =
   'PRODUCT DESIGN · DESIGN ENGINEERING · SYSTEMS THINKING · STRATEGY & DISCOVERY · VISUAL CRAFT · FRONT-END · '
 
-// Stagger helper
 function fadeUp(delay = 0) {
   return {
     initial: { opacity: 0, y: 32 },
@@ -35,6 +35,9 @@ function LogoMark() {
 }
 
 export function Footer() {
+  const isMobile = useIsMobile()
+  const px = isMobile ? 20 : 52
+
   function scrollToTop() {
     const scroller = document.getElementById('main-scroll')
     if (scroller) scroller.scrollTo({ top: 0, behavior: 'smooth' })
@@ -42,7 +45,7 @@ export function Footer() {
 
   return (
     <>
-      {/* ── Transition bridge: light → dark gradient ── */}
+      {/* ── Transition bridge ── */}
       <div style={{
         height: 80,
         background: 'linear-gradient(to bottom, #F0F0EC 0%, #0d0d0d 100%)',
@@ -73,18 +76,19 @@ export function Footer() {
         {/* ── Main content ── */}
         <div style={{
           display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row',
           justifyContent: 'space-between',
-          padding: '80px 52px 72px',
-          minHeight: 380,
-          gap: 40,
+          padding: isMobile ? `52px ${px}px 44px` : `80px ${px}px 72px`,
+          minHeight: isMobile ? 'auto' : 380,
+          gap: isMobile ? 40 : 40,
         }}>
 
           {/* Left — heading + CTA */}
-          <div style={{ flex: '0 0 52%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <div style={{ flex: isMobile ? 'none' : '0 0 52%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <div>
               <motion.h2 {...fadeUp(0)} style={{
                 margin: '0 0 20px',
-                fontSize: 'clamp(40px, 5.5vw, 64px)',
+                fontSize: isMobile ? 'clamp(32px, 9vw, 48px)' : 'clamp(40px, 5.5vw, 64px)',
                 fontWeight: 700,
                 lineHeight: 1.05,
                 letterSpacing: '-0.03em',
@@ -95,7 +99,7 @@ export function Footer() {
               </motion.h2>
 
               <motion.p {...fadeUp(0.1)} style={{
-                margin: '0 0 36px',
+                margin: '0 0 32px',
                 fontSize: 13,
                 color: '#666',
                 fontFamily: FB,
@@ -127,30 +131,39 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Vertical divider */}
-          <div style={{ width: 1, background: '#1e1e1e', flexShrink: 0, alignSelf: 'stretch' }} />
+          {/* Vertical divider — desktop only */}
+          {!isMobile && (
+            <div style={{ width: 1, background: '#1e1e1e', flexShrink: 0, alignSelf: 'stretch' }} />
+          )}
+
+          {/* Horizontal divider — mobile only */}
+          {isMobile && (
+            <div style={{ height: 1, background: '#1e1e1e' }} />
+          )}
 
           {/* Right — social links */}
           <div style={{
             flex: 1,
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'flex-end',
-            alignItems: 'flex-end',
+            justifyContent: isMobile ? 'flex-start' : 'flex-end',
+            alignItems: isMobile ? 'flex-start' : 'flex-end',
             position: 'relative',
           }}>
-            {/* Decorative circle */}
-            <div style={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              width: 36,
-              height: 36,
-              borderRadius: '50%',
-              border: '1.5px solid #2a2a2a',
-            }} />
+            {/* Decorative circle — desktop only */}
+            {!isMobile && (
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                width: 36,
+                height: 36,
+                borderRadius: '50%',
+                border: '1.5px solid #2a2a2a',
+              }} />
+            )}
 
-            <motion.div {...fadeUp(0.22)} style={{ textAlign: 'right' }}>
+            <motion.div {...fadeUp(0.22)} style={{ textAlign: isMobile ? 'left' : 'right' }}>
               <p style={{
                 margin: '0 0 18px',
                 fontSize: 9.5,
@@ -169,18 +182,18 @@ export function Footer() {
                 <motion.a
                   key={label}
                   href={href}
-                  initial={{ opacity: 0, x: 16 }}
+                  initial={{ opacity: 0, x: isMobile ? -16 : 16 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.26 + i * 0.08, duration: 0.5, ease: 'easeOut' }}
                   style={{
                     display: 'block',
-                    fontSize: 14,
+                    fontSize: isMobile ? 15 : 14,
                     color: '#fff',
                     textDecoration: 'none',
                     fontFamily: FH,
                     fontWeight: 500,
-                    marginBottom: 8,
+                    marginBottom: 10,
                     letterSpacing: '-0.01em',
                   }}
                 >
@@ -192,7 +205,7 @@ export function Footer() {
         </div>
 
         {/* ── Bottom strip ── */}
-        <div style={{ borderTop: '1px solid #1a1a1a', padding: '0 52px' }}>
+        <div style={{ borderTop: '1px solid #1a1a1a', padding: `0 ${px}px` }}>
 
           {/* Available / Globally row */}
           <div style={{

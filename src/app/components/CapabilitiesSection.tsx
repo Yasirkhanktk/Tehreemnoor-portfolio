@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Plus, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'motion/react'
+import { useIsMobile } from '../utils/useIsMobile'
 
 const FH = "'Space Grotesk', sans-serif"
 const FB = "'Inter', sans-serif"
@@ -42,22 +43,27 @@ const CAPABILITIES = [
 ]
 
 export function CapabilitiesSection() {
+  const isMobile = useIsMobile()
   const [openId, setOpenId] = useState<number | null>(1)
+
+  const px = isMobile ? 20 : 52
 
   function toggle(id: number) {
     setOpenId(prev => (prev === id ? null : id))
   }
 
   return (
-    <section style={{ background: '#fff', borderTop: '1px solid #efefef', padding: '64px 0 72px' }}>
+    <section style={{ background: '#fff', borderTop: '1px solid #efefef', padding: `${isMobile ? 44 : 64}px 0 ${isMobile ? 52 : 72}px` }}>
 
       {/* ── Section header ── */}
       <div style={{
         display: 'flex',
+        flexDirection: isMobile ? 'column' : 'row',
         justifyContent: 'space-between',
-        alignItems: 'flex-start',
-        padding: '0 52px',
-        marginBottom: 52,
+        alignItems: isMobile ? 'flex-start' : 'flex-start',
+        padding: `0 ${px}px`,
+        marginBottom: isMobile ? 36 : 52,
+        gap: isMobile ? 12 : 0,
       }}>
         <div>
           <p style={{
@@ -72,7 +78,7 @@ export function CapabilitiesSection() {
           </p>
           <h2 style={{
             margin: 0,
-            fontSize: 'clamp(38px, 5vw, 60px)',
+            fontSize: isMobile ? 'clamp(32px, 9vw, 48px)' : 'clamp(38px, 5vw, 60px)',
             fontWeight: 700,
             lineHeight: 1.0,
             letterSpacing: '-0.03em',
@@ -84,20 +90,20 @@ export function CapabilitiesSection() {
         </div>
 
         <p style={{
-          margin: '14px 0 0',
+          margin: isMobile ? 0 : '14px 0 0',
           fontSize: 13,
           color: '#888',
           fontFamily: FB,
-          maxWidth: 340,
+          maxWidth: isMobile ? '100%' : 340,
           lineHeight: 1.6,
-          textAlign: 'right',
+          textAlign: isMobile ? 'left' : 'right',
         }}>
           A closer look at what the work actually involves.
         </p>
       </div>
 
       {/* ── Accordion list ── */}
-      <div style={{ padding: '0 52px' }}>
+      <div style={{ padding: `0 ${px}px` }}>
         {CAPABILITIES.map((cap) => {
           const isOpen = openId === cap.id
           return (
@@ -108,8 +114,7 @@ export function CapabilitiesSection() {
                 borderLeft: isOpen ? `3px solid ${LIME}` : '3px solid transparent',
                 transition: 'border-left-color 0.25s ease',
                 paddingLeft: isOpen ? 22 : 24,
-                transition2: 'padding-left 0.25s ease',
-              } as React.CSSProperties}
+              }}
             >
               {/* ── Row header ── */}
               <button
@@ -118,8 +123,8 @@ export function CapabilitiesSection() {
                   width: '100%',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 24,
-                  padding: '28px 0',
+                  gap: isMobile ? 12 : 24,
+                  padding: isMobile ? '20px 0' : '28px 0',
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
@@ -140,7 +145,7 @@ export function CapabilitiesSection() {
 
                 {/* Title */}
                 <span style={{
-                  fontSize: 'clamp(18px, 2.2vw, 26px)',
+                  fontSize: isMobile ? 'clamp(16px, 4.5vw, 22px)' : 'clamp(18px, 2.2vw, 26px)',
                   fontWeight: 700,
                   color: '#0d0d0d',
                   fontFamily: FH,
@@ -150,45 +155,47 @@ export function CapabilitiesSection() {
                   {cap.title}
                 </span>
 
-                {/* Tags */}
-                <div style={{
-                  display: 'flex',
-                  gap: 20,
-                  alignItems: 'center',
-                  flexShrink: 0,
-                }}>
-                  {cap.tags.map(tag => (
-                    <span key={tag} style={{
-                      fontSize: 10,
-                      fontWeight: 500,
-                      color: '#aaa',
-                      fontFamily: FB,
-                      letterSpacing: '0.1em',
-                    }}>
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+                {/* Tags — hidden on mobile */}
+                {!isMobile && (
+                  <div style={{
+                    display: 'flex',
+                    gap: 20,
+                    alignItems: 'center',
+                    flexShrink: 0,
+                  }}>
+                    {cap.tags.map(tag => (
+                      <span key={tag} style={{
+                        fontSize: 10,
+                        fontWeight: 500,
+                        color: '#aaa',
+                        fontFamily: FB,
+                        letterSpacing: '0.1em',
+                      }}>
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
 
                 {/* Toggle button */}
                 <div style={{
-                  width: 30,
-                  height: 30,
+                  width: 28,
+                  height: 28,
                   borderRadius: '50%',
                   border: '1.5px solid #d0d0d0',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   flexShrink: 0,
-                  marginLeft: 16,
+                  marginLeft: isMobile ? 8 : 16,
                   color: '#444',
                   transition: 'all 0.2s ease',
                   background: isOpen ? '#0d0d0d' : 'transparent',
                   borderColor: isOpen ? '#0d0d0d' : '#d0d0d0',
                 }}>
                   {isOpen
-                    ? <X size={13} color="#fff" strokeWidth={2.5} />
-                    : <Plus size={13} color="#555" strokeWidth={2.5} />
+                    ? <X size={12} color="#fff" strokeWidth={2.5} />
+                    : <Plus size={12} color="#555" strokeWidth={2.5} />
                   }
                 </div>
               </button>
@@ -204,9 +211,25 @@ export function CapabilitiesSection() {
                     transition={{ duration: 0.28, ease: [0.25, 0, 0, 1] }}
                     style={{ overflow: 'hidden' }}
                   >
+                    {/* Tags inline on mobile inside expanded content */}
+                    {isMobile && (
+                      <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 12, paddingLeft: 36 }}>
+                        {cap.tags.map(tag => (
+                          <span key={tag} style={{
+                            fontSize: 9.5,
+                            fontWeight: 500,
+                            color: '#bbb',
+                            fontFamily: FB,
+                            letterSpacing: '0.1em',
+                          }}>
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                     <p style={{
-                      margin: '0 0 32px',
-                      paddingLeft: 48,
+                      margin: '0 0 28px',
+                      paddingLeft: isMobile ? 36 : 48,
                       fontSize: 13,
                       color: '#777',
                       lineHeight: 1.75,
