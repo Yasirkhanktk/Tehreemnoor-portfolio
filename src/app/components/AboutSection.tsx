@@ -5,7 +5,7 @@ import { useIsMobile } from '../utils/useIsMobile'
 const FH = "'Space Grotesk', sans-serif"
 const FB = "'Inter', sans-serif"
 
-const PREV_COMPANIES = ['Anemoia.dev', 'Renosoft',]
+const PREV_COMPANIES = ['Anemoia.dev', 'Renosoft']
 
 export function AboutSection() {
   const isMobile = useIsMobile()
@@ -81,9 +81,9 @@ export function AboutSection() {
         {/* ── Bio paragraphs ── */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginBottom: 36 }}>
           {[
-            `I've spent the last 3+ years designing digital products that people actually want to use from mobile apps and SaaS dashboards to full design systems. The interface is just the surface; I care about what lives beneath: the flows, the decisions, the moments where clarity matters most.
-              My process blends user research, visual systems, and interaction design. I work closely with product and engineering teams to ship things that are both beautiful and functional without losing precision along the way.
-              Every project I take on, I treat as a systems problem designing at scale, across real user needs, business constraints, and technical realities.`,
+            `I've spent the last 3+ years designing digital products that people actually want to use from mobile apps and SaaS dashboards to full design systems. The interface is just the surface; I care about what lives beneath: the flows, the decisions, the moments where clarity matters most.`,
+            `My process blends user research, visual systems, and interaction design. I work closely with product and engineering teams to ship things that are both beautiful and functional without losing precision along the way.`,
+            `Every project I take on, I treat as a systems problem designing at scale, across real user needs, business constraints, and technical realities.`,
           ].map((text, i) => (
             <p key={i} style={{
               margin: 0,

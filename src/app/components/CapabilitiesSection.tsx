@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Plus, X } from 'lucide-react'
+// Plus used only for the accordion toggle
 import { motion, AnimatePresence } from 'motion/react'
 import { useIsMobile } from '../utils/useIsMobile'
 
@@ -230,37 +231,27 @@ export function CapabilitiesSection() {
 
                       {/* ── Applied in ── */}
                       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                        {/* Context pill */}
+                        {/* Context pill — no icon */}
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                           <div style={{
-                            display: 'inline-flex', alignItems: 'center', gap: 6,
+                            display: 'inline-flex', alignItems: 'center',
                             background: 'rgba(197,241,53,0.12)',
                             border: `1px solid rgba(197,241,53,0.35)`,
                             borderRadius: 100,
-                            padding: '5px 13px 5px 9px',
+                            padding: '5px 14px',
                           }}>
-                            <span style={{
-                              width: 16, height: 16,
-                              borderRadius: '50%',
-                              background: LIME,
-                              display: 'flex', alignItems: 'center', justifyContent: 'center',
-                              flexShrink: 0,
-                            }}>
-                              <Plus size={9} color="#000" strokeWidth={2.8} />
-                            </span>
                             <span style={{
                               fontSize: 11.5,
                               color: '#3a4a00',
                               fontFamily: FH,
                               fontWeight: 500,
-                              whiteSpace: 'nowrap',
                             }}>
                               {cap.appliedContexts.join(', ')}
                             </span>
                           </div>
                         </div>
 
-                        {/* Seen in */}
+                        {/* Applied in */}
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                           <span style={{
                             fontSize: 11,
@@ -268,7 +259,7 @@ export function CapabilitiesSection() {
                             fontFamily: FB,
                             whiteSpace: 'nowrap',
                           }}>
-                            Seen in:
+                            Applied in:
                           </span>
                           {cap.seenIn.map(project => (
                             <span key={project} style={{

@@ -21,24 +21,31 @@ const THEME: Record<Col, { border: string; text: string; bg: string }> = {
 interface Cap { id: number; label: string; col: Col; w: number }
 const CAPS: Cap[] = [
   // Gray cluster
-  { id: 1,  label: 'Wayfinding',        col: 'gray', w: 172 },
-  { id: 2,  label: 'Research',          col: 'gray', w: 150 },
-  { id: 3,  label: 'Prototyping',       col: 'gray', w: 176 },
+  { id: 1,  label: 'Research',           col: 'gray', w: 148 },
+  { id: 2,  label: 'Edge Cases',         col: 'gray', w: 150 },
+  { id: 3,  label: 'Roadmapping',        col: 'gray', w: 162 },
+  { id: 4,  label: 'Product Logic',      col: 'gray', w: 176 },
+  { id: 5,  label: 'Prototyping',        col: 'gray', w: 162 },
+  { id: 6,  label: 'App Design',         col: 'gray', w: 150 },
+  { id: 7,  label: 'Accessibility',      col: 'gray', w: 174 },
   // Blue cluster
-  { id: 4,  label: 'ASAP',             col: 'blue', w: 116 },
-  { id: 5,  label: 'Wireframes',       col: 'blue', w: 170 },
-  { id: 6,  label: 'Thresholds',       col: 'blue', w: 170 },
-  { id: 7,  label: 'Data Flows',       col: 'blue', w: 166 },
-  { id: 8,  label: 'Hidden Complexity',col: 'blue', w: 242 },
-  { id: 9,  label: 'Trade-offs',       col: 'blue', w: 162 },
-  { id: 10, label: 'Design Systems',   col: 'blue', w: 208 },
-  { id: 11, label: 'Front-End',        col: 'blue', w: 156 },
+  { id: 8,  label: 'Wireframes',         col: 'blue', w: 158 },
+  { id: 9,  label: 'User Flows',         col: 'blue', w: 152 },
+  { id: 10, label: 'Interaction Design', col: 'blue', w: 216 },
+  { id: 11, label: 'Design Systems',     col: 'blue', w: 190 },
+  { id: 12, label: 'Developer Handoff',  col: 'blue', w: 212 },
+  { id: 13, label: 'Usability Testing',  col: 'blue', w: 210 },
+  { id: 14, label: 'System Thinking',    col: 'blue', w: 194 },
+  { id: 15, label: 'Responsive Apps',    col: 'blue', w: 192 },
   // Lime cluster
-  { id: 12, label: 'Roadmap',          col: 'lime', w: 142 },
-  { id: 13, label: 'Interaction',      col: 'lime', w: 176 },
-  { id: 14, label: 'Motion',           col: 'lime', w: 128 },
-  { id: 15, label: 'Visual Craft',     col: 'lime', w: 186 },
-  { id: 16, label: 'Edge Cases',       col: 'lime', w: 164 },
+  { id: 16, label: 'Visual Craft',       col: 'lime', w: 170 },
+  { id: 17, label: 'Motion',             col: 'lime', w: 122 },
+  { id: 18, label: 'UI Design',          col: 'lime', w: 140 },
+  { id: 19, label: 'UX Design',          col: 'lime', w: 140 },
+  { id: 20, label: 'SaaS Platforms',     col: 'lime', w: 184 },
+  { id: 21, label: 'Website Design',     col: 'lime', w: 186 },
+  { id: 22, label: 'Landing Page',       col: 'lime', w: 168 },
+  { id: 23, label: 'Dashboard Designs',  col: 'lime', w: 212 },
 ]
 
 // ─── Physics setup — called fresh whenever container gets a real width ─────
@@ -234,7 +241,7 @@ export function SkillsBubbles() {
         ref={fieldRef}
         style={{
           position: 'relative',
-          height: isMobile ? 420 : 340,
+          height: isMobile ? 560 : 420,
           marginTop: 10,
           userSelect: 'none',
           touchAction: 'none',
