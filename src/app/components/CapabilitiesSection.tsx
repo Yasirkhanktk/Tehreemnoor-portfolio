@@ -7,6 +7,7 @@ const FH = "'Space Grotesk', sans-serif"
 const FB = "'Inter', sans-serif"
 const LIME = '#C5F135'
 
+// ─── Capability data with dynamic project references ──────────────────────────
 const CAPABILITIES = [
   {
     id: 1,
@@ -14,7 +15,9 @@ const CAPABILITIES = [
     title: 'Product Design',
     tags: ['UI/UX', 'DESIGN SYSTEMS', 'VISUAL CRAFT'],
     description:
-      'Interaction design, information architecture, and visual craft for complex digital products. From early discovery to final delivery, including design systems that teams can actually maintain.',
+      'I design complex digital products by aligning user needs, business goals, and technical constraints — from early discovery to scalable, production-ready systems.',
+    appliedContexts: ['Banking onboarding', 'Matching flows', 'SaaS dashboards'],
+    seenIn: ['Moove', 'Metrix', 'Pago', 'Nomo Studio'],
   },
   {
     id: 2,
@@ -23,14 +26,18 @@ const CAPABILITIES = [
     tags: ['DISCOVERY', 'TESTING', 'INSIGHTS'],
     description:
       'Turning ambiguity into clarity through structured user interviews, usability testing, and behavioural analysis. I surface the insights that shape smarter product decisions.',
+    appliedContexts: ['Usability testing', 'Discovery sprints', 'Behavioural analysis'],
+    seenIn: ['Moove', 'Pago'],
   },
   {
     id: 3,
     number: '03',
     title: 'Systems Thinking',
-    tags: ['FINTECH', 'WEB3', 'AI PRODUCTS'],
+    tags: ['FLOWS', 'DEPENDENCIES', 'SCALABILITY'],
     description:
       'Building scalable design architectures that work across products, platforms, and teams. I create component libraries, design tokens, and documentation that scale without chaos.',
+    appliedContexts: ['Component libraries', 'Token architecture', 'Multi-product systems'],
+    seenIn: ['Nomo Studio', 'Vox Swap', 'Metrix'],
   },
   {
     id: 4,
@@ -39,6 +46,8 @@ const CAPABILITIES = [
     tags: ['PROTOTYPING', 'MOTION', 'FRONT-END'],
     description:
       'Bridging design and code through high-fidelity prototypes, micro-interactions, and front-end collaboration. I speak both languages fluently to reduce handoff friction.',
+    appliedContexts: ['Interactive prototypes', 'Micro-interactions', 'Motion design'],
+    seenIn: ['Vox Swap', 'Moove', 'Nomo Studio'],
   },
 ]
 
@@ -53,52 +62,45 @@ export function CapabilitiesSection() {
   }
 
   return (
-    <section style={{ background: '#fff', borderTop: '1px solid #efefef', padding: `${isMobile ? 44 : 64}px 0 ${isMobile ? 52 : 72}px` }}>
+    <section style={{
+      background: '#fff',
+      borderTop: '1px solid #efefef',
+      padding: `${isMobile ? 44 : 72}px 0 ${isMobile ? 52 : 80}px`,
+    }}>
 
       {/* ── Section header ── */}
-      <div style={{
-        display: 'flex',
-        flexDirection: isMobile ? 'column' : 'row',
-        justifyContent: 'space-between',
-        alignItems: isMobile ? 'flex-start' : 'flex-start',
-        padding: `0 ${px}px`,
-        marginBottom: isMobile ? 36 : 52,
-        gap: isMobile ? 12 : 0,
-      }}>
-        <div>
-          <p style={{
-            margin: '0 0 10px',
-            fontSize: 9.5,
-            letterSpacing: '0.16em',
-            color: '#aaa',
-            textTransform: 'uppercase',
-            fontFamily: FB,
-          }}>
-            CAPABILITIES
-          </p>
-          <h2 style={{
-            margin: 0,
-            fontSize: isMobile ? 'clamp(32px, 9vw, 48px)' : 'clamp(38px, 5vw, 60px)',
-            fontWeight: 700,
-            lineHeight: 1.0,
-            letterSpacing: '-0.03em',
-            color: '#0d0d0d',
-            fontFamily: FH,
-          }}>
-            what i do
-          </h2>
-        </div>
-
+      <div style={{ padding: `0 ${px}px`, marginBottom: isMobile ? 40 : 56 }}>
         <p style={{
-          margin: isMobile ? 0 : '14px 0 0',
-          fontSize: 13,
-          color: '#888',
+          margin: '0 0 14px',
+          fontSize: 9.5,
+          letterSpacing: '0.18em',
+          color: '#bbb',
+          textTransform: 'uppercase',
           fontFamily: FB,
-          maxWidth: isMobile ? '100%' : 340,
-          lineHeight: 1.6,
-          textAlign: isMobile ? 'left' : 'right',
         }}>
-          A closer look at what the work actually involves.
+          CAPABILITIES
+        </p>
+        <h2 style={{
+          margin: '0 0 14px',
+          fontSize: isMobile ? 'clamp(28px, 8vw, 42px)' : 'clamp(40px, 5.2vw, 62px)',
+          fontWeight: 700,
+          lineHeight: 1.05,
+          letterSpacing: '-0.03em',
+          color: '#0d0d0d',
+          fontFamily: FH,
+        }}>
+          What I do{' '}
+          <span style={{ fontWeight: 400, color: '#555' }}>—</span>
+          {' '}and how I think
+        </h2>
+        <p style={{
+          margin: 0,
+          fontSize: 13,
+          color: '#aaa',
+          fontFamily: FB,
+          lineHeight: 1.6,
+        }}>
+          A closer look at how I design, research, and build digital products.
         </p>
       </div>
 
@@ -110,34 +112,32 @@ export function CapabilitiesSection() {
             <div
               key={cap.id}
               style={{
-                borderTop: '1px solid #e8e8e8',
+                borderTop: '1px solid #eaeaea',
                 borderLeft: isOpen ? `3px solid ${LIME}` : '3px solid transparent',
                 transition: 'border-left-color 0.25s ease',
-                paddingLeft: isOpen ? 22 : 24,
+                paddingLeft: isOpen ? 20 : 22,
               }}
             >
-              {/* ── Row header ── */}
+              {/* ── Row ── */}
               <button
                 onClick={() => toggle(cap.id)}
                 style={{
                   width: '100%',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: isMobile ? 12 : 24,
-                  padding: isMobile ? '20px 0' : '28px 0',
+                  gap: isMobile ? 10 : 20,
+                  padding: isMobile ? '20px 0' : '26px 0',
                   background: 'none',
                   border: 'none',
-                  cursor: 'pointer',
                   textAlign: 'left',
                 }}
               >
                 {/* Number */}
                 <span style={{
-                  fontSize: 11,
+                  fontSize: 10,
                   color: '#ccc',
                   fontFamily: FB,
-                  fontWeight: 400,
-                  minWidth: 24,
+                  minWidth: 22,
                   flexShrink: 0,
                 }}>
                   {cap.number}
@@ -145,7 +145,7 @@ export function CapabilitiesSection() {
 
                 {/* Title */}
                 <span style={{
-                  fontSize: isMobile ? 'clamp(16px, 4.5vw, 22px)' : 'clamp(18px, 2.2vw, 26px)',
+                  fontSize: isMobile ? 'clamp(17px, 4.8vw, 22px)' : 'clamp(20px, 2.2vw, 26px)',
                   fontWeight: 700,
                   color: '#0d0d0d',
                   fontFamily: FH,
@@ -157,17 +157,12 @@ export function CapabilitiesSection() {
 
                 {/* Tags — hidden on mobile */}
                 {!isMobile && (
-                  <div style={{
-                    display: 'flex',
-                    gap: 20,
-                    alignItems: 'center',
-                    flexShrink: 0,
-                  }}>
+                  <div style={{ display: 'flex', gap: 18, alignItems: 'center', flexShrink: 0 }}>
                     {cap.tags.map(tag => (
                       <span key={tag} style={{
-                        fontSize: 10,
+                        fontSize: 9.5,
                         fontWeight: 500,
-                        color: '#aaa',
+                        color: '#bbb',
                         fontFamily: FB,
                         letterSpacing: '0.1em',
                       }}>
@@ -177,25 +172,20 @@ export function CapabilitiesSection() {
                   </div>
                 )}
 
-                {/* Toggle button */}
+                {/* Toggle */}
                 <div style={{
-                  width: 28,
-                  height: 28,
+                  width: 28, height: 28,
                   borderRadius: '50%',
-                  border: '1.5px solid #d0d0d0',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
                   flexShrink: 0,
-                  marginLeft: isMobile ? 8 : 16,
-                  color: '#444',
-                  transition: 'all 0.2s ease',
+                  marginLeft: 12,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
                   background: isOpen ? '#0d0d0d' : 'transparent',
-                  borderColor: isOpen ? '#0d0d0d' : '#d0d0d0',
+                  border: `1.5px solid ${isOpen ? '#0d0d0d' : '#d8d8d8'}`,
+                  transition: 'all 0.2s ease',
                 }}>
                   {isOpen
                     ? <X size={12} color="#fff" strokeWidth={2.5} />
-                    : <Plus size={12} color="#555" strokeWidth={2.5} />
+                    : <Plus size={12} color="#888" strokeWidth={2.5} />
                   }
                 </div>
               </button>
@@ -204,40 +194,100 @@ export function CapabilitiesSection() {
               <AnimatePresence initial={false}>
                 {isOpen && (
                   <motion.div
-                    key="content"
+                    key="body"
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.28, ease: [0.25, 0, 0, 1] }}
+                    transition={{ duration: 0.3, ease: [0.25, 0, 0, 1] }}
                     style={{ overflow: 'hidden' }}
                   >
-                    {/* Tags inline on mobile inside expanded content */}
-                    {isMobile && (
-                      <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 12, paddingLeft: 36 }}>
-                        {cap.tags.map(tag => (
-                          <span key={tag} style={{
-                            fontSize: 9.5,
-                            fontWeight: 500,
+                    <div style={{ paddingLeft: isMobile ? 32 : 42, paddingBottom: 28 }}>
+
+                      {/* Tags on mobile inside expanded */}
+                      {isMobile && (
+                        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 12 }}>
+                          {cap.tags.map(tag => (
+                            <span key={tag} style={{
+                              fontSize: 9.5, color: '#bbb', fontFamily: FB, letterSpacing: '0.1em',
+                            }}>
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Description */}
+                      <p style={{
+                        margin: '0 0 22px',
+                        fontSize: 13,
+                        color: '#777',
+                        lineHeight: 1.78,
+                        fontFamily: FB,
+                        maxWidth: 520,
+                      }}>
+                        {cap.description}
+                      </p>
+
+                      {/* ── Applied in ── */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                        {/* Context pill */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                          <div style={{
+                            display: 'inline-flex', alignItems: 'center', gap: 6,
+                            background: 'rgba(197,241,53,0.12)',
+                            border: `1px solid rgba(197,241,53,0.35)`,
+                            borderRadius: 100,
+                            padding: '5px 13px 5px 9px',
+                          }}>
+                            <span style={{
+                              width: 16, height: 16,
+                              borderRadius: '50%',
+                              background: LIME,
+                              display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              flexShrink: 0,
+                            }}>
+                              <Plus size={9} color="#000" strokeWidth={2.8} />
+                            </span>
+                            <span style={{
+                              fontSize: 11.5,
+                              color: '#3a4a00',
+                              fontFamily: FH,
+                              fontWeight: 500,
+                              whiteSpace: 'nowrap',
+                            }}>
+                              {cap.appliedContexts.join(', ')}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Seen in */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                          <span style={{
+                            fontSize: 11,
                             color: '#bbb',
                             fontFamily: FB,
-                            letterSpacing: '0.1em',
+                            whiteSpace: 'nowrap',
                           }}>
-                            {tag}
+                            Seen in:
                           </span>
-                        ))}
+                          {cap.seenIn.map(project => (
+                            <span key={project} style={{
+                              fontSize: 11,
+                              fontWeight: 600,
+                              color: '#555',
+                              fontFamily: FH,
+                              background: '#f5f5f5',
+                              borderRadius: 100,
+                              padding: '4px 12px',
+                              letterSpacing: '-0.01em',
+                            }}>
+                              {project}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                    )}
-                    <p style={{
-                      margin: '0 0 28px',
-                      paddingLeft: isMobile ? 36 : 48,
-                      fontSize: 13,
-                      color: '#777',
-                      lineHeight: 1.75,
-                      fontFamily: FB,
-                      maxWidth: 420,
-                    }}>
-                      {cap.description}
-                    </p>
+
+                    </div>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -246,7 +296,7 @@ export function CapabilitiesSection() {
         })}
 
         {/* Bottom border */}
-        <div style={{ borderTop: '1px solid #e8e8e8' }} />
+        <div style={{ borderTop: '1px solid #eaeaea' }} />
       </div>
 
     </section>

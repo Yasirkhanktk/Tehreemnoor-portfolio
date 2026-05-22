@@ -1,6 +1,7 @@
 import { ArrowRight, ArrowUp } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useIsMobile } from '../utils/useIsMobile'
+import logoImg from '../../imports/Logo-1.png'
 
 const LIME = '#C5F135'
 const FH = "'Space Grotesk', sans-serif"
@@ -20,17 +21,11 @@ function fadeUp(delay = 0) {
 
 function LogoMark() {
   return (
-    <div style={{
-      width: 36, height: 36,
-      background: LIME,
-      borderRadius: 7,
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-    }}>
-      <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
-        <path d="M2 3.5H14L2 12.5H14" stroke="#000" strokeWidth="2.2"
-          strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    </div>
+    <img
+      src={logoImg}
+      alt="Tehreem Noor logo"
+      style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover', display: 'block' }}
+    />
   )
 }
 
