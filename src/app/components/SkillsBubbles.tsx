@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { motion } from 'motion/react'
 import Matter from 'matter-js'
 import { useIsMobile } from '../utils/useIsMobile'
 
@@ -236,12 +237,24 @@ export function SkillsBubbles() {
       overflow: 'hidden',
     }}>
       {/* Intro text */}
-      <p style={{ margin: '0 0 5px', fontSize: 13, color: '#888', fontFamily: FB }}>
+      <motion.p
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-40px' }}
+        transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+        style={{ margin: '0 0 5px', fontSize: 13, color: '#888', fontFamily: FB }}
+      >
         A closer look at what the work actually involves.
-      </p>
-      <p style={{ margin: 0, fontSize: 13, color: '#bbb', fontFamily: FB }}>
+      </motion.p>
+      <motion.p
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-40px' }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+        style={{ margin: 0, fontSize: 13, color: '#bbb', fontFamily: FB }}
+      >
         Tools, decisions, and the recurring concerns that shape every project.
-      </p>
+      </motion.p>
 
       {/* Physics field — overflow hidden prevents capsules overlapping text above */}
       <div

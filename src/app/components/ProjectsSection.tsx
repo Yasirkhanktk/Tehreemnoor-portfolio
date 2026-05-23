@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'motion/react'
 import { ArrowUpRight } from 'lucide-react'
 import { ImageWithFallback } from './figma/ImageWithFallback'
 import { useIsMobile } from '../utils/useIsMobile'
+import { PROJECTS } from '../data/projects'
+import type { ProjectData } from '../data/projects'
 
 const LIME = '#C5F135'
 const DRAG_PURPLE = '#7C3AED'
@@ -11,65 +13,7 @@ const FB = "'Inter', sans-serif"
 
 const CATS = ['All', 'Website', 'Application', 'Mobile', 'Web3', 'Branding']
 
-const PROJECTS = [
-  {
-    id: 1,
-    name: 'Moove',
-    description: 'Mobility app redesign that boosted ride completion rates by 23% through simplified UX flows.',
-    tags: ['MOBILE', 'UX'],
-    year: '2026',
-    bg: '#6B35B0',
-    category: 'Mobile',
-    image: 'https://images.unsplash.com/photo-1620207284057-e6c6b3d1b4c0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800',
-    cats: ['Application', 'Mobile'],
-  },
-  {
-    id: 2,
-    name: 'Metrix',
-    description: 'Replaced a dense configuration form with a step-by-step wizard. Setup became 35% faster.',
-    tags: ['WEB', 'SAAS'],
-    year: '2026',
-    bg: '#C75028',
-    category: 'Dashboard',
-    image: 'https://images.unsplash.com/photo-1669101602104-bfa264a17cce?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800',
-    cats: ['Website', 'Application'],
-  },
-  {
-    id: 3,
-    name: 'Vox Swap',
-    description: 'Designed transaction states and system health dashboards for a DeFi exchange.',
-    tags: ['WEB', 'DEFI', 'WEB3'],
-    year: '2025',
-    bg: '#2B3EB5',
-    category: 'Website',
-    image: 'https://images.unsplash.com/photo-1639825988283-39e5408b75e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800',
-    cats: ['Website', 'Web3'],
-  },
-  {
-    id: 4,
-    name: 'Pago',
-    description: 'Personal finance tracker with AI-powered insights and automated budget recommendations.',
-    tags: ['MOBILE', 'FINTECH'],
-    year: '2025',
-    bg: '#1A2B50',
-    category: 'App',
-    image: 'https://images.unsplash.com/photo-1642142784847-83b9b8a22910?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800',
-    cats: ['Application', 'Mobile'],
-  },
-  {
-    id: 5,
-    name: 'Nomo Studio',
-    description: 'End-to-end design system and brand identity for a fast-growing B2B SaaS company.',
-    tags: ['WEB', 'BRANDING'],
-    year: '2024',
-    bg: '#1E3D30',
-    category: 'Website',
-    image: 'https://images.unsplash.com/photo-1772272935464-2e90d8218987?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800',
-    cats: ['Website', 'Branding'],
-  },
-]
-
-export function ProjectsSection() {
+export function ProjectsSection({ onProjectClick }: { onProjectClick: (project: ProjectData) => void }) {
   const isMobile = useIsMobile()
   const [activeCat, setActiveCat] = useState('All')
   const [hoveredId, setHoveredId] = useState<number | null>(null)
@@ -135,16 +79,22 @@ export function ProjectsSection() {
 
         {/* ── Section header ── */}
         <div style={{ padding: `0 ${px}px`, marginBottom: isMobile ? 28 : 36 }}>
-          <p style={{
-            margin: '0 0 8px',
-            fontSize: 9.5,
-            letterSpacing: '0.18em',
-            color: '#bbb',
-            textTransform: 'uppercase',
-            fontFamily: FB,
-          }}>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              margin: '0 0 8px',
+              fontSize: 9.5,
+              letterSpacing: '0.18em',
+              color: '#bbb',
+              textTransform: 'uppercase',
+              fontFamily: FB,
+            }}
+          >
             WORK
-          </p>
+          </motion.p>
           <div style={{
             display: 'flex',
             flexDirection: isMobile ? 'column' : 'row',
@@ -152,38 +102,56 @@ export function ProjectsSection() {
             justifyContent: 'space-between',
             gap: isMobile ? 10 : 0,
           }}>
-            <h2 style={{
-              margin: 0,
-              fontSize: isMobile ? 'clamp(42px, 13vw, 64px)' : 'clamp(64px, 8vw, 96px)',
-              fontWeight: 700,
-              lineHeight: 0.95,
-              letterSpacing: '-0.04em',
-              color: '#0d0d0d',
-              fontFamily: FH,
-            }}>
+            <motion.h2
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.82, ease: [0.22, 1, 0.36, 1], delay: 0.07 }}
+              style={{
+                margin: 0,
+                fontSize: isMobile ? 'clamp(42px, 13vw, 64px)' : 'clamp(64px, 8vw, 96px)',
+                fontWeight: 700,
+                lineHeight: 0.95,
+                letterSpacing: '-0.04em',
+                color: '#0d0d0d',
+                fontFamily: FH,
+              }}
+            >
               projects
-            </h2>
-            <p style={{
-              margin: isMobile ? 0 : '0 0 8px',
-              fontSize: 13,
-              color: '#aaa',
-              fontFamily: FB,
-              lineHeight: 1.6,
-              maxWidth: 280,
-              textAlign: isMobile ? 'left' : 'right',
-            }}>
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.18 }}
+              style={{
+                margin: isMobile ? 0 : '0 0 8px',
+                fontSize: 13,
+                color: '#aaa',
+                fontFamily: FB,
+                lineHeight: 1.6,
+                maxWidth: 280,
+                textAlign: isMobile ? 'left' : 'right',
+              }}
+            >
               Carefully crafted work that reflects how I think, build, and ship.
-            </p>
+            </motion.p>
           </div>
         </div>
 
         {/* ── Category tabs ── */}
-        <div style={{
-          display: 'flex', gap: 6,
-          padding: `0 ${px}px`,
-          marginBottom: isMobile ? 24 : 32,
-          flexWrap: 'wrap',
-        }}>
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+          style={{
+            display: 'flex', gap: 6,
+            padding: `0 ${px}px`,
+            marginBottom: isMobile ? 24 : 32,
+            flexWrap: 'wrap',
+          }}
+        >
           {CATS.map(cat => {
             const active = activeCat === cat
             return (
@@ -207,7 +175,7 @@ export function ProjectsSection() {
               </button>
             )
           })}
-        </div>
+        </motion.div>
 
         {/* ── Cards row ── */}
         <style>{`.proj-row::-webkit-scrollbar{display:none}`}</style>
@@ -290,6 +258,7 @@ export function ProjectsSection() {
                         initial={{ opacity: 0, scale: 0.88, y: 10 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         transition={{ duration: 0.22, delay: 0.06 }}
+                        onClick={() => onProjectClick(p)}
                         style={{
                           background: '#fff',
                           color: '#0d0d0d',

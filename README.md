@@ -1,7 +1,7 @@
 
-  # My Portfolio
+  # Noor's Portfolio
 
-  This is a code bundle for My Portfolio. The original project is available at https://www.figma.com/design/rSJLNGpAFHCnMiAnfqSXJO/My-Portfolio.
+  This is a code bundle for Noor's Portfolio. The original project is available at https://www.figma.com/design/rSJLNGpAFHCnMiAnfqSXJO/Noor-s-Portfolio.
 
   ## Running the code
 

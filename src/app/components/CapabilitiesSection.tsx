@@ -71,47 +71,69 @@ export function CapabilitiesSection() {
 
       {/* ── Section header ── */}
       <div style={{ padding: `0 ${px}px`, marginBottom: isMobile ? 40 : 56 }}>
-        <p style={{
-          margin: '0 0 14px',
-          fontSize: 9.5,
-          letterSpacing: '0.18em',
-          color: '#bbb',
-          textTransform: 'uppercase',
-          fontFamily: FB,
-        }}>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            margin: '0 0 14px',
+            fontSize: 9.5,
+            letterSpacing: '0.18em',
+            color: '#bbb',
+            textTransform: 'uppercase',
+            fontFamily: FB,
+          }}
+        >
           CAPABILITIES
-        </p>
-        <h2 style={{
-          margin: '0 0 14px',
-          fontSize: isMobile ? 'clamp(28px, 8vw, 42px)' : 'clamp(40px, 5.2vw, 62px)',
-          fontWeight: 700,
-          lineHeight: 1.05,
-          letterSpacing: '-0.03em',
-          color: '#0d0d0d',
-          fontFamily: FH,
-        }}>
+        </motion.p>
+        <motion.h2
+          initial={{ opacity: 0, y: 36 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.76, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
+          style={{
+            margin: '0 0 14px',
+            fontSize: isMobile ? 'clamp(28px, 8vw, 42px)' : 'clamp(40px, 5.2vw, 62px)',
+            fontWeight: 700,
+            lineHeight: 1.05,
+            letterSpacing: '-0.03em',
+            color: '#0d0d0d',
+            fontFamily: FH,
+          }}
+        >
           What I do{' '}
           <span style={{ fontWeight: 400, color: '#555' }}>—</span>
           {' '}and how I think
-        </h2>
-        <p style={{
-          margin: 0,
-          fontSize: 13,
-          color: '#aaa',
-          fontFamily: FB,
-          lineHeight: 1.6,
-        }}>
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.16 }}
+          style={{
+            margin: 0,
+            fontSize: 13,
+            color: '#aaa',
+            fontFamily: FB,
+            lineHeight: 1.6,
+          }}
+        >
           A closer look at how I design, research, and build digital products.
-        </p>
+        </motion.p>
       </div>
 
       {/* ── Accordion list ── */}
       <div style={{ padding: `0 ${px}px` }}>
-        {CAPABILITIES.map((cap) => {
+        {CAPABILITIES.map((cap, idx) => {
           const isOpen = openId === cap.id
           return (
-            <div
+            <motion.div
               key={cap.id}
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: idx * 0.07 }}
               style={{
                 borderTop: '1px solid #eaeaea',
                 borderLeft: isOpen ? `3px solid ${LIME}` : '3px solid transparent',
@@ -292,7 +314,7 @@ export function CapabilitiesSection() {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
+            </motion.div>
           )
         })}
 

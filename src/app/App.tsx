@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { ChevronRight, Globe, Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'motion/react'
 import logoImg from '../imports/Logo-1.png'
@@ -8,7 +8,10 @@ import { CapabilitiesSection } from './components/CapabilitiesSection'
 import { SkillsBubbles } from './components/SkillsBubbles'
 import { Footer } from './components/Footer'
 import { GlobalCursor } from './components/GlobalCursor'
+import { CaseStudy } from './components/CaseStudy'
 import { useIsMobile } from './utils/useIsMobile'
+import { PROJECTS } from './data/projects'
+import type { ProjectData } from './data/projects'
 
 const LIME = '#C5F135'
 const FH = "'Space Grotesk', sans-serif"
@@ -25,8 +28,25 @@ function LogoMark({ size = 32 }: { size?: number }) {
   )
 }
 
+// ─── Scroll to section helper ─────────────────────────────────────────────────
+function scrollToSection(id: string) {
+  const scroller = document.getElementById('main-scroll')
+  const target   = document.getElementById(id)
+  if (!scroller || !target) return
+  const top = target.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop
+  scroller.scrollTo({ top: top - 64, behavior: 'smooth' })
+}
+
 // ─── Top navigation ────────────────────────────────────────────────────────────
-function TopNav({ isMobile, onMenuOpen }: { isMobile: boolean; onMenuOpen: () => void }) {
+function TopNav({
+  isMobile,
+  onMenuOpen,
+  onNavClick,
+}: {
+  isMobile: boolean
+  onMenuOpen: () => void
+  onNavClick: (section: string) => void
+}) {
   return (
     <header style={{
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -57,11 +77,22 @@ function TopNav({ isMobile, onMenuOpen }: { isMobile: boolean; onMenuOpen: () =>
       ) : (
         <>
           <nav style={{ display: 'flex', gap: 36 }}>
-            {['ABOUT', 'WORK', 'CONTACT'].map(item => (
-              <a key={item} href="#" style={{
-                fontSize: 10.5, letterSpacing: '0.13em', color: '#222',
-                textDecoration: 'none', fontFamily: FH, fontWeight: 500,
-              }}>{item}</a>
+            {[
+              { label: 'ABOUT',   id: 'about' },
+              { label: 'WORK',    id: 'work' },
+              { label: 'CONTACT', id: 'contact' },
+            ].map(({ label, id }) => (
+              <a
+                key={label}
+                href="#"
+                onClick={e => { e.preventDefault(); onNavClick(id) }}
+                style={{
+                  fontSize: 10.5, letterSpacing: '0.13em', color: '#222',
+                  textDecoration: 'none', fontFamily: FH, fontWeight: 500,
+                }}
+              >
+                {label}
+              </a>
             ))}
           </nav>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
@@ -84,7 +115,7 @@ function TopNav({ isMobile, onMenuOpen }: { isMobile: boolean; onMenuOpen: () =>
 }
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
-function Hero({ isMobile }: { isMobile: boolean }) {
+function Hero({ isMobile, onViewWork }: { isMobile: boolean; onViewWork: () => void }) {
   return (
     <section style={{
       minHeight: 'calc(100vh - 64px)',
@@ -98,14 +129,12 @@ function Hero({ isMobile }: { isMobile: boolean }) {
       position: 'relative',
       overflow: 'hidden',
     }}>
-      {/* Subtle lime glow top-right */}
       <div style={{
         position: 'absolute', top: '8%', right: '4%',
         width: 520, height: 520, borderRadius: '50%',
         background: 'radial-gradient(circle, rgba(197,241,53,0.1) 0%, transparent 68%)',
         pointerEvents: 'none',
       }} />
-      {/* Subtle lime glow bottom-left */}
       <div style={{
         position: 'absolute', bottom: '14%', left: '2%',
         width: 320, height: 320, borderRadius: '50%',
@@ -135,7 +164,7 @@ function Hero({ isMobile }: { isMobile: boolean }) {
       <motion.h1
         initial={{ opacity: 0, y: 48 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.06 }}
         style={{
           margin: '0 0 28px',
           fontSize: isMobile ? 'clamp(36px, 10.5vw, 52px)' : 'clamp(58px, 7.2vw, 92px)',
@@ -155,7 +184,6 @@ function Hero({ isMobile }: { isMobile: boolean }) {
         Not Just Screens
       </motion.h1>
 
-      {/* Subheading */}
       <motion.p
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
@@ -173,7 +201,6 @@ function Hero({ isMobile }: { isMobile: boolean }) {
         Crafting scalable digital products focused on usability, clarity, and business impact.
       </motion.p>
 
-      {/* CTAs */}
       <motion.div
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
@@ -181,6 +208,7 @@ function Hero({ isMobile }: { isMobile: boolean }) {
         style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}
       >
         <button
+          onClick={onViewWork}
           style={{
             background: LIME, color: '#0d0d0d', border: 'none',
             borderRadius: 100, padding: isMobile ? '12px 26px' : '14px 32px',
@@ -219,7 +247,6 @@ function Hero({ isMobile }: { isMobile: boolean }) {
         </button>
       </motion.div>
 
-      {/* Scroll hint */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -245,77 +272,125 @@ function Hero({ isMobile }: { isMobile: boolean }) {
 
 // ─── Root ─────────────────────────────────────────────────────────────────────
 export default function App() {
-  const isMobile = useIsMobile()
-  const [menuOpen, setMenuOpen] = useState(false)
+  const isMobile  = useIsMobile()
+  const [menuOpen, setMenuOpen]     = useState(false)
+  const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null)
+  const wasViewingProject = useRef(false)
 
   useEffect(() => { if (!isMobile) setMenuOpen(false) }, [isMobile])
+
+  // Only scroll back to work when *closing* a case study, never on initial mount
+  useEffect(() => {
+    if (!selectedProject && wasViewingProject.current) {
+      setTimeout(() => scrollToSection('work'), 80)
+    }
+    wasViewingProject.current = !!selectedProject
+  }, [selectedProject])
+
+  const handleProjectClick = (project: ProjectData) => {
+    setSelectedProject(project)
+    document.getElementById('main-scroll')?.scrollTo({ top: 0, behavior: 'instant' })
+  }
+
+  const handleNavClick = (section: string) => {
+    if (selectedProject) {
+      setSelectedProject(null)
+      setTimeout(() => scrollToSection(section), 120)
+    } else {
+      scrollToSection(section)
+    }
+    setMenuOpen(false)
+  }
+
+  const nextProject = selectedProject
+    ? PROJECTS[(PROJECTS.findIndex(p => p.id === selectedProject.id) + 1) % PROJECTS.length]
+    : null
 
   return (
     <div style={{ background: '#fff' }}>
       <GlobalCursor />
-
       <div id="main-scroll" style={{ height: '100vh', overflowY: 'auto', overflowX: 'hidden' }}>
-        <TopNav isMobile={isMobile} onMenuOpen={() => setMenuOpen(true)} />
 
-        {/* Mobile nav dropdown */}
-        <AnimatePresence>
-          {isMobile && menuOpen && (
-            <>
-              <motion.div
-                key="backdrop"
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                transition={{ duration: 0.18 }}
-                onClick={() => setMenuOpen(false)}
-                style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.3)', zIndex: 100 }}
-              />
-              <motion.div
-                key="menu"
-                initial={{ opacity: 0, y: -12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.2 }}
-                style={{
-                  position: 'fixed', top: 64, left: 0, right: 0,
-                  background: '#fff', borderBottom: '1px solid #ebebeb',
-                  zIndex: 101, padding: '8px 0 16px',
-                }}
-              >
-                <button onClick={() => setMenuOpen(false)} style={{
-                  position: 'absolute', top: 12, right: 16,
-                  background: 'none', border: 'none', padding: 4,
-                }}>
-                  <X size={18} color="#555" />
-                </button>
-                {['ABOUT', 'WORK', 'CONTACT'].map(item => (
-                  <button key={item} onClick={() => setMenuOpen(false)} style={{
-                    display: 'block', width: '100%',
-                    padding: '14px 24px', background: 'none', border: 'none',
-                    fontSize: 13, letterSpacing: '0.1em', color: '#222',
-                    fontFamily: FH, fontWeight: 500, textAlign: 'left',
-                  }}>
-                    {item}
-                  </button>
-                ))}
-                <div style={{ padding: '10px 24px 0' }}>
-                  <div style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 6,
-                    background: '#f0f0ec', borderRadius: 20, padding: '6px 12px',
-                  }}>
-                    <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', display: 'block' }} />
-                    <span style={{ fontSize: 11, color: '#333', fontFamily: FB }}>Available for projects</span>
-                  </div>
-                </div>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
+        {/* Case study view */}
+        {selectedProject ? (
+          <CaseStudy
+            project={selectedProject}
+            nextProject={nextProject}
+            onClose={() => setSelectedProject(null)}
+            onNavigate={(id) => {
+              const p = PROJECTS.find(x => x.id === id)
+              if (p) handleProjectClick(p)
+            }}
+          />
+        ) : (
+          <>
+            <TopNav isMobile={isMobile} onMenuOpen={() => setMenuOpen(true)} onNavClick={handleNavClick} />
 
-        <Hero isMobile={isMobile} />
-        <ProjectsSection />
-        <AboutSection />
-        <CapabilitiesSection />
-        <SkillsBubbles />
-        <Footer />
+            {/* Mobile nav dropdown */}
+            <AnimatePresence>
+              {isMobile && menuOpen && (
+                <>
+                  <motion.div
+                    key="backdrop"
+                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                    transition={{ duration: 0.18 }}
+                    onClick={() => setMenuOpen(false)}
+                    style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.3)', zIndex: 100 }}
+                  />
+                  <motion.div
+                    key="menu"
+                    initial={{ opacity: 0, y: -12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    transition={{ duration: 0.2 }}
+                    style={{
+                      position: 'fixed', top: 64, left: 0, right: 0,
+                      background: '#fff', borderBottom: '1px solid #ebebeb',
+                      zIndex: 101, padding: '8px 0 16px',
+                    }}
+                  >
+                    <button onClick={() => setMenuOpen(false)} style={{
+                      position: 'absolute', top: 12, right: 16,
+                      background: 'none', border: 'none', padding: 4,
+                    }}>
+                      <X size={18} color="#555" />
+                    </button>
+                    {[
+                      { label: 'ABOUT',   id: 'about' },
+                      { label: 'WORK',    id: 'work' },
+                      { label: 'CONTACT', id: 'contact' },
+                    ].map(({ label, id }) => (
+                      <button key={label} onClick={() => handleNavClick(id)} style={{
+                        display: 'block', width: '100%',
+                        padding: '14px 24px', background: 'none', border: 'none',
+                        fontSize: 13, letterSpacing: '0.1em', color: '#222',
+                        fontFamily: FH, fontWeight: 500, textAlign: 'left',
+                      }}>
+                        {label}
+                      </button>
+                    ))}
+                    <div style={{ padding: '10px 24px 0' }}>
+                      <div style={{
+                        display: 'inline-flex', alignItems: 'center', gap: 6,
+                        background: '#f0f0ec', borderRadius: 20, padding: '6px 12px',
+                      }}>
+                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', display: 'block' }} />
+                        <span style={{ fontSize: 11, color: '#333', fontFamily: FB }}>Available for projects</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
+
+            <Hero isMobile={isMobile} onViewWork={() => scrollToSection('work')} />
+            <div id="work"><ProjectsSection onProjectClick={handleProjectClick} /></div>
+            <div id="about"><AboutSection /></div>
+            <CapabilitiesSection />
+            <SkillsBubbles />
+            <div id="contact"><Footer /></div>
+          </>
+        )}
       </div>
     </div>
   )

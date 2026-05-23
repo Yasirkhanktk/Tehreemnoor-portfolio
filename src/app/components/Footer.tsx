@@ -10,15 +10,6 @@ const FB = "'Inter', sans-serif"
 const TICKER_TEXT =
   'PRODUCT DESIGN · DESIGN ENGINEERING · SYSTEMS THINKING · STRATEGY & DISCOVERY · VISUAL CRAFT · FRONT-END · '
 
-function fadeUp(delay = 0) {
-  return {
-    initial: { opacity: 0, y: 32 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, margin: '-60px' },
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay },
-  }
-}
-
 function LogoMark() {
   return (
     <img
@@ -29,7 +20,7 @@ function LogoMark() {
   )
 }
 
-export function Footer() {
+export function Footer({ noBridge = false }: { noBridge?: boolean }) {
   const isMobile = useIsMobile()
   const px = isMobile ? 20 : 52
 
@@ -40,12 +31,13 @@ export function Footer() {
 
   return (
     <>
-      {/* ── Transition bridge ── */}
-      <div style={{
-        height: 80,
-        background: 'linear-gradient(to bottom, #F0F0EC 0%, #0d0d0d 100%)',
-        flexShrink: 0,
-      }} />
+      {!noBridge && (
+        <div style={{
+          height: 80,
+          background: 'linear-gradient(to bottom, #F0F0EC 0%, #0d0d0d 100%)',
+          flexShrink: 0,
+        }} />
+      )}
 
       <footer style={{ background: '#0d0d0d', color: '#fff' }}>
 
@@ -81,7 +73,7 @@ export function Footer() {
           {/* Left — heading + CTA */}
           <div style={{ flex: isMobile ? 'none' : '0 0 52%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <div>
-              <motion.h2 {...fadeUp(0)} style={{
+              <h2 style={{
                 margin: '0 0 20px',
                 fontSize: isMobile ? 'clamp(32px, 9vw, 48px)' : 'clamp(40px, 5.5vw, 64px)',
                 fontWeight: 700,
@@ -91,9 +83,9 @@ export function Footer() {
                 fontFamily: FH,
               }}>
                 got a complex<br />problem to solve?
-              </motion.h2>
+              </h2>
 
-              <motion.p {...fadeUp(0.1)} style={{
+              <p style={{
                 margin: '0 0 32px',
                 fontSize: 13,
                 color: '#666',
@@ -101,28 +93,26 @@ export function Footer() {
                 lineHeight: 1.65,
               }}>
                 Let's talk about what you're building.
-              </motion.p>
+              </p>
 
-              <motion.div {...fadeUp(0.18)}>
-                <button style={{
-                  background: LIME,
-                  color: '#0d0d0d',
-                  border: 'none',
-                  borderRadius: 6,
-                  padding: '14px 26px',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 10,
-                  cursor: 'pointer',
-                  fontSize: 11,
-                  fontWeight: 700,
-                  fontFamily: FH,
-                  letterSpacing: '0.1em',
-                }}>
-                  CONTACT ME
-                  <ArrowRight size={14} strokeWidth={2.5} />
-                </button>
-              </motion.div>
+              <button style={{
+                background: LIME,
+                color: '#0d0d0d',
+                border: 'none',
+                borderRadius: 6,
+                padding: '14px 26px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 10,
+                cursor: 'pointer',
+                fontSize: 11,
+                fontWeight: 700,
+                fontFamily: FH,
+                letterSpacing: '0.1em',
+              }}>
+                CONTACT ME
+                <ArrowRight size={14} strokeWidth={2.5} />
+              </button>
             </div>
           </div>
 
@@ -145,20 +135,15 @@ export function Footer() {
             alignItems: isMobile ? 'flex-start' : 'flex-end',
             position: 'relative',
           }}>
-            {/* Decorative circle — desktop only */}
             {!isMobile && (
               <div style={{
-                position: 'absolute',
-                top: 0,
-                right: 0,
-                width: 36,
-                height: 36,
-                borderRadius: '50%',
+                position: 'absolute', top: 0, right: 0,
+                width: 36, height: 36, borderRadius: '50%',
                 border: '1.5px solid #2a2a2a',
               }} />
             )}
 
-            <motion.div {...fadeUp(0.22)} style={{ textAlign: isMobile ? 'left' : 'right' }}>
+            <div style={{ textAlign: isMobile ? 'left' : 'right' }}>
               <p style={{
                 margin: '0 0 18px',
                 fontSize: 9.5,
@@ -173,14 +158,10 @@ export function Footer() {
                 { label: 'hello@tehreemnoor.com', href: 'mailto:hello@tehreemnoor.com' },
                 { label: 'Behance', href: '#' },
                 { label: 'LinkedIn', href: '#' },
-              ].map(({ label, href }, i) => (
-                <motion.a
+              ].map(({ label, href }) => (
+                <a
                   key={label}
                   href={href}
-                  initial={{ opacity: 0, x: isMobile ? -16 : 16 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.26 + i * 0.08, duration: 0.5, ease: 'easeOut' }}
                   style={{
                     display: 'block',
                     fontSize: isMobile ? 15 : 14,
@@ -193,16 +174,15 @@ export function Footer() {
                   }}
                 >
                   {label}
-                </motion.a>
+                </a>
               ))}
-            </motion.div>
+            </div>
           </div>
         </div>
 
         {/* ── Bottom strip ── */}
         <div style={{ borderTop: '1px solid #1a1a1a', padding: `0 ${px}px` }}>
 
-          {/* Available / Globally row */}
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
@@ -217,7 +197,6 @@ export function Footer() {
             </span>
           </div>
 
-          {/* Copyright / Logo / Back to top */}
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
@@ -229,16 +208,9 @@ export function Footer() {
             <button
               onClick={scrollToTop}
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: 11,
-                color: '#555',
-                fontFamily: FB,
-                padding: 0,
+                display: 'flex', alignItems: 'center', gap: 6,
+                background: 'none', border: 'none', cursor: 'pointer',
+                fontSize: 11, color: '#555', fontFamily: FB, padding: 0,
               }}
             >
               Back to top

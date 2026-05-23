@@ -1,11 +1,19 @@
 import { Download } from "lucide-react";
+import { motion } from "motion/react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useIsMobile } from "../utils/useIsMobile";
 
 const FH = "'Space Grotesk', sans-serif";
 const FB = "'Inter', sans-serif";
 
-const PREV_COMPANIES = ["Anemoia.dev", "Revnosoft"];
+const PREV_COMPANIES = ["Anemoia.dev", "Renosoft"];
+
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 36 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-60px" },
+  transition: { duration: 0.76, ease: [0.22, 1, 0.36, 1], delay },
+});
 
 export function AboutSection() {
   const isMobile = useIsMobile();
@@ -18,10 +26,15 @@ export function AboutSection() {
         minHeight: isMobile ? "auto" : 660,
         background: "#fff",
         borderTop: "1px solid #efefef",
+        overflow: "hidden",
       }}
     >
       {/* ── Photo ──────────────────────────────────── */}
-      <div
+      <motion.div
+        initial={{ opacity: 0, scale: 1.06 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         style={{
           flex: isMobile ? "none" : "0 0 42%",
           height: isMobile ? 300 : undefined,
@@ -42,7 +55,7 @@ export function AboutSection() {
             filter: "grayscale(18%) contrast(1.05)",
           }}
         />
-      </div>
+      </motion.div>
 
       {/* ── Content ────────────────────────────────── */}
       <div
@@ -51,65 +64,49 @@ export function AboutSection() {
           display: "flex",
           flexDirection: "column",
           justifyContent: isMobile ? "flex-start" : "center",
-          padding: isMobile
-            ? "36px 24px 44px"
-            : "64px 52px 52px 60px",
+          padding: isMobile ? "36px 24px 44px" : "64px 52px 52px 60px",
           position: "relative",
         }}
       >
-        {/* Decorative circle — desktop only */}
         {!isMobile && (
           <div
             style={{
               position: "absolute",
-              top: 40,
-              right: 52,
-              width: 22,
-              height: 22,
+              top: 40, right: 52,
+              width: 22, height: 22,
               borderRadius: "50%",
               border: "1.5px solid #d8d8d8",
             }}
           />
         )}
 
-        {/* ── Heading ── */}
-        <h2
+        {/* Heading */}
+        <motion.h2
+          {...fadeUp(0)}
           style={{
             margin: "0 0 24px",
             fontFamily: FH,
-            fontSize: isMobile
-              ? "clamp(28px, 8vw, 40px)"
-              : "clamp(34px, 4vw, 52px)",
+            fontSize: isMobile ? "clamp(28px, 8vw, 40px)" : "clamp(34px, 4vw, 52px)",
             lineHeight: 1.08,
             letterSpacing: "-0.025em",
             color: "#0d0d0d",
           }}
         >
-          <span style={{ fontWeight: 700 }}>
-            I design systems,
-          </span>
+          <span style={{ fontWeight: 700 }}>I design systems,</span>
           <br />
-          <span style={{ fontWeight: 400 }}>
-            not just screens.
-          </span>
-        </h2>
+          <span style={{ fontWeight: 400 }}>not just screens.</span>
+        </motion.h2>
 
-        {/* ── Bio paragraphs ── */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 14,
-            marginBottom: 36,
-          }}
-        >
+        {/* Bio paragraphs */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 36 }}>
           {[
             `I've spent the last 3+ years designing digital products that people actually want to use from mobile apps and SaaS dashboards to full design systems. The interface is just the surface; I care about what lives beneath: the flows, the decisions, the moments where clarity matters most.`,
             `My process blends user research, visual systems, and interaction design. I work closely with product and engineering teams to ship things that are both beautiful and functional without losing precision along the way.`,
             `Every project I take on, I treat as a systems problem designing at scale, across real user needs, business constraints, and technical realities.`,
           ].map((text, i) => (
-            <p
+            <motion.p
               key={i}
+              {...fadeUp(0.1 + i * 0.08)}
               style={{
                 margin: 0,
                 fontSize: 13,
@@ -120,12 +117,12 @@ export function AboutSection() {
               }}
             >
               {text}
-            </p>
+            </motion.p>
           ))}
         </div>
 
-        {/* ── Previously worked with ── */}
-        <div>
+        {/* Previously worked with */}
+        <motion.div {...fadeUp(0.36)}>
           <p
             style={{
               margin: "0 0 12px",
@@ -148,14 +145,7 @@ export function AboutSection() {
               flexWrap: "wrap",
             }}
           >
-            {/* Company pills */}
-            <div
-              style={{
-                display: "flex",
-                gap: 8,
-                flexWrap: "wrap",
-              }}
-            >
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
               {PREV_COMPANIES.map((name) => (
                 <span
                   key={name}
@@ -177,7 +167,6 @@ export function AboutSection() {
 
             {!isMobile && <div style={{ flex: 1 }} />}
 
-            {/* Download Resume button */}
             <button
               style={{
                 display: "inline-flex",
@@ -201,7 +190,7 @@ export function AboutSection() {
               DOWNLOAD RESUME
             </button>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
