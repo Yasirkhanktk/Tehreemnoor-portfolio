@@ -6,8 +6,8 @@ const FH = "'Space Grotesk', sans-serif"
 const FB = "'Inter', sans-serif"
 
 // ─── Capsule body dimensions ───────────────────────────────────────────────
-const BH = 62           // body height (pill height)
-const CR = BH / 2       // chamfer = perfect pill ends
+const BH_DESKTOP = 62
+const BH_MOBILE  = 44
 
 // ─── Colour themes ────────────────────────────────────────────────────────
 type Col = 'gray' | 'blue' | 'lime'
@@ -49,60 +49,58 @@ const CAPS: Cap[] = [
 ]
 
 // ─── Physics setup — called fresh whenever container gets a real width ─────
-function setupPhysics(field: HTMLDivElement, elemRefs: React.MutableRefObject<(HTMLDivElement | null)[]>) {
-  const W = field.offsetWidth
-  const H = field.offsetHeight
+function setupPhysics(
+  field: HTMLDivElement,
+  elemRefs: React.MutableRefObject<(HTMLDivElement | null)[]>,
+  bh: number,
+) {
+  const W  = field.offsetWidth
+  const H  = field.offsetHeight
+  const CR = bh / 2
   if (W < 80) return undefined
 
-  // Engine — light gravity so they fall & tilt naturally
   const engine = Matter.Engine.create({ gravity: { x: 0, y: 0.55 } })
 
-  // Bodies — stagger them above the container so they cascade in
   const bodies = CAPS.map((cap, i) => {
     const col4 = i % 4
     const row  = Math.floor(i / 4)
-    // Spread x evenly across container width
     const x = Math.max(
       cap.w / 2 + 8,
       Math.min(
         W - cap.w / 2 - 8,
-        ((col4 + 0.5) / 4) * W + (Math.random() - 0.5) * 80
+        ((col4 + 0.5) / 4) * W + (Math.random() - 0.5) * 80,
       )
     )
-    // Start above the visible field so they fall into frame
-    const y = -(BH + row * (BH + 14) + Math.random() * 30 + 20)
+    const y = -(bh + row * (bh + 12) + Math.random() * 30 + 20)
 
-    return Matter.Bodies.rectangle(x, y, cap.w, BH, {
+    return Matter.Bodies.rectangle(x, y, cap.w, bh, {
       chamfer: { radius: CR },
       restitution: 0.28,
       friction: 0.18,
       frictionAir: 0.035,
       density: 0.0018,
       label: String(cap.id),
-      angle: (Math.random() - 0.5) * 0.6,   // initial random tilt
+      angle: (Math.random() - 0.5) * 0.6,
     })
   })
 
-  // Invisible walls — ceiling is far above so falling capsules aren't blocked
   const WO = { isStatic: true, restitution: 0.2, friction: 0.25 }
-  const ground  = Matter.Bodies.rectangle(W / 2, H + 30, W + 400, 60, WO)
-  const lWall   = Matter.Bodies.rectangle(-32, H / 2, 64, H + 800, WO)
-  const rWall   = Matter.Bodies.rectangle(W + 32, H / 2, 64, H + 800, WO)
-  // No top ceiling — let them fall from above freely
+  const ground = Matter.Bodies.rectangle(W / 2, H + 30, W + 400, 60, WO)
+  const lWall  = Matter.Bodies.rectangle(-32,   H / 2, 64, H + 800, WO)
+  const rWall  = Matter.Bodies.rectangle(W + 32, H / 2, 64, H + 800, WO)
 
   Matter.World.add(engine.world, [...bodies, ground, lWall, rWall])
 
   const runner = Matter.Runner.create()
   Matter.Runner.run(runner, engine)
 
-  // ── Direct DOM sync (no setState → zero re-renders) ─────────────────────
   let rafId = 0
   const sync = () => {
     bodies.forEach((body, i) => {
       const el = elemRefs.current[i]
       if (!el) return
       const x = body.position.x - CAPS[i].w / 2
-      const y = body.position.y - BH / 2
+      const y = body.position.y - bh / 2
       el.style.transform = `translate(${x}px,${y}px) rotate(${body.angle}rad)`
     })
     rafId = requestAnimationFrame(sync)
@@ -195,21 +193,22 @@ export function SkillsBubbles() {
   const fieldRef   = useRef<HTMLDivElement>(null)
   const elemRefs   = useRef<(HTMLDivElement | null)[]>([])
   const cleanupRef = useRef<(() => void) | undefined>(undefined)
+  // Keep bh in a ref so the ResizeObserver callback always reads the latest value
+  const bhRef      = useRef(isMobile ? BH_MOBILE : BH_DESKTOP)
+  bhRef.current    = isMobile ? BH_MOBILE : BH_DESKTOP
+  const bh         = bhRef.current
 
   useEffect(() => {
     const field = fieldRef.current
     if (!field) return
 
-    // ResizeObserver fires whenever the container gets a real width
-    // (handles initial mount AND window resize / fullscreen toggle)
     let prevW = 0
     const ro = new ResizeObserver(entries => {
       const W = Math.round(entries[0].contentRect.width)
-      // Only re-init when width changes meaningfully (>30 px) to avoid thrash
       if (W < 80 || Math.abs(W - prevW) < 30) return
       prevW = W
       cleanupRef.current?.()
-      cleanupRef.current = setupPhysics(field, elemRefs) ?? undefined
+      cleanupRef.current = setupPhysics(field, elemRefs, bhRef.current) ?? undefined
     })
     ro.observe(field)
 
@@ -218,6 +217,14 @@ export function SkillsBubbles() {
       cleanupRef.current?.()
     }
   }, [])
+
+  // Re-init physics when mobile breakpoint changes
+  useEffect(() => {
+    const field = fieldRef.current
+    if (!field || field.offsetWidth < 80) return
+    cleanupRef.current?.()
+    cleanupRef.current = setupPhysics(field, elemRefs, bh) ?? undefined
+  }, [isMobile, bh])
 
   const px = isMobile ? 20 : 52
 
@@ -236,13 +243,14 @@ export function SkillsBubbles() {
         Tools, decisions, and the recurring concerns that shape every project.
       </p>
 
-      {/* Physics field */}
+      {/* Physics field — overflow hidden prevents capsules overlapping text above */}
       <div
         ref={fieldRef}
         style={{
           position: 'relative',
-          height: isMobile ? 560 : 420,
+          height: isMobile ? 480 : 420,
           marginTop: 10,
+          overflow: 'hidden',
           userSelect: 'none',
           touchAction: 'none',
         }}
@@ -255,10 +263,9 @@ export function SkillsBubbles() {
               ref={el => { elemRefs.current[i] = el }}
               style={{
                 position: 'absolute',
-                top: 0,
-                left: 0,
+                top: 0, left: 0,
                 width: cap.w,
-                height: BH,
+                height: bh,
                 willChange: 'transform',
                 cursor: 'grab',
               }}
@@ -268,11 +275,11 @@ export function SkillsBubbles() {
                 height: '100%',
                 border: `2px solid ${t.border}`,
                 background: t.bg,
-                borderRadius: BH / 2,
+                borderRadius: bh / 2,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: 15,
+                fontSize: isMobile ? 12 : 15,
                 fontWeight: 500,
                 color: t.text,
                 fontFamily: FH,

@@ -231,15 +231,25 @@ export function CapabilitiesSection() {
 
                       {/* ── Applied in ── */}
                       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                        {/* Context pill — no icon */}
+                        {/* Applied In pill */}
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                           <div style={{
-                            display: 'inline-flex', alignItems: 'center',
+                            display: 'inline-flex', alignItems: 'center', gap: 6,
                             background: 'rgba(197,241,53,0.12)',
                             border: `1px solid rgba(197,241,53,0.35)`,
                             borderRadius: 100,
                             padding: '5px 14px',
                           }}>
+                            <span style={{
+                              fontSize: 10,
+                              color: '#7a9200',
+                              fontFamily: FB,
+                              fontWeight: 600,
+                              letterSpacing: '0.04em',
+                              whiteSpace: 'nowrap',
+                            }}>
+                              Applied In:
+                            </span>
                             <span style={{
                               fontSize: 11.5,
                               color: '#3a4a00',
@@ -251,7 +261,7 @@ export function CapabilitiesSection() {
                           </div>
                         </div>
 
-                        {/* Applied in */}
+                        {/* Seen in */}
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                           <span style={{
                             fontSize: 11,
@@ -259,7 +269,7 @@ export function CapabilitiesSection() {
                             fontFamily: FB,
                             whiteSpace: 'nowrap',
                           }}>
-                            Applied in:
+                            Seen in:
                           </span>
                           {cap.seenIn.map(project => (
                             <span key={project} style={{

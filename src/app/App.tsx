@@ -113,6 +113,24 @@ function Hero({ isMobile }: { isMobile: boolean }) {
         pointerEvents: 'none',
       }} />
 
+      {/* Intro label */}
+      <motion.p
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        style={{
+          margin: '0 0 26px',
+          fontSize: isMobile ? 8.5 : 10,
+          letterSpacing: '0.16em',
+          color: '#b8b8b8',
+          textTransform: 'uppercase',
+          fontFamily: FB,
+          fontWeight: 400,
+        }}
+      >
+        HI I'M TEHREEM NOOR — 24 Y/O UI/UX DESIGNER, WORKING GLOBALLY
+      </motion.p>
+
       {/* Main heading */}
       <motion.h1
         initial={{ opacity: 0, y: 48 }}
