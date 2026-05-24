@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { ChevronRight, Globe, Menu, X } from 'lucide-react'
+import { ChevronRight, Globe, Menu, X, ArrowUpRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'motion/react'
 import logoImg from '../imports/Logo-1.png'
 import { ProjectsSection } from './components/ProjectsSection'
@@ -42,10 +42,12 @@ function TopNav({
   isMobile,
   onMenuOpen,
   onNavClick,
+  onLogoClick,
 }: {
   isMobile: boolean
   onMenuOpen: () => void
   onNavClick: (section: string) => void
+  onLogoClick: () => void
 }) {
   return (
     <header style={{
@@ -58,14 +60,20 @@ function TopNav({
       position: 'sticky', top: 0, zIndex: 50,
     }}>
       {/* Logo + name */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+      <button 
+        onClick={onLogoClick}
+        style={{ 
+          display: 'flex', alignItems: 'center', gap: 10,
+          background: 'none', border: 'none', padding: 0, cursor: 'pointer'
+        }}
+      >
         <LogoMark />
         {!isMobile && (
           <span style={{ fontSize: 13, fontWeight: 600, color: '#0d0d0d', fontFamily: FH, letterSpacing: '-0.01em' }}>
             Tehreem Noor
           </span>
         )}
-      </div>
+      </button>
 
       {isMobile ? (
         <button onClick={onMenuOpen} style={{
@@ -275,14 +283,28 @@ export default function App() {
   const isMobile  = useIsMobile()
   const [menuOpen, setMenuOpen]     = useState(false)
   const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null)
+  const [showScrollTop, setShowScrollTop] = useState(false)
   const wasViewingProject = useRef(false)
 
   useEffect(() => { if (!isMobile) setMenuOpen(false) }, [isMobile])
 
-  // Only scroll back to work when *closing* a case study, never on initial mount
+  // Track scrolling for Go to Top button
+  useEffect(() => {
+    const scroller = document.getElementById('main-scroll')
+    if (!scroller) return
+    const handleScroll = () => {
+      setShowScrollTop(scroller.scrollTop > 400)
+    }
+    scroller.addEventListener('scroll', handleScroll)
+    return () => scroller.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  // Only scroll back to top when *closing* a case study, never on initial mount
   useEffect(() => {
     if (!selectedProject && wasViewingProject.current) {
-      setTimeout(() => scrollToSection('work'), 80)
+      setTimeout(() => {
+        document.getElementById('main-scroll')?.scrollTo({ top: 0, behavior: 'smooth' })
+      }, 80)
     }
     wasViewingProject.current = !!selectedProject
   }, [selectedProject])
@@ -302,13 +324,66 @@ export default function App() {
     setMenuOpen(false)
   }
 
-  const nextProject = selectedProject
-    ? PROJECTS[(PROJECTS.findIndex(p => p.id === selectedProject.id) + 1) % PROJECTS.length]
-    : null
+  const handleLogoClick = () => {
+    if (selectedProject) setSelectedProject(null)
+    setMenuOpen(false)
+    document.getElementById('main-scroll')?.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const handleScrollTopClick = () => {
+    document.getElementById('main-scroll')?.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const nextProject = (() => {
+    if (!selectedProject) return null
+    // Find projects that share the exact same primary category (the first item in cats array)
+    const primaryCat = selectedProject.cats[0]
+    const sameCatProjects = PROJECTS.filter(p => p.cats[0] === primaryCat)
+    
+    if (sameCatProjects.length > 1) {
+      const idx = sameCatProjects.findIndex(p => p.id === selectedProject.id)
+      return sameCatProjects[(idx + 1) % sameCatProjects.length]
+    }
+    // Fallback if no other projects share the exact category
+    return PROJECTS[(PROJECTS.findIndex(p => p.id === selectedProject.id) + 1) % PROJECTS.length]
+  })()
 
   return (
     <div style={{ background: '#fff' }}>
       <GlobalCursor />
+
+      {/* Go to Top Floating Button */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            transition={{ duration: 0.2 }}
+            onClick={handleScrollTopClick}
+            style={{
+              position: 'fixed',
+              bottom: isMobile ? 24 : 40,
+              right: isMobile ? 24 : 40,
+              width: 48,
+              height: 48,
+              borderRadius: '50%',
+              background: LIME,
+              color: '#000',
+              border: 'none',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              zIndex: 90,
+            }}
+          >
+            <ArrowUpRight size={20} style={{ transform: 'rotate(-45deg)' }} strokeWidth={2.5} />
+          </motion.button>
+        )}
+      </AnimatePresence>
+
       <div id="main-scroll" style={{ height: '100vh', overflowY: 'auto', overflowX: 'hidden' }}>
 
         {/* Case study view */}
@@ -317,6 +392,7 @@ export default function App() {
             project={selectedProject}
             nextProject={nextProject}
             onClose={() => setSelectedProject(null)}
+            onLogoClick={handleLogoClick}
             onNavigate={(id) => {
               const p = PROJECTS.find(x => x.id === id)
               if (p) handleProjectClick(p)
@@ -324,7 +400,7 @@ export default function App() {
           />
         ) : (
           <>
-            <TopNav isMobile={isMobile} onMenuOpen={() => setMenuOpen(true)} onNavClick={handleNavClick} />
+            <TopNav isMobile={isMobile} onMenuOpen={() => setMenuOpen(true)} onNavClick={handleNavClick} onLogoClick={handleLogoClick} />
 
             {/* Mobile nav dropdown */}
             <AnimatePresence>

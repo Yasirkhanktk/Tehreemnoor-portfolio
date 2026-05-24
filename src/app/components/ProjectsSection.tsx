@@ -201,11 +201,16 @@ export function ProjectsSection({ onProjectClick }: { onProjectClick: (project: 
           {filtered.map(p => (
             <div
               key={p.id}
+              onClick={() => {
+                // On mobile, clicking anywhere on the card opens the project
+                if (isMobile) onProjectClick(p)
+              }}
               style={{
                 minWidth: cardW,
                 maxWidth: cardW,
                 flexShrink: 0,
                 background: '#fff',
+                cursor: isMobile ? 'pointer' : 'none',
                 // No border/stroke — open card
               }}
               onMouseEnter={() => !isMobile && setHoveredId(p.id)}

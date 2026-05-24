@@ -9,23 +9,28 @@ export function GlobalCursor() {
   const [hidden, setHidden] = useState(false)
 
   useEffect(() => {
-    // Inject global cursor:none
+    // Inject global cursor:none but allow overrides
     const style = document.createElement('style')
     style.id = '__global-cursor__'
     style.textContent = `
-      *, *::before, *::after { cursor: none !important; }
+      body, .custom-cursor-area { cursor: none; }
+      a, button, input, select, textarea, [role="button"], .pointer-override { cursor: none; }
     `
     document.head.appendChild(style)
 
     const onMove = (e: MouseEvent) => {
       setPos({ x: e.clientX, y: e.clientY })
-      const el = document.elementFromPoint(e.clientX, e.clientY) as HTMLElement | null
+      checkElement(e.clientX, e.clientY)
+    }
+
+    const checkElement = (x: number, y: number) => {
+      const el = document.elementFromPoint(x, y) as HTMLElement | null
       if (!el) return
       // Hide over the drag scroll row — the DRAG circle cursor handles it
       const inDragZone = !!el.closest('.proj-row')
       setHidden(inDragZone)
       if (!inDragZone) {
-        const isInteractive = !!el.closest('button, a, input, textarea, select, [role="button"]')
+        const isInteractive = !!el.closest('button, a, input, textarea, select, [role="button"], .interactive')
         setIsPointer(isInteractive)
       }
     }
@@ -33,17 +38,28 @@ export function GlobalCursor() {
     const onLeave = () => setHidden(true)
     const onEnter = () => setHidden(false)
 
+    // Re-evaluate cursor state on clicks and scrolls, since elements might move under the static mouse
+    const onInteraction = () => {
+      setTimeout(() => {
+        checkElement(pos.x, pos.y)
+      }, 50)
+    }
+
     window.addEventListener('mousemove', onMove)
+    window.addEventListener('click', onInteraction)
+    window.addEventListener('scroll', onInteraction, true) // capture phase for scroll inside divs
     document.addEventListener('mouseleave', onLeave)
     document.addEventListener('mouseenter', onEnter)
 
     return () => {
       document.getElementById('__global-cursor__')?.remove()
       window.removeEventListener('mousemove', onMove)
+      window.removeEventListener('click', onInteraction)
+      window.removeEventListener('scroll', onInteraction, true)
       document.removeEventListener('mouseleave', onLeave)
       document.removeEventListener('mouseenter', onEnter)
     }
-  }, [])
+  }, [pos.x, pos.y])
 
   return (
     <>

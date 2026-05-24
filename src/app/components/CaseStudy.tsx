@@ -133,6 +133,7 @@ interface Props {
   project: ProjectData;
   nextProject: ProjectData | null;
   onClose: () => void;
+  onLogoClick?: () => void;
   onNavigate: (id: number) => void;
 }
 
@@ -140,17 +141,20 @@ export function CaseStudy({
   project,
   nextProject,
   onClose,
+  onLogoClick,
   onNavigate,
 }: Props) {
   const isMobile = useIsMobile();
   const cs = project.caseStudy;
   const px = isMobile ? 24 : 60;
 
-  // Scroll to top on mount
+  // Scroll to top on mount or project change
   useEffect(() => {
-    document
-      .getElementById("main-scroll")
-      ?.scrollTo({ top: 0, behavior: "instant" });
+    const scroller = document.getElementById("main-scroll");
+    if (scroller) {
+      // Use smooth or auto, but instant can sometimes be ignored
+      scroller.scrollTo({ top: 0, behavior: "auto" });
+    }
   }, [project.id]);
 
   return (
@@ -186,14 +190,19 @@ export function CaseStudy({
           }}
         >
           <ArrowLeft size={14} strokeWidth={1.75} />
-          {!isMobile && "Back to Work"}
+          {!isMobile && "Back to Home"}
         </button>
 
-        <div
+        <button
+          onClick={onLogoClick || onClose}
           style={{
             display: "flex",
             alignItems: "center",
             gap: 8,
+            background: "none",
+            border: "none",
+            padding: 0,
+            cursor: "pointer",
           }}
         >
           <img
@@ -217,7 +226,7 @@ export function CaseStudy({
               Tehreem Noor
             </span>
           )}
-        </div>
+        </button>
 
         <div style={{ width: isMobile ? 40 : 120 }} />
       </header>
