@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 
-const LIME = '#C5F135'
+const LIME = '#000000ff'
 
 export function GlobalCursor() {
   const [pos, setPos] = useState({ x: -200, y: -200 })
