@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from 'react'
 import { Plus, X } from 'lucide-react'
 // Plus used only for the accordion toggle

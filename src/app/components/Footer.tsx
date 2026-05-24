@@ -13,7 +13,7 @@ const TICKER_TEXT =
 function LogoMark() {
   return (
     <img
-      src={logoImg}
+      src={typeof logoImg === 'string' ? logoImg : logoImg.src}
       alt="Tehreem Noor logo"
       style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover', display: 'block' }}
     />

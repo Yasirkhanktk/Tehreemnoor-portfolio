@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect } from "react";
 import {
   ArrowLeft,
@@ -22,7 +24,7 @@ const fadeUp = (delay = 0) => ({
   viewport: { once: true, margin: "-60px" },
   transition: {
     duration: 0.78,
-    ease: [0.22, 1, 0.36, 1],
+    ease: [0.22, 1, 0.36, 1] as const,
     delay,
   },
 });
@@ -33,7 +35,7 @@ const fadeLeft = (delay = 0) => ({
   viewport: { once: true, margin: "-60px" },
   transition: {
     duration: 0.78,
-    ease: [0.22, 1, 0.36, 1],
+    ease: [0.22, 1, 0.36, 1] as const,
     delay,
   },
 });
@@ -206,7 +208,7 @@ export function CaseStudy({
           }}
         >
           <img
-            src={logoImg}
+            src={typeof logoImg === 'string' ? logoImg : logoImg.src}
             alt="logo"
             style={{
               width: 28,
@@ -743,7 +745,7 @@ export function CaseStudy({
             style={{ flex: 1, minWidth: 0 }}
           >
             <BrowserMockup
-              src={cs.contextImage}
+              src={cs.context.image || cs.contextImage}
               alt="Context visual"
               bg={`${project.bg}22`}
             />
@@ -817,7 +819,7 @@ export function CaseStudy({
         {/* Full-width image */}
         <motion.div {...fadeUp(0.2)}>
           <BrowserMockup
-            src={cs.designImage}
+            src={cs.designApproach.image || cs.designImage}
             alt="Design approach"
             bg={`${project.bg}18`}
           />
@@ -1031,7 +1033,7 @@ export function CaseStudy({
         {/* Design image */}
         <motion.div {...fadeUp(0.15)}>
           <BrowserMockup
-            src={cs.designImage}
+            src={cs.impact.image || cs.designImage}
             alt="Impact visual"
             bg={`${project.bg}18`}
           />
@@ -1234,72 +1236,80 @@ export function CaseStudy({
         </div>
 
         {/* Image grid — 3 images */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "1.6fr 1fr",
-            gridTemplateRows: isMobile ? "auto" : "auto auto",
-            gap: 16,
-          }}
-        >
-          {/* Large image — spans 2 rows on desktop */}
-          <motion.div
-            {...fadeUp()}
-            style={{ gridRow: isMobile ? "auto" : "span 2" }}
-          >
-            <BrowserMockup
-              src={cs.contextImage}
-              alt="Final screens"
-              bg={`${project.bg}18`}
-            />
-          </motion.div>
-
-          {/* Top-right image */}
-          <motion.div {...fadeUp(0.1)}>
+        {(() => {
+          const outcomeImages = cs.outcome.images || [];
+          const img1 = outcomeImages[0] || cs.contextImage;
+          const img2 = outcomeImages[1] || cs.designImage;
+          const img3 = outcomeImages[2] || cs.designImage;
+          return (
             <div
               style={{
-                background: `${project.bg}14`,
-                borderRadius: 12,
-                overflow: "hidden",
-                border: `1px solid ${project.bg}30`,
+                display: "grid",
+                gridTemplateColumns: isMobile ? "1fr" : "1.6fr 1fr",
+                gridTemplateRows: isMobile ? "auto" : "auto auto",
+                gap: 16,
               }}
             >
-              <ImageWithFallback
-                src={cs.designImage}
-                alt="Design detail"
-                style={{
-                  width: "100%",
-                  display: "block",
-                  objectFit: "cover",
-                  height: isMobile ? 200 : 220,
-                }}
-              />
-            </div>
-          </motion.div>
+              {/* Large image — spans 2 rows on desktop */}
+              <motion.div
+                {...fadeUp()}
+                style={{ gridRow: isMobile ? "auto" : "span 2" }}
+              >
+                <BrowserMockup
+                  src={img1}
+                  alt="Final screens"
+                  bg={`${project.bg}18`}
+                />
+              </motion.div>
 
-          {/* Bottom-right — accent card */}
-          <motion.div {...fadeUp(0.1)}>
-            <div
-              style={{
-                background: `${project.bg}14`,
-                borderRadius: 12,
-                overflow: "hidden",
-                border: `1px solid ${project.bg}30`,
-              }}
-            >
-              <ImageWithFallback
-                src={cs.designImage}
-                alt="Design detail"
-                style={{
-                  width: "100%",
-                  display: "block",
-                  objectFit: "cover",
-                  height: isMobile ? 200 : 220,
-                }}
-              />
+              {/* Top-right image */}
+              <motion.div {...fadeUp(0.1)}>
+                <div
+                  style={{
+                    background: `${project.bg}14`,
+                    borderRadius: 12,
+                    overflow: "hidden",
+                    border: `1px solid ${project.bg}30`,
+                  }}
+                >
+                  <ImageWithFallback
+                    src={img2}
+                    alt="Design detail"
+                    style={{
+                      width: "100%",
+                      display: "block",
+                      objectFit: "cover",
+                      height: isMobile ? 200 : 220,
+                    }}
+                  />
+                </div>
+              </motion.div>
+
+              {/* Bottom-right — accent card */}
+              <motion.div {...fadeUp(0.1)}>
+                <div
+                  style={{
+                    background: `${project.bg}14`,
+                    borderRadius: 12,
+                    overflow: "hidden",
+                    border: `1px solid ${project.bg}30`,
+                  }}
+                >
+                  <ImageWithFallback
+                    src={img3}
+                    alt="Design detail"
+                    style={{
+                      width: "100%",
+                      display: "block",
+                      objectFit: "cover",
+                      height: isMobile ? 200 : 220,
+                    }}
+                  />
+                </div>
+              </motion.div>
             </div>
-          </motion.div>
-        </div>
+          );
+        })()}
       </section>
 
       {/* ── NEXT PROJECT ──────────────────────────────────────────────────── */}

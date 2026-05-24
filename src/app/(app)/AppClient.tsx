@@ -1,17 +1,18 @@
+"use client"
+
 import { useState, useEffect, useRef } from 'react'
 import { ChevronRight, Globe, Menu, X, ArrowUpRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'motion/react'
-import logoImg from '../imports/Logo-1.png'
-import { ProjectsSection } from './components/ProjectsSection'
-import { AboutSection } from './components/AboutSection'
-import { CapabilitiesSection } from './components/CapabilitiesSection'
-import { SkillsBubbles } from './components/SkillsBubbles'
-import { Footer } from './components/Footer'
-import { GlobalCursor } from './components/GlobalCursor'
-import { CaseStudy } from './components/CaseStudy'
-import { useIsMobile } from './utils/useIsMobile'
-import { PROJECTS } from './data/projects'
-import type { ProjectData } from './data/projects'
+import logoImg from '../../imports/Logo-1.png'
+import { ProjectsSection } from '../components/ProjectsSection'
+import { AboutSection } from '../components/AboutSection'
+import { CapabilitiesSection } from '../components/CapabilitiesSection'
+import { SkillsBubbles } from '../components/SkillsBubbles'
+import { Footer } from '../components/Footer'
+import { GlobalCursor } from '../components/GlobalCursor'
+import { CaseStudy } from '../components/CaseStudy'
+import { useIsMobile } from '../utils/useIsMobile'
+import type { ProjectData } from '../data/projects'
 
 const LIME = '#C5F135'
 const FH = "'Space Grotesk', sans-serif"
@@ -21,7 +22,7 @@ const FB = "'Inter', sans-serif"
 function LogoMark({ size = 32 }: { size?: number }) {
   return (
     <img
-      src={logoImg}
+      src={typeof logoImg === 'string' ? logoImg : logoImg.src}
       alt="Tehreem Noor logo"
       style={{ width: size, height: size, borderRadius: '50%', objectFit: 'cover', flexShrink: 0, display: 'block' }}
     />
@@ -279,7 +280,8 @@ function Hero({ isMobile, onViewWork }: { isMobile: boolean; onViewWork: () => v
 }
 
 // ─── Root ─────────────────────────────────────────────────────────────────────
-export default function App() {
+export default function AppClient({ initialProjects }: { initialProjects: ProjectData[] }) {
+  const PROJECTS = initialProjects
   const isMobile  = useIsMobile()
   const [menuOpen, setMenuOpen]     = useState(false)
   const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null)
@@ -460,7 +462,7 @@ export default function App() {
             </AnimatePresence>
 
             <Hero isMobile={isMobile} onViewWork={() => scrollToSection('work')} />
-            <div id="work"><ProjectsSection onProjectClick={handleProjectClick} /></div>
+            <div id="work"><ProjectsSection onProjectClick={handleProjectClick} initialProjects={PROJECTS} /></div>
             <div id="about"><AboutSection /></div>
             <CapabilitiesSection />
             <SkillsBubbles />

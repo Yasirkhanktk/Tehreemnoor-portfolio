@@ -1,9 +1,10 @@
+"use client"
+
 import { useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { ArrowUpRight } from 'lucide-react'
 import { ImageWithFallback } from './figma/ImageWithFallback'
 import { useIsMobile } from '../utils/useIsMobile'
-import { PROJECTS } from '../data/projects'
 import type { ProjectData } from '../data/projects'
 
 const LIME = '#C5F135'
@@ -13,7 +14,7 @@ const FB = "'Inter', sans-serif"
 
 const CATS = ['All', 'Website', 'Application', 'Mobile', 'Web3', 'Branding']
 
-export function ProjectsSection({ onProjectClick }: { onProjectClick: (project: ProjectData) => void }) {
+export function ProjectsSection({ onProjectClick, initialProjects }: { onProjectClick: (project: ProjectData) => void; initialProjects: ProjectData[] }) {
   const isMobile = useIsMobile()
   const [activeCat, setActiveCat] = useState('All')
   const [hoveredId, setHoveredId] = useState<number | null>(null)
@@ -24,7 +25,7 @@ export function ProjectsSection({ onProjectClick }: { onProjectClick: (project: 
   const dragStartX = useRef(0)
   const scrollOrigin = useRef(0)
 
-  const filtered = activeCat === 'All' ? PROJECTS : PROJECTS.filter(p => p.cats.includes(activeCat))
+  const filtered = activeCat === 'All' ? initialProjects : initialProjects.filter(p => p.cats.includes(activeCat))
   const px = isMobile ? 20 : 52
 
   function onMouseDown(e: React.MouseEvent) {

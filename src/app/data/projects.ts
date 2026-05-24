@@ -17,11 +17,11 @@ export interface ProjectData {
     team: string
     contextImage: string
     designImage: string
-    context: { headline: string; body: string[] }
-    designApproach: { headline: string; body: string[] }
+    context: { headline: string; body: string[]; image?: string }
+    designApproach: { headline: string; body: string[]; image?: string }
     myRole: { headline: string; bullets: string[] }
-    impact: { headline: string; body: string; metrics: Metric[] }
-    outcome: { headline: string; body: string }
+    impact: { headline: string; body: string; metrics: Metric[]; image?: string }
+    outcome: { headline: string; body: string; images: string[] }
   }
 }
 
@@ -48,14 +48,16 @@ export const PROJECTS: ProjectData[] = [
         body: [
           "Moove's app had strong market penetration but suffered from high drop-off rates mid-booking. Users were abandoning at pricing, pickup accuracy, and ETA screens — creating friction that cost both users and drivers.",
           "The challenge wasn't a feature gap. It was a clarity problem. Users didn't trust what they were seeing. Every added screen felt like a barrier. The product needed a UX overhaul that restored confidence without stripping functionality."
-        ]
+        ],
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
       },
       designApproach: {
         headline: "Stripping back complexity to reveal the essential path",
         body: [
           "I mapped every decision point in the existing booking flow, identifying where users hesitated or dropped off. The audit revealed 11 screens where users had to reconcile conflicting information — a clear sign of accumulated design debt.",
           "The redesign focused on progressive disclosure: show users only what they need at each moment. Pricing confidence was solved with upfront fare locks. Pickup accuracy was addressed with a live map and one-tap confirmation. Every screen was rebuilt around a single, clear action."
-        ]
+        ],
+        image: "https://images.unsplash.com/photo-1581291518655-9523c932dedf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
       },
       myRole: {
         headline: "End-to-end design from discovery through delivery",
@@ -75,11 +77,17 @@ export const PROJECTS: ProjectData[] = [
           { value: '23%', label: 'Increase in ride completions' },
           { value: '18%', label: 'Drop in support tickets' },
           { value: '4.7★', label: 'App Store rating' }
-        ]
+        ],
+        image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
       },
       outcome: {
         headline: "A scalable foundation, not just a screen refresh",
-        body: "The Moove redesign became the design benchmark for all future features. The component library and flow architecture were adopted for three subsequent launches. The project proved that systematic UX thinking — not visual polish — is what moves product metrics."
+        body: "The Moove redesign became the design benchmark for all future features. The component library and flow architecture were adopted for three subsequent launches. The project proved that systematic UX thinking — not visual polish — is what moves product metrics.",
+        images: [
+          "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1000",
+          "https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1000",
+          "https://images.unsplash.com/photo-1581291518655-9523c932dedf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1000"
+        ]
       }
     }
   },
@@ -105,14 +113,16 @@ export const PROJECTS: ProjectData[] = [
         body: [
           "Metrix's onboarding flow required new users to configure over 40 settings across a single dense form before they could use the product. Customer success reported that 1 in 3 trials abandoned during setup.",
           "The product was powerful, but the entry point was hostile. New users couldn't see the value because they couldn't get through the door. The product needed a configuration experience that respected users' time and context."
-        ]
+        ],
+        image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
       },
       designApproach: {
         headline: "Turning a wall of settings into a guided conversation",
         body: [
           "I restructured the configuration into a 5-step wizard that asked only the minimum viable questions at each stage. Each step had a single purpose, clear progress, and explained the 'why' behind each setting — turning an interrogation into guidance.",
           "Secondary and advanced settings were deferred to after the initial setup, letting users get to 'first value' faster. The design prioritized immediate product activation over comprehensive configuration."
-        ]
+        ],
+        image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
       },
       myRole: {
         headline: "UX research, information architecture, and interaction design",
@@ -132,11 +142,17 @@ export const PROJECTS: ProjectData[] = [
           { value: '35%', label: 'Faster average setup time' },
           { value: '100%', label: 'Preferred new wizard in tests' },
           { value: '2.4×', label: 'Increase in trial activation' }
-        ]
+        ],
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
       },
       outcome: {
         headline: "A template for every complex workflow in the product",
-        body: "The wizard framework I built for Metrix's onboarding became the default pattern for all subsequent complex flows. The engineering team implemented it as a reusable component. It's now the standard for any multi-step configuration in the product."
+        body: "The wizard framework I built for Metrix's onboarding became the default pattern for all subsequent complex flows. The engineering team implemented it as a reusable component. It's now the standard for any multi-step configuration in the product.",
+        images: [
+          "https://images.unsplash.com/photo-1460925895917-afdab827c52f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1000",
+          "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1000",
+          "https://images.unsplash.com/photo-1531403009284-440f080d1e12?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1000"
+        ]
       }
     }
   },
@@ -162,14 +178,16 @@ export const PROJECTS: ProjectData[] = [
         body: [
           "Vox Swap was a fast-growing DeFi exchange where users executed token swaps with real money. The existing interface provided minimal feedback during transactions — users couldn't tell if a swap was processing, failed, or stuck in a pending state.",
           "In crypto, ambiguity at the transaction layer erodes trust fast. Users were posting in support channels, abandoning swaps mid-flow, and in some cases, re-submitting transactions — costing themselves gas fees. The interface needed to be as reliable as the protocol underneath it."
-        ]
+        ],
+        image: "https://images.unsplash.com/photo-1621761191319-c6fb62004040?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
       },
       designApproach: {
         headline: "Designing every state before touching the happy path",
         body: [
           "I started by mapping all possible transaction states: pending, confirming, success, failed, timed out, insufficient gas, and edge cases like network congestion. Each state got a dedicated design with clear explanations, user guidance, and recovery paths.",
           "The system health dashboard was designed for power users who needed protocol-level visibility — liquidity pool depth, slippage, fee estimates — all surfaced contextually without cluttering the primary swap interface."
-        ]
+        ],
+        image: "https://images.unsplash.com/photo-1642790106117-e829e14a795f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
       },
       myRole: {
         headline: "Transaction UX design and dashboard architecture",
@@ -189,11 +207,17 @@ export const PROJECTS: ProjectData[] = [
           { value: '40%', label: 'Drop in transaction-related support tickets' },
           { value: '2.3×', label: 'Task completion speed improvement' },
           { value: '4.6★', label: 'Product satisfaction score' }
-        ]
+        ],
+        image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
       },
       outcome: {
         headline: "A design system built for financial trust",
-        body: "The state management patterns and component system built for Vox Swap were adopted across the broader product. The project established that DeFi UX isn't just about aesthetics — it's about designing systems that users trust with real value."
+        body: "The state management patterns and component system built for Vox Swap were adopted across the broader product. The project established that DeFi UX isn't just about aesthetics — it's about designing systems that users trust with real value.",
+        images: [
+          "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1000",
+          "https://images.unsplash.com/photo-1621761191319-c6fb62004040?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1000",
+          "https://images.unsplash.com/photo-1642790106117-e829e14a795f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1000"
+        ]
       }
     }
   },
@@ -219,14 +243,16 @@ export const PROJECTS: ProjectData[] = [
         body: [
           "Most personal finance apps fail the same way: they're built for accountants, not humans. Pago's predecessor had strong categorisation features but a weekly active user rate below 22%. Users set up the app, checked it once, and never returned.",
           "The challenge was designing an experience that felt like a trusted advisor, not a spreadsheet. The AI engine was powerful — but the interface was burying its value behind dense charts and data tables. The design needed to lead with insight, not information."
-        ]
+        ],
+        image: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
       },
       designApproach: {
         headline: "Designing for the emotional reality of money",
         body: [
           "I led a series of diary studies tracking how users thought and felt about their finances day-to-day. The research revealed that users didn't want more data — they wanted reassurance, gentle nudges, and clear next steps. The design philosophy shifted from 'show everything' to 'show what matters now'.",
           "The AI insights were redesigned as conversational cards — short, specific, actionable. Instead of overwhelming dashboards, users saw a single most-important insight each day, with the option to explore deeper. The budget recommendation flow was rebuilt around natural language, not form fields."
-        ]
+        ],
+        image: "https://images.unsplash.com/photo-1563013544-824ae1d704d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
       },
       myRole: {
         headline: "Full product design from research to launch",
@@ -246,11 +272,17 @@ export const PROJECTS: ProjectData[] = [
           { value: '62%', label: 'Increase in daily active users' },
           { value: '89%', label: '30-day user retention rate' },
           { value: '4.8★', label: 'App Store rating' }
-        ]
+        ],
+        image: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
       },
       outcome: {
         headline: "A new standard for how the product communicates value",
-        body: "The insight card pattern and conversational setup flow became the design foundation for Pago's entire product roadmap. The project demonstrated that in fintech, emotional design — making users feel in control and informed — directly drives the metrics that matter."
+        body: "The insight card pattern and conversational setup flow became the design foundation for Pago's entire product roadmap. The project demonstrated that in fintech, emotional design — making users feel in control and informed — directly drives the metrics that matter.",
+        images: [
+          "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1000",
+          "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1000",
+          "https://images.unsplash.com/photo-1563013544-824ae1d704d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1000"
+        ]
       }
     }
   },
@@ -276,14 +308,16 @@ export const PROJECTS: ProjectData[] = [
         body: [
           "Nomo Studio had grown from a 3-person startup to a 60-person B2B SaaS company in 18 months. Along the way, the product accumulated 4 separate visual styles, 3 component libraries, and no shared design language. Every team was building from scratch.",
           "The inconsistency wasn't just a design problem — it was slowing engineering down and making the product feel fragmented to customers. Nomo needed a unified design system and a brand identity that could scale with the company."
-        ]
+        ],
+        image: "https://images.unsplash.com/photo-1541462608141-2ff01dd914e0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
       },
       designApproach: {
         headline: "System before style — architecture before aesthetics",
         body: [
           "I started with a full audit of the existing product — cataloguing every component, pattern, and visual inconsistency across the 4 divergent codebases. The audit identified 340 unique UI elements, of which only 80 were truly distinct. The rest were duplicates and variations that could be unified.",
           "The design system was built token-first: colour, spacing, typography, and motion were defined as semantic tokens before any component was designed. This ensured the system could adapt to future brand evolution without requiring a full rebuild."
-        ]
+        ],
+        image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
       },
       myRole: {
         headline: "Design systems architecture and brand identity",
@@ -303,11 +337,17 @@ export const PROJECTS: ProjectData[] = [
           { value: '80%', label: 'Reduction in UI inconsistencies' },
           { value: '3 mo', label: 'Full system shipped from zero' },
           { value: '100%', label: 'Designer & engineer adoption' }
-        ]
+        ],
+        image: "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
       },
       outcome: {
         headline: "A system that scales with the company",
-        body: "The Nomo design system is now the single source of truth for 8 product teams. The brand identity was adopted across marketing, product, and sales materials within 6 weeks of launch. The project proved that investing in foundations — not features — is the highest-leverage design work a growing team can do."
+        body: "The Nomo design system is now the single source of truth for 8 product teams. The brand identity was adopted across marketing, product, and sales materials within 6 weeks of launch. The project proved that investing in foundations — not features — is the highest-leverage design work a growing team can do.",
+        images: [
+          "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1000",
+          "https://images.unsplash.com/photo-1541462608141-2ff01dd914e0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1000",
+          "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1000"
+        ]
       }
     }
   }
