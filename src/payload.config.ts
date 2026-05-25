@@ -448,7 +448,14 @@ export default buildConfig({
               if (imgId) designSecImageIds.push(imgId);
             }
           }
-          const impactSecImageId = proj.caseStudy.impact.image ? await uploadImage(proj.caseStudy.impact.image, `${proj.name} Impact Section`) : null
+          const impactSecImageIds = [];
+          if (proj.caseStudy.impact.images && Array.isArray(proj.caseStudy.impact.images)) {
+            for (let i = 0; i < proj.caseStudy.impact.images.length; i++) {
+              const url = proj.caseStudy.impact.images[i];
+              const imgId = await uploadImage(url, `${proj.name} Impact ${i + 1}`);
+              if (imgId) impactSecImageIds.push(imgId);
+            }
+          }
 
           await payload.create({
             collection: 'projects',
@@ -486,7 +493,7 @@ export default buildConfig({
                   headline: proj.caseStudy.impact.headline,
                   body: proj.caseStudy.impact.body,
                   metrics: proj.caseStudy.impact.metrics.map(m => ({ value: m.value, label: m.label })),
-                  image: impactSecImageId || undefined,
+                  images: impactSecImageIds as any,
                 },
                 outcome: {
                   headline: proj.caseStudy.outcome.headline,
