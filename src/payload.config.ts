@@ -284,9 +284,10 @@ export default buildConfig({
                   ]
                 },
                 {
-                  name: 'image',
+                  name: 'images',
                   type: 'relationship',
                   relationTo: 'media',
+                  hasMany: true,
                   required: false,
                 }
               ]
@@ -435,7 +436,14 @@ export default buildConfig({
           }
 
           const contextSecImageId = proj.caseStudy.context.image ? await uploadImage(proj.caseStudy.context.image, `${proj.name} Context Section`) : null
-          const designSecImageId = proj.caseStudy.designApproach.image ? await uploadImage(proj.caseStudy.designApproach.image, `${proj.name} Design Approach Section`) : null
+          const designSecImageIds = [];
+          if (proj.caseStudy.designApproach.images && Array.isArray(proj.caseStudy.designApproach.images)) {
+            for (let i = 0; i < proj.caseStudy.designApproach.images.length; i++) {
+              const url = proj.caseStudy.designApproach.images[i];
+              const imgId = await uploadImage(url, `${proj.name} Design Approach ${i + 1}`);
+              if (imgId) designSecImageIds.push(imgId);
+            }
+          }
           const impactSecImageId = proj.caseStudy.impact.image ? await uploadImage(proj.caseStudy.impact.image, `${proj.name} Impact Section`) : null
 
           await payload.create({
@@ -464,7 +472,7 @@ export default buildConfig({
                 designApproach: {
                   headline: proj.caseStudy.designApproach.headline,
                   body: proj.caseStudy.designApproach.body.map(text => ({ paragraph: text })),
-                  image: designSecImageId || undefined,
+                  images: designSecImageIds as any,
                 },
                 myRole: {
                   headline: proj.caseStudy.myRole.headline,

@@ -18,7 +18,7 @@ export interface ProjectData {
     contextImage: string
     designImage: string
     context: { headline: string; body: string[]; image?: string }
-    designApproach: { headline: string; body: string[]; image?: string }
+    designApproach: { headline: string; body: string[]; images: string[] }
     myRole: { headline: string; bullets: string[] }
     impact: { headline: string; body: string; metrics: Metric[]; image?: string }
     outcome: { headline: string; body: string; images: string[] }
@@ -57,7 +57,7 @@ export const PROJECTS: ProjectData[] = [
           "I mapped every decision point in the existing booking flow, identifying where users hesitated or dropped off. The audit revealed 11 screens where users had to reconcile conflicting information — a clear sign of accumulated design debt.",
           "The redesign focused on progressive disclosure: show users only what they need at each moment. Pricing confidence was solved with upfront fare locks. Pickup accuracy was addressed with a live map and one-tap confirmation. Every screen was rebuilt around a single, clear action."
         ],
-        image: "https://images.unsplash.com/photo-1581291518655-9523c932dedf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
+        images: ["https://images.unsplash.com/photo-1581291518655-9523c932dedf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"]
       },
       myRole: {
         headline: "End-to-end design from discovery through delivery",
@@ -122,7 +122,7 @@ export const PROJECTS: ProjectData[] = [
           "I restructured the configuration into a 5-step wizard that asked only the minimum viable questions at each stage. Each step had a single purpose, clear progress, and explained the 'why' behind each setting — turning an interrogation into guidance.",
           "Secondary and advanced settings were deferred to after the initial setup, letting users get to 'first value' faster. The design prioritized immediate product activation over comprehensive configuration."
         ],
-        image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
+        images: ["https://images.unsplash.com/photo-1531403009284-440f080d1e12?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"]
       },
       myRole: {
         headline: "UX research, information architecture, and interaction design",
@@ -187,7 +187,7 @@ export const PROJECTS: ProjectData[] = [
           "I started by mapping all possible transaction states: pending, confirming, success, failed, timed out, insufficient gas, and edge cases like network congestion. Each state got a dedicated design with clear explanations, user guidance, and recovery paths.",
           "The system health dashboard was designed for power users who needed protocol-level visibility — liquidity pool depth, slippage, fee estimates — all surfaced contextually without cluttering the primary swap interface."
         ],
-        image: "https://images.unsplash.com/photo-1642790106117-e829e14a795f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
+        images: ["https://images.unsplash.com/photo-1642790106117-e829e14a795f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"]
       },
       myRole: {
         headline: "Transaction UX design and dashboard architecture",
@@ -252,7 +252,7 @@ export const PROJECTS: ProjectData[] = [
           "I led a series of diary studies tracking how users thought and felt about their finances day-to-day. The research revealed that users didn't want more data — they wanted reassurance, gentle nudges, and clear next steps. The design philosophy shifted from 'show everything' to 'show what matters now'.",
           "The AI insights were redesigned as conversational cards — short, specific, actionable. Instead of overwhelming dashboards, users saw a single most-important insight each day, with the option to explore deeper. The budget recommendation flow was rebuilt around natural language, not form fields."
         ],
-        image: "https://images.unsplash.com/photo-1563013544-824ae1d704d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
+        images: ["https://images.unsplash.com/photo-1563013544-824ae1d704d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"]
       },
       myRole: {
         headline: "Full product design from research to launch",
@@ -317,7 +317,7 @@ export const PROJECTS: ProjectData[] = [
           "I started with a full audit of the existing product — cataloguing every component, pattern, and visual inconsistency across the 4 divergent codebases. The audit identified 340 unique UI elements, of which only 80 were truly distinct. The rest were duplicates and variations that could be unified.",
           "The design system was built token-first: colour, spacing, typography, and motion were defined as semantic tokens before any component was designed. This ensured the system could adapt to future brand evolution without requiring a full rebuild."
         ],
-        image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
+        images: ["https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"]
       },
       myRole: {
         headline: "Design systems architecture and brand identity",

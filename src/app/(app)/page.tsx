@@ -40,7 +40,7 @@ export default async function Page() {
         designApproach: {
           headline: p.caseStudy?.designApproach?.headline || '',
           body: p.caseStudy?.designApproach?.body?.map((b: any) => b.paragraph) || [],
-          image: p.caseStudy?.designApproach?.image && typeof p.caseStudy.designApproach.image === 'object' ? p.caseStudy.designApproach.image.url : '',
+          images: p.caseStudy?.designApproach?.images?.map((img: any) => typeof img === 'object' ? img.url : '') || [],
         },
         myRole: {
           headline: p.caseStudy?.myRole?.headline || '',

@@ -229,7 +229,7 @@ export interface Project {
             id?: string | null;
           }[]
         | null;
-      image?: (string | null) | Media;
+      images?: (string | Media)[] | null;
     };
     myRole: {
       headline: string;
@@ -461,7 +461,7 @@ export interface ProjectsSelect<T extends boolean = true> {
                     paragraph?: T;
                     id?: T;
                   };
-              image?: T;
+              images?: T;
             };
         myRole?:
           | T

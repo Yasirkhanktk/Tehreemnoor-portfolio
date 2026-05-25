@@ -816,14 +816,43 @@ export function CaseStudy({
           </div>
         </motion.div>
 
-        {/* Full-width image */}
-        <motion.div {...fadeUp(0.2)}>
-          <BrowserMockup
-            src={cs.designApproach.image || cs.designImage}
-            alt="Design approach"
-            bg={`${project.bg}18`}
-          />
-        </motion.div>
+        {(() => {
+          const imgs = cs.designApproach.images && cs.designApproach.images.length > 0
+            ? cs.designApproach.images.filter(Boolean)
+            : [];
+
+          if (imgs.length <= 1) {
+            return (
+              <motion.div {...fadeUp(0.2)}>
+                <BrowserMockup
+                  src={imgs[0] || cs.designImage}
+                  alt="Design approach"
+                  bg={`${project.bg}18`}
+                />
+              </motion.div>
+            );
+          }
+
+          return (
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: isMobile ? "1fr" : imgs.length === 2 ? "1fr 1fr" : "repeat(auto-fit, minmax(360px, 1fr))",
+                gap: 24,
+              }}
+            >
+              {imgs.map((img, i) => (
+                <motion.div key={i} {...fadeUp(0.2 + i * 0.08)}>
+                  <BrowserMockup
+                    src={img}
+                    alt={`Design approach detail ${i + 1}`}
+                    bg={`${project.bg}18`}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          );
+        })()}
       </section>
 
       {/* ── 03 MY ROLE ────────────────────────────────────────────────────── */}
