@@ -20,7 +20,7 @@ export interface ProjectData {
     context: { headline: string; body: string[]; image?: string }
     designApproach: { headline: string; body: string[]; images: string[] }
     myRole: { headline: string; bullets: string[] }
-    impact: { headline: string; body: string; metrics: Metric[]; image?: string }
+    impact: { headline: string; body: string; metrics: Metric[]; images: string[] }
     outcome: { headline: string; body: string; images: string[] }
   }
 }
@@ -78,7 +78,7 @@ export const PROJECTS: ProjectData[] = [
           { value: '18%', label: 'Drop in support tickets' },
           { value: '4.7★', label: 'App Store rating' }
         ],
-        image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
+        images: ["https://images.unsplash.com/photo-1460925895917-afdab827c52f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"]
       },
       outcome: {
         headline: "A scalable foundation, not just a screen refresh",
@@ -143,7 +143,7 @@ export const PROJECTS: ProjectData[] = [
           { value: '100%', label: 'Preferred new wizard in tests' },
           { value: '2.4×', label: 'Increase in trial activation' }
         ],
-        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
+        images: ["https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"]
       },
       outcome: {
         headline: "A template for every complex workflow in the product",
@@ -208,7 +208,7 @@ export const PROJECTS: ProjectData[] = [
           { value: '2.3×', label: 'Task completion speed improvement' },
           { value: '4.6★', label: 'Product satisfaction score' }
         ],
-        image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
+        images: ["https://images.unsplash.com/photo-1639762681485-074b7f938ba0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"]
       },
       outcome: {
         headline: "A design system built for financial trust",
@@ -273,7 +273,7 @@ export const PROJECTS: ProjectData[] = [
           { value: '89%', label: '30-day user retention rate' },
           { value: '4.8★', label: 'App Store rating' }
         ],
-        image: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
+        images: ["https://images.unsplash.com/photo-1559526324-4b87b5e36e44?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"]
       },
       outcome: {
         headline: "A new standard for how the product communicates value",
@@ -338,7 +338,7 @@ export const PROJECTS: ProjectData[] = [
           { value: '3 mo', label: 'Full system shipped from zero' },
           { value: '100%', label: 'Designer & engineer adoption' }
         ],
-        image: "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"
+        images: ["https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400"]
       },
       outcome: {
         headline: "A system that scales with the company",

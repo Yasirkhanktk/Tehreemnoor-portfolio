@@ -250,7 +250,10 @@ export interface Project {
             id?: string | null;
           }[]
         | null;
-      image?: (string | null) | Media;
+      /**
+       * Add one or more impact images to display below the metrics.
+       */
+      images?: (string | Media)[] | null;
     };
     outcome: {
       headline: string;
@@ -486,7 +489,7 @@ export interface ProjectsSelect<T extends boolean = true> {
                     label?: T;
                     id?: T;
                   };
-              image?: T;
+              images?: T;
             };
         outcome?:
           | T

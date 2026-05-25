@@ -345,10 +345,14 @@ export default buildConfig({
                   ]
                 },
                 {
-                  name: 'image',
+                  name: 'images',
                   type: 'relationship',
                   relationTo: 'media',
+                  hasMany: true,
                   required: false,
+                  admin: {
+                    description: 'Add one or more impact images to display below the metrics.',
+                  }
                 }
               ]
             },

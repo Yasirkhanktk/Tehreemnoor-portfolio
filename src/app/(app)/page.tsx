@@ -50,7 +50,7 @@ export default async function Page() {
           headline: p.caseStudy?.impact?.headline || '',
           body: p.caseStudy?.impact?.body || '',
           metrics: p.caseStudy?.impact?.metrics?.map((m: any) => ({ value: m.value, label: m.label })) || [],
-          image: p.caseStudy?.impact?.image && typeof p.caseStudy.impact.image === 'object' ? p.caseStudy.impact.image.url : '',
+          images: p.caseStudy?.impact?.images?.map((img: any) => typeof img === 'object' ? img.url : '') || [],
         },
         outcome: {
           headline: p.caseStudy?.outcome?.headline || '',

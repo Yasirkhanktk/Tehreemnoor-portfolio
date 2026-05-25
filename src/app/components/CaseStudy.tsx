@@ -236,86 +236,63 @@ export function CaseStudy({
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section
         style={{
-          minHeight: isMobile ? "auto" : "100vh",
-          background: "#fafafa",
-          display: "flex",
-          flexDirection: "column",
+          minHeight: isMobile ? "70vh" : "100vh",
           position: "relative",
           overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-end",
         }}
       >
-        {/* Accent color wash — top-right blob */}
-        <div
-          style={{
-            position: "absolute",
-            top: "-20%",
-            right: "-12%",
-            width: 800,
-            height: 800,
-            borderRadius: "50%",
-            background: `radial-gradient(circle, ${project.bg}28 0%, transparent 62%)`,
-            pointerEvents: "none",
-          }}
-        />
-        {/* Second soft blob bottom-left */}
-        <div
-          style={{
-            position: "absolute",
-            bottom: "5%",
-            left: "-8%",
-            width: 480,
-            height: 480,
-            borderRadius: "50%",
-            background: `radial-gradient(circle, ${project.bg}14 0%, transparent 70%)`,
-            pointerEvents: "none",
-          }}
-        />
-        {/* Dot grid watermark */}
+        {/* ── Full-bleed background image ── */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
+          <ImageWithFallback
+            src={cs.contextImage || cs.designImage}
+            alt={project.name}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "center top",
+              display: "block",
+            }}
+          />
+        </div>
+
+        {/* ── Dark gradient overlay ── */}
         <div
           style={{
             position: "absolute",
             inset: 0,
-            pointerEvents: "none",
-            opacity: 0.35,
-            backgroundImage:
-              "radial-gradient(circle, #d0d0d0 1px, transparent 1px)",
-            backgroundSize: "28px 28px",
+            zIndex: 1,
+            background:
+              "linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.52) 40%, rgba(0,0,0,0.90) 100%)",
           }}
         />
 
-        {/* Top accent strip */}
+        {/* ── Top accent strip ── */}
         <div
           style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
             height: 4,
             background: project.bg,
-            flexShrink: 0,
+            zIndex: 2,
           }}
         />
 
-        {/* Content */}
+
+        {/* ── Content overlaid on image ── */}
         <div
           style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: isMobile ? "column" : "row",
-            alignItems: "stretch",
-            padding: isMobile
-              ? "52px 24px 60px"
-              : "72px 60px 80px",
-            gap: isMobile ? 52 : 64,
             position: "relative",
-            zIndex: 1,
+            zIndex: 2,
+            padding: isMobile ? "60px 24px 52px" : "80px 60px 72px",
+            maxWidth: 860,
           }}
         >
-          {/* Left: text */}
-          <div
-            style={{
-              flex: isMobile ? "none" : "0 0 48%",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-            }}
-          >
             {/* Category + year row */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
@@ -333,10 +310,7 @@ export function CaseStudy({
                   fontSize: 9.5,
                   fontWeight: 700,
                   letterSpacing: "0.14em",
-                  color:
-                    project.bg === "#C5F135"
-                      ? "#526500"
-                      : "#fff",
+                  color: project.bg === "#C5F135" ? "#526500" : "#fff",
                   background: project.bg,
                   padding: "4px 12px",
                   borderRadius: 100,
@@ -348,7 +322,7 @@ export function CaseStudy({
               <span
                 style={{
                   fontSize: 11,
-                  color: "#bbb",
+                  color: "rgba(255,255,255,0.6)",
                   fontFamily: FB,
                 }}
               >
@@ -358,14 +332,14 @@ export function CaseStudy({
                 style={{
                   width: 20,
                   height: 1,
-                  background: "#ddd",
+                  background: "rgba(255,255,255,0.3)",
                   display: "block",
                 }}
               />
               <span
                 style={{
                   fontSize: 10,
-                  color: "#ccc",
+                  color: "rgba(255,255,255,0.45)",
                   fontFamily: FB,
                   letterSpacing: "0.08em",
                 }}
@@ -386,13 +360,14 @@ export function CaseStudy({
               style={{
                 margin: "0 0 6px",
                 fontSize: isMobile
-                  ? "clamp(54px, 14vw, 74px)"
-                  : "clamp(68px, 7.8vw, 108px)",
+                  ? "clamp(48px, 12vw, 68px)"
+                  : "clamp(64px, 7.2vw, 100px)",
                 fontWeight: 700,
                 lineHeight: 0.92,
                 letterSpacing: "-0.045em",
-                color: "#0d0d0d",
+                color: "#ffffff",
                 fontFamily: FH,
+                textShadow: "0 2px 32px rgba(0,0,0,0.4)",
               }}
             >
               {project.name}
@@ -417,10 +392,12 @@ export function CaseStudy({
                   style={{
                     fontSize: 9,
                     fontWeight: 600,
-                    color: "#888",
+                    color: "rgba(255,255,255,0.75)",
                     fontFamily: FB,
                     letterSpacing: "0.1em",
-                    background: "#efefed",
+                    background: "rgba(255,255,255,0.12)",
+                    border: "1px solid rgba(255,255,255,0.2)",
+                    backdropFilter: "blur(8px)",
                     padding: "4px 10px",
                     borderRadius: 4,
                   }}
@@ -438,10 +415,10 @@ export function CaseStudy({
               style={{
                 margin: "0 0 40px",
                 fontSize: isMobile ? 14 : 15.5,
-                color: "#666",
+                color: "rgba(255,255,255,0.72)",
                 lineHeight: 1.75,
                 fontFamily: FB,
-                maxWidth: 430,
+                maxWidth: 520,
               }}
             >
               {cs.tagline}
@@ -458,8 +435,9 @@ export function CaseStudy({
               }}
               style={{
                 height: 1,
-                background: "#e8e8e8",
+                background: "rgba(255,255,255,0.18)",
                 marginBottom: 32,
+                maxWidth: 520,
               }}
             />
 
@@ -470,8 +448,8 @@ export function CaseStudy({
               transition={{ duration: 0.6, delay: 0.36 }}
               style={{
                 display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "18px 32px",
+                gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4, auto)",
+                gap: isMobile ? "18px 32px" : "0 48px",
               }}
             >
               {[
@@ -483,9 +461,9 @@ export function CaseStudy({
                 <div key={label}>
                   <p
                     style={{
-                      margin: "0 0 3px",
+                      margin: "0 0 4px",
                       fontSize: 9,
-                      color: "#bbb",
+                      color: "rgba(255,255,255,0.45)",
                       fontFamily: FB,
                       letterSpacing: "0.14em",
                       textTransform: "uppercase",
@@ -497,7 +475,7 @@ export function CaseStudy({
                     style={{
                       margin: 0,
                       fontSize: 13,
-                      color: "#0d0d0d",
+                      color: "#ffffff",
                       fontFamily: FH,
                       fontWeight: 600,
                     }}
@@ -507,176 +485,7 @@ export function CaseStudy({
                 </div>
               ))}
             </motion.div>
-          </div>
-
-          {/* Right: stacked floating mockups */}
-          {!isMobile && (
-            <div
-              style={{
-                flex: 1,
-                minWidth: 0,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                position: "relative",
-              }}
-            >
-              {/* Back card — slightly rotated */}
-              <motion.div
-                initial={{ opacity: 0, rotate: -4, y: 30 }}
-                animate={{ opacity: 1, rotate: -3, y: 0 }}
-                transition={{
-                  duration: 1,
-                  ease: [0.22, 1, 0.36, 1],
-                  delay: 0.28,
-                }}
-                style={{
-                  position: "absolute",
-                  width: "90%",
-                  top: "6%",
-                  background: `${project.bg}22`,
-                  border: `1px solid ${project.bg}44`,
-                  borderRadius: 16,
-                  padding: "18px 16px 0",
-                  overflow: "hidden",
-                  boxShadow: `0 24px 60px rgba(0,0,0,0.08)`,
-                }}
-              >
-                <div
-                  style={{
-                    background: "#fff",
-                    borderRadius: "6px 6px 0 0",
-                    padding: "8px 12px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 5,
-                    borderBottom: "1px solid #f0f0f0",
-                  }}
-                >
-                  {["#ff605c", "#ffbd44", "#00ca4e"].map(
-                    (c) => (
-                      <div
-                        key={c}
-                        style={{
-                          width: 7,
-                          height: 7,
-                          borderRadius: "50%",
-                          background: c,
-                        }}
-                      />
-                    ),
-                  )}
-                  <div
-                    style={{
-                      flex: 1,
-                      background: "#f5f5f5",
-                      borderRadius: 3,
-                      height: 14,
-                      marginLeft: 6,
-                    }}
-                  />
-                </div>
-                <ImageWithFallback
-                  src={cs.designImage}
-                  alt="preview"
-                  style={{
-                    width: "100%",
-                    display: "block",
-                    objectFit: "cover",
-                    maxHeight: 300,
-                    opacity: 0.7,
-                  }}
-                />
-              </motion.div>
-
-              {/* Front card — main mockup */}
-              <motion.div
-                initial={{ opacity: 0, y: 50, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{
-                  duration: 1.1,
-                  ease: [0.22, 1, 0.36, 1],
-                  delay: 0.38,
-                }}
-                style={{
-                  position: "relative",
-                  width: "86%",
-                  marginTop: 40,
-                  background: "#fff",
-                  borderRadius: 16,
-                  padding: "18px 16px 0",
-                  overflow: "hidden",
-                  boxShadow: `0 32px 80px rgba(0,0,0,0.14), 0 0 0 1px rgba(0,0,0,0.06)`,
-                }}
-              >
-                <div
-                  style={{
-                    background: "#f8f8f8",
-                    borderRadius: "6px 6px 0 0",
-                    padding: "8px 12px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 5,
-                    borderBottom: "1px solid #efefef",
-                  }}
-                >
-                  {["#ff605c", "#ffbd44", "#00ca4e"].map(
-                    (c) => (
-                      <div
-                        key={c}
-                        style={{
-                          width: 8,
-                          height: 8,
-                          borderRadius: "50%",
-                          background: c,
-                        }}
-                      />
-                    ),
-                  )}
-                  <div
-                    style={{
-                      flex: 1,
-                      background: "#ebebeb",
-                      borderRadius: 4,
-                      height: 15,
-                      marginLeft: 7,
-                    }}
-                  />
-                </div>
-                <ImageWithFallback
-                  src={cs.contextImage}
-                  alt={project.name}
-                  style={{
-                    width: "100%",
-                    display: "block",
-                    objectFit: "cover",
-                    maxHeight: 380,
-                  }}
-                />
-              </motion.div>
-            </div>
-          )}
         </div>
-
-        {/* Mobile hero image */}
-        {isMobile && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.3 }}
-            style={{
-              padding: "0 24px 60px",
-              position: "relative",
-              zIndex: 1,
-            }}
-          >
-            <BrowserMockup
-              src={cs.contextImage}
-              alt={project.name}
-              bg={`${project.bg}18`}
-            />
-          </motion.div>
-        )}
       </section>
 
       {/* ── 01 CONTEXT ───────────────────────────────────────────────────── */}
@@ -819,34 +628,35 @@ export function CaseStudy({
         {(() => {
           const imgs = cs.designApproach.images && cs.designApproach.images.length > 0
             ? cs.designApproach.images.filter(Boolean)
-            : [];
-
-          if (imgs.length <= 1) {
-            return (
-              <motion.div {...fadeUp(0.2)}>
-                <BrowserMockup
-                  src={imgs[0] || cs.designImage}
-                  alt="Design approach"
-                  bg={`${project.bg}18`}
-                />
-              </motion.div>
-            );
-          }
+            : [cs.designImage];
 
           return (
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: isMobile ? "1fr" : imgs.length === 2 ? "1fr 1fr" : "repeat(auto-fit, minmax(360px, 1fr))",
-                gap: 24,
-              }}
-            >
+            <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
               {imgs.map((img, i) => (
-                <motion.div key={i} {...fadeUp(0.2 + i * 0.08)}>
-                  <BrowserMockup
+                <motion.div
+                  key={i}
+                  {...fadeUp(0.2 + i * 0.1)}
+                  style={{
+                    width: "100%",
+                    height: isMobile ? 260 : 600,
+                    borderRadius: 16,
+                    overflow: "hidden",
+                    border: "1px solid #e8e8e8",
+                    boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
+                    background: "#f5f5f5",
+                    flexShrink: 0,
+                  }}
+                >
+                  <ImageWithFallback
                     src={img}
-                    alt={`Design approach detail ${i + 1}`}
-                    bg={`${project.bg}18`}
+                    alt={`Design approach ${i + 1}`}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      display: "block",
+                      objectFit: "cover",
+                      objectPosition: "top center",
+                    }}
                   />
                 </motion.div>
               ))}
@@ -1059,14 +869,43 @@ export function CaseStudy({
           ))}
         </div>
 
-        {/* Design image */}
-        <motion.div {...fadeUp(0.15)}>
-          <BrowserMockup
-            src={cs.impact.image || cs.designImage}
-            alt="Impact visual"
-            bg={`${project.bg}18`}
-          />
-        </motion.div>
+        {/* Impact images — stacked full-width (same style as Design Approach) */}
+        {(() => {
+          const imgs = (cs.impact.images || []).filter(Boolean);
+          const fallback = imgs.length === 0 ? [cs.designImage] : imgs;
+          return (
+            <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+              {fallback.map((img, i) => (
+                <motion.div
+                  key={i}
+                  {...fadeUp(0.15 + i * 0.08)}
+                  style={{
+                    width: "100%",
+                    height: isMobile ? 260 : 600,
+                    borderRadius: 16,
+                    overflow: "hidden",
+                    border: "1px solid #e8e8e8",
+                    boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
+                    background: "#f5f5f5",
+                    flexShrink: 0,
+                  }}
+                >
+                  <ImageWithFallback
+                    src={img}
+                    alt={`Impact visual ${i + 1}`}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      display: "block",
+                      objectFit: "cover",
+                      objectPosition: "top center",
+                    }}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          );
+        })()}
       </section>
 
       {/* ── 05 OUTCOME ────────────────────────────────────────────────────── */}
@@ -1264,79 +1103,115 @@ export function CaseStudy({
           )}
         </div>
 
-        {/* Image grid — 3 images */}
+        {/* Outcome image grid — original 3-image editorial grid + full-width overflow */}
         {(() => {
-          const outcomeImages = cs.outcome.images || [];
-          const img1 = outcomeImages[0] || cs.contextImage;
-          const img2 = outcomeImages[1] || cs.designImage;
-          const img3 = outcomeImages[2] || cs.designImage;
-          return (
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: isMobile ? "1fr" : "1.6fr 1fr",
-                gridTemplateRows: isMobile ? "auto" : "auto auto",
-                gap: 16,
-              }}
-            >
-              {/* Large image — spans 2 rows on desktop */}
-              <motion.div
-                {...fadeUp()}
-                style={{ gridRow: isMobile ? "auto" : "span 2" }}
-              >
-                <BrowserMockup
-                  src={img1}
-                  alt="Final screens"
-                  bg={`${project.bg}18`}
-                />
-              </motion.div>
+          const imgs = (cs.outcome.images || []).filter(Boolean);
+          if (imgs.length === 0) return null;
 
-              {/* Top-right image */}
-              <motion.div {...fadeUp(0.1)}>
-                <div
+          const gridImgs = imgs.slice(0, 3);
+          const extraImgs = imgs.slice(3);
+
+          const img1 = gridImgs[0] || cs.contextImage;
+          const img2 = gridImgs[1] || cs.designImage;
+          const img3 = gridImgs[2] || cs.designImage;
+
+          return (
+            <>
+              {/* Original editorial grid — big left + 2 stacked right */}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: isMobile ? "1fr" : "1.6fr 1fr",
+                  gridTemplateRows: isMobile ? "auto" : "auto auto",
+                  gap: 16,
+                  marginBottom: extraImgs.length > 0 ? 24 : 0,
+                }}
+              >
+                {/* Large image — spans 2 rows on desktop */}
+                <motion.div
+                  {...fadeUp()}
                   style={{
-                    background: `${project.bg}14`,
-                    borderRadius: 12,
+                    gridRow: isMobile ? "auto" : "span 2",
+                    height: isMobile ? 280 : "auto",
+                    borderRadius: 14,
                     overflow: "hidden",
-                    border: `1px solid ${project.bg}30`,
+                    border: "1px solid #e8e8e8",
+                    boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
+                    background: "#f5f5f5",
+                  }}
+                >
+                  <ImageWithFallback
+                    src={img1}
+                    alt="Final screens"
+                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block", minHeight: isMobile ? 280 : 460 }}
+                  />
+                </motion.div>
+
+                {/* Top-right image */}
+                <motion.div
+                  {...fadeUp(0.1)}
+                  style={{
+                    borderRadius: 14,
+                    overflow: "hidden",
+                    border: "1px solid #e8e8e8",
+                    boxShadow: "0 4px 16px rgba(0,0,0,0.06)",
+                    background: "#f5f5f5",
                   }}
                 >
                   <ImageWithFallback
                     src={img2}
                     alt="Design detail"
-                    style={{
-                      width: "100%",
-                      display: "block",
-                      objectFit: "cover",
-                      height: isMobile ? 200 : 220,
-                    }}
+                    style={{ width: "100%", display: "block", objectFit: "cover", objectPosition: "top center", height: isMobile ? 200 : 222 }}
                   />
-                </div>
-              </motion.div>
+                </motion.div>
 
-              {/* Bottom-right — accent card */}
-              <motion.div {...fadeUp(0.1)}>
-                <div
+                {/* Bottom-right image */}
+                <motion.div
+                  {...fadeUp(0.18)}
                   style={{
-                    background: `${project.bg}14`,
-                    borderRadius: 12,
+                    borderRadius: 14,
                     overflow: "hidden",
-                    border: `1px solid ${project.bg}30`,
+                    border: "1px solid #e8e8e8",
+                    boxShadow: "0 4px 16px rgba(0,0,0,0.06)",
+                    background: "#f5f5f5",
                   }}
                 >
                   <ImageWithFallback
                     src={img3}
                     alt="Design detail"
-                    style={{
-                      width: "100%",
-                      display: "block",
-                      objectFit: "cover",
-                      height: isMobile ? 200 : 220,
-                    }}
+                    style={{ width: "100%", display: "block", objectFit: "cover", objectPosition: "top center", height: isMobile ? 200 : 222 }}
                   />
+                </motion.div>
+              </div>
+
+              {/* Extra images (4th, 5th, 6th…) — full-width stacked */}
+              {extraImgs.length > 0 && (
+                <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+                  {extraImgs.map((img, i) => (
+                    <motion.div
+                      key={i}
+                      {...fadeUp(0.1 + i * 0.08)}
+                      style={{
+                        width: "100%",
+                        height: isMobile ? 260 : 600,
+                        borderRadius: 16,
+                        overflow: "hidden",
+                        border: "1px solid #e8e8e8",
+                        boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
+                        background: "#f5f5f5",
+                        flexShrink: 0,
+                      }}
+                    >
+                      <ImageWithFallback
+                        src={img}
+                        alt={`Outcome extra ${i + 4}`}
+                        style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block" }}
+                      />
+                    </motion.div>
+                  ))}
                 </div>
-              </motion.div>
-            </div>
+              )}
+            </>
           );
         })()}
       </section>
