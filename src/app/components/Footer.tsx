@@ -96,7 +96,7 @@ export function Footer({ noBridge = false }: { noBridge?: boolean }) {
               </p>
 
               <a 
-                href="mailto:tehreemnoor466@gmail.com?subject=Inquiry%20about%20UI%2FUX%20Project%20Design&body=Hi%20Tehreem%2C%0A%0AI%20reached%20out%20through%20your%20portfolio%20and%20would%20love%20to%20discuss%20a%20UI%2FUX%20project%20with%20you.%20Below%20are%20some%20details%3A%0A%0A-%20Project%20Name%3A%20%0A-%20Project%20Description%3A%20%0A-%20Expected%20Timeline%2FBudget%3A%20%0A%0ALooking%20forward%20to%20hearing%20from%20you!%0A%0ABest%20regards%2C"
+                href="mailto:tehreemnoor273@gmail.com?subject=Inquiry%20about%20UI%2FUX%20Project%20Design&body=Hi%20Tehreem%2C%0A%0AI%20reached%20out%20through%20your%20portfolio%20and%20would%20love%20to%20discuss%20a%20UI%2FUX%20project%20with%20you.%20Below%20are%20some%20details%3A%0A%0A-%20Project%20Name%3A%20%0A-%20Project%20Description%3A%20%0A-%20Expected%20Timeline%2FBudget%3A%20%0A%0ALooking%20forward%20to%20hearing%20from%20you!%0A%0ABest%20regards%2C"
                 style={{
                   background: LIME,
                   color: '#0d0d0d',
@@ -159,7 +159,7 @@ export function Footer({ noBridge = false }: { noBridge?: boolean }) {
                 Find Me Here:
               </p>
               {[
-                { label: 'tehreemnoor466@gmail.com', href: 'mailto:tehreemnoor466@gmail.com?subject=Inquiry%20about%20UI%2FUX%20Project%20Design&body=Hi%20Tehreem%2C%0A%0AI%20reached%20out%20through%20your%20portfolio%20and%20would%20love%20to%20discuss%20a%20UI%2FUX%20project%20with%20you.%20Below%20are%20some%20details%3A%0A%0A-%20Project%20Name%3A%20%0A-%20Project%20Description%3A%20%0A-%20Expected%20Timeline%2FBudget%3A%20%0A%0ALooking%20forward%20to%20hearing%20from%20you!%0A%0ABest%20regards%2C' },
+                { label: 'tehreemnoor273@gmail.com', href: 'mailto:tehreemnoor273@gmail.com?subject=Inquiry%20about%20UI%2FUX%20Project%20Design&body=Hi%20Tehreem%2C%0A%0AI%20reached%20out%20through%20your%20portfolio%20and%20would%20love%20to%20discuss%20a%20UI%2FUX%20project%20with%20you.%20Below%20are%20some%20details%3A%0A%0A-%20Project%20Name%3A%20%0A-%20Project%20Description%3A%20%0A-%20Expected%20Timeline%2FBudget%3A%20%0A%0ALooking%20forward%20to%20hearing%20from%20you!%0A%0ABest%20regards%2C' },
                 { label: 'Behance', href: '#' },
                 { label: 'LinkedIn', href: '#' },
               ].map(({ label, href }) => (
