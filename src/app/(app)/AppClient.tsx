@@ -11,6 +11,7 @@ import { SkillsBubbles } from '../components/SkillsBubbles'
 import { Footer } from '../components/Footer'
 import { GlobalCursor } from '../components/GlobalCursor'
 import { CaseStudy } from '../components/CaseStudy'
+import { SplashScreen } from '../components/SplashScreen'
 import { useIsMobile } from '../utils/useIsMobile'
 import type { ProjectData } from '../data/projects'
 
@@ -286,6 +287,7 @@ export default function AppClient({ initialProjects }: { initialProjects: Projec
   const [menuOpen, setMenuOpen]     = useState(false)
   const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null)
   const [showScrollTop, setShowScrollTop] = useState(false)
+  const [splashDone, setSplashDone] = useState(false)
   const wasViewingProject = useRef(false)
 
   useEffect(() => { if (!isMobile) setMenuOpen(false) }, [isMobile])
@@ -352,6 +354,7 @@ export default function AppClient({ initialProjects }: { initialProjects: Projec
 
   return (
     <div style={{ background: '#fff' }}>
+      {!splashDone && <SplashScreen onComplete={() => setSplashDone(true)} />}
       <GlobalCursor />
 
       {/* Go to Top Floating Button */}
