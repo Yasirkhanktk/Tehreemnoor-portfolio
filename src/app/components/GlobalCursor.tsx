@@ -44,8 +44,15 @@ export function GlobalCursor() {
     const style = document.createElement('style')
     style.id = '__global-cursor__'
     style.textContent = `
-      body, .custom-cursor-area { cursor: none; }
-      a, button, input, select, textarea, [role="button"], .pointer-override { cursor: none; }
+      @media (min-width: 768px) and (pointer: fine) {
+        body, .custom-cursor-area { cursor: none; }
+        a, button, input, select, textarea, [role="button"], .pointer-override { cursor: none; }
+      }
+      @media (max-width: 767px), (pointer: coarse) {
+        .custom-cursor-element {
+          display: none !important;
+        }
+      }
     `
     document.head.appendChild(style)
 
@@ -109,6 +116,7 @@ export function GlobalCursor() {
     <>
       {/* Trailing ring — lagging spring */}
       <motion.div
+        className="custom-cursor-element"
         animate={{
           x: pos.x - 20,
           y: pos.y - 20,
@@ -129,6 +137,7 @@ export function GlobalCursor() {
       />
       {/* Dot — snaps instantly */}
       <motion.div
+        className="custom-cursor-element"
         animate={{
           x: pos.x - 3,
           y: pos.y - 3,

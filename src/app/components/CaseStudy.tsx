@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -69,19 +69,25 @@ function BrowserMockup({
   src,
   alt,
   bg,
+  onClick,
 }: {
   src: string;
   alt: string;
   bg: string;
+  onClick?: () => void;
 }) {
   return (
     <div
+      onClick={onClick}
       style={{
         background: bg,
         borderRadius: 14,
         padding: "28px 24px 0",
         overflow: "hidden",
+        cursor: onClick ? "zoom-in" : "default",
+        transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
       }}
+      className={onClick ? "hover:scale-[1.02] active:scale-[0.98] hover:brightness-[1.02]" : ""}
     >
       <div
         style={{
@@ -150,6 +156,16 @@ export function CaseStudy({
   const cs = project.caseStudy;
   const px = isMobile ? 24 : 60;
 
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const [previewSrc, setPreviewSrc] = useState<any>(null);
+  const [previewAlt, setPreviewAlt] = useState<string>("");
+
+  const handleImageClick = (src: any, alt: string) => {
+    setPreviewSrc(src);
+    setPreviewAlt(alt);
+    dialogRef.current?.showModal();
+  };
+
   // Scroll to top on mount or project change
   useEffect(() => {
     const scroller = document.getElementById("main-scroll");
@@ -158,6 +174,34 @@ export function CaseStudy({
       scroller.scrollTo({ top: 0, behavior: "auto" });
     }
   }, [project.id]);
+
+  // Fallback for light-dismiss on backdrop click (e.g. Safari / older browsers)
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    const handleBackdropClick = (event: MouseEvent) => {
+      if ('closedBy' in HTMLDialogElement.prototype) return;
+      if (event.target !== dialog) return;
+
+      const rect = dialog.getBoundingClientRect();
+      const isDialogContent = (
+        rect.top <= event.clientY &&
+        event.clientY <= rect.top + rect.height &&
+        rect.left <= event.clientX &&
+        event.clientX <= rect.left + rect.width
+      );
+
+      if (!isDialogContent) {
+        dialog.close();
+      }
+    };
+
+    dialog.addEventListener("click", handleBackdropClick);
+    return () => {
+      dialog.removeEventListener("click", handleBackdropClick);
+    };
+  }, []);
 
   return (
     <div>
@@ -557,6 +601,7 @@ export function CaseStudy({
               src={cs.context.image || cs.contextImage}
               alt="Context visual"
               bg={`${project.bg}22`}
+              onClick={() => handleImageClick(cs.context.image || cs.contextImage, "Context visual")}
             />
           </motion.div>
         </div>
@@ -636,6 +681,7 @@ export function CaseStudy({
                 <motion.div
                   key={i}
                   {...fadeUp(0.2 + i * 0.1)}
+                  onClick={() => handleImageClick(img, `Design approach ${i + 1}`)}
                   style={{
                     width: "100%",
                     height: isMobile ? 260 : 600,
@@ -645,7 +691,10 @@ export function CaseStudy({
                     boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
                     background: "#f5f5f5",
                     flexShrink: 0,
+                    cursor: "zoom-in",
+                    transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
                   }}
+                  className="hover:scale-[1.015] active:scale-[0.99] hover:brightness-[1.02]"
                 >
                   <ImageWithFallback
                     src={img}
@@ -879,6 +928,7 @@ export function CaseStudy({
                 <motion.div
                   key={i}
                   {...fadeUp(0.15 + i * 0.08)}
+                  onClick={() => handleImageClick(img, `Impact visual ${i + 1}`)}
                   style={{
                     width: "100%",
                     height: isMobile ? 260 : 600,
@@ -888,7 +938,10 @@ export function CaseStudy({
                     boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
                     background: "#f5f5f5",
                     flexShrink: 0,
+                    cursor: "zoom-in",
+                    transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
                   }}
+                  className="hover:scale-[1.015] active:scale-[0.99] hover:brightness-[1.02]"
                 >
                   <ImageWithFallback
                     src={img}
@@ -1130,6 +1183,7 @@ export function CaseStudy({
                 {/* Large image — spans 2 rows on desktop */}
                 <motion.div
                   {...fadeUp()}
+                  onClick={() => handleImageClick(img1, "Final screens")}
                   style={{
                     gridRow: isMobile ? "auto" : "span 2",
                     height: isMobile ? 280 : "auto",
@@ -1138,7 +1192,10 @@ export function CaseStudy({
                     border: "1px solid #e8e8e8",
                     boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
                     background: "#f5f5f5",
+                    cursor: "zoom-in",
+                    transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
                   }}
+                  className="hover:scale-[1.015] active:scale-[0.99] hover:brightness-[1.02]"
                 >
                   <ImageWithFallback
                     src={img1}
@@ -1150,13 +1207,17 @@ export function CaseStudy({
                 {/* Top-right image */}
                 <motion.div
                   {...fadeUp(0.1)}
+                  onClick={() => handleImageClick(img2, "Design detail")}
                   style={{
                     borderRadius: 14,
                     overflow: "hidden",
                     border: "1px solid #e8e8e8",
                     boxShadow: "0 4px 16px rgba(0,0,0,0.06)",
                     background: "#f5f5f5",
+                    cursor: "zoom-in",
+                    transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
                   }}
+                  className="hover:scale-[1.02] active:scale-[0.98] hover:brightness-[1.02]"
                 >
                   <ImageWithFallback
                     src={img2}
@@ -1168,13 +1229,17 @@ export function CaseStudy({
                 {/* Bottom-right image */}
                 <motion.div
                   {...fadeUp(0.18)}
+                  onClick={() => handleImageClick(img3, "Design detail")}
                   style={{
                     borderRadius: 14,
                     overflow: "hidden",
                     border: "1px solid #e8e8e8",
                     boxShadow: "0 4px 16px rgba(0,0,0,0.06)",
                     background: "#f5f5f5",
+                    cursor: "zoom-in",
+                    transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
                   }}
+                  className="hover:scale-[1.02] active:scale-[0.98] hover:brightness-[1.02]"
                 >
                   <ImageWithFallback
                     src={img3}
@@ -1191,6 +1256,7 @@ export function CaseStudy({
                     <motion.div
                       key={i}
                       {...fadeUp(0.1 + i * 0.08)}
+                      onClick={() => handleImageClick(img, `Outcome extra ${i + 4}`)}
                       style={{
                         width: "100%",
                         height: isMobile ? 260 : 600,
@@ -1200,7 +1266,10 @@ export function CaseStudy({
                         boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
                         background: "#f5f5f5",
                         flexShrink: 0,
+                        cursor: "zoom-in",
+                        transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
                       }}
+                      className="hover:scale-[1.015] active:scale-[0.99] hover:brightness-[1.02]"
                     >
                       <ImageWithFallback
                         src={img}
@@ -1294,6 +1363,126 @@ export function CaseStudy({
       )}
 
       <Footer noBridge />
+
+      {/* Lightbox Dialog */}
+      <dialog
+        ref={dialogRef}
+        closedby="any"
+        onClose={() => setPreviewSrc(null)}
+        style={{
+          border: "none",
+          background: "transparent",
+          padding: 0,
+          maxWidth: "100vw",
+          maxHeight: "100vh",
+          outline: "none",
+          overflow: "visible",
+        }}
+      >
+        {previewSrc && (
+          <div
+            style={{
+              position: "relative",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "100vw",
+              height: "100vh",
+              padding: isMobile ? 16 : 40,
+              boxSizing: "border-box",
+            }}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => dialogRef.current?.close()}
+              style={{
+                position: "absolute",
+                top: isMobile ? 16 : 30,
+                right: isMobile ? 16 : 30,
+                background: "rgba(255,255,255,0.08)",
+                backdropFilter: "blur(12px)",
+                border: "1px solid rgba(255,255,255,0.12)",
+                borderRadius: "50%",
+                width: 46,
+                height: 46,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#fff",
+                cursor: "pointer",
+                zIndex: 10,
+                transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+              }}
+              className="hover:bg-white/20 hover:scale-105 active:scale-95 hover:border-white/30"
+              aria-label="Close image preview"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+
+            {/* Preview Image */}
+            <img
+              src={typeof previewSrc === "string" ? previewSrc : previewSrc.src}
+              alt={previewAlt}
+              onClick={() => dialogRef.current?.close()}
+              style={{
+                maxWidth: "90vw",
+                maxHeight: "85vh",
+                objectFit: "contain",
+                borderRadius: isMobile ? 8 : 16,
+                boxShadow: "0 30px 60px -15px rgba(0, 0, 0, 0.95)",
+              }}
+              className="lightbox-img-anim"
+            />
+          </div>
+        )}
+      </dialog>
+
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            dialog[open], dialog[open] * {
+              cursor: zoom-out !important;
+            }
+            dialog[open] button, dialog[open] button * {
+              cursor: pointer !important;
+            }
+            dialog::backdrop {
+              background-color: rgba(10, 10, 10, 0.92) !important;
+              backdrop-filter: blur(12px) !important;
+              opacity: 0;
+              transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            dialog[open]::backdrop {
+              opacity: 1;
+            }
+            .lightbox-img-anim {
+              animation: lightbox-zoom 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            }
+            @keyframes lightbox-zoom {
+              from {
+                opacity: 0;
+                transform: scale(0.95);
+              }
+              to {
+                opacity: 1;
+                transform: scale(1);
+              }
+            }
+          `,
+        }}
+      />
     </div>
   );
 }
