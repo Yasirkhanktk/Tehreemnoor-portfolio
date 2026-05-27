@@ -2,6 +2,7 @@ import { Download } from "lucide-react";
 import { motion } from "motion/react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useIsMobile } from "../utils/useIsMobile";
+import tehreemAboutImg from "../../imports/tehreem-about.png";
 
 const FH = "'Space Grotesk', sans-serif";
 const FB = "'Inter', sans-serif";
@@ -44,7 +45,7 @@ export function AboutSection() {
         }}
       >
         <ImageWithFallback
-          src="https://images.unsplash.com/photo-1771072428050-1492abb58f4a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=900"
+          src={typeof tehreemAboutImg === 'string' ? tehreemAboutImg : tehreemAboutImg.src}
           alt="Tehreem Noor — UI/UX Designer"
           style={{
             width: "100%",
