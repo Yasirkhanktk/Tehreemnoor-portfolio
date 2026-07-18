@@ -392,7 +392,16 @@ export default function AppClient({ initialProjects }: { initialProjects: Projec
         )}
       </AnimatePresence>
 
-      <div id="main-scroll" style={{ height: '100vh', overflowY: 'auto', overflowX: 'hidden' }}>
+      <div
+        id="main-scroll"
+        style={{
+          height: '100vh',
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          scrollSnapType: selectedProject ? 'y mandatory' : 'none',
+          scrollBehavior: 'smooth',
+        }}
+      >
 
         {/* Case study view */}
         {selectedProject ? (

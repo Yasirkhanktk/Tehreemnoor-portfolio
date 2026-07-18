@@ -280,12 +280,15 @@ export function CaseStudy({
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section
         style={{
-          minHeight: isMobile ? "70vh" : "100vh",
+          minHeight: isMobile ? "70vh" : "calc(100vh - 64px)",
+          height: isMobile ? "auto" : "calc(100vh - 64px)",
           position: "relative",
           overflow: "hidden",
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-end",
+          scrollSnapAlign: isMobile ? "none" : "start",
+          boxSizing: "border-box",
         }}
       >
         {/* ── Full-bleed background image ── */}
@@ -536,7 +539,13 @@ export function CaseStudy({
       <section
         style={{
           background: "#fff",
-          padding: isMobile ? "72px 24px" : "96px 60px",
+          padding: isMobile ? "72px 24px" : "40px 60px",
+          minHeight: isMobile ? "auto" : "calc(100vh - 64px)",
+          display: isMobile ? "block" : "flex",
+          alignItems: "center",
+          boxSizing: "border-box",
+          scrollSnapAlign: isMobile ? "none" : "start",
+          scrollMarginTop: 64,
         }}
       >
         <div
@@ -544,7 +553,8 @@ export function CaseStudy({
             display: "flex",
             flexDirection: isMobile ? "column" : "row",
             gap: isMobile ? 48 : 72,
-            alignItems: "flex-start",
+            alignItems: "center",
+            width: "100%",
           }}
         >
           {/* Text */}
@@ -612,43 +622,49 @@ export function CaseStudy({
         style={{
           background: "#F7F7F5",
           borderTop: "1px solid #eee",
-          padding: isMobile ? "72px 24px" : "96px 60px",
+          padding: isMobile ? "72px 24px" : "40px 60px",
+          minHeight: isMobile ? "auto" : "calc(100vh - 64px)",
+          display: isMobile ? "block" : "flex",
+          alignItems: "center",
+          boxSizing: "border-box",
+          scrollSnapAlign: isMobile ? "none" : "start",
+          scrollMarginTop: 64,
         }}
       >
-        <motion.div {...fadeUp()}>
-          <SectionLabel number="02" title="Design Approach" />
-          <div
-            style={{
-              display: "flex",
-              flexDirection: isMobile ? "column" : "row",
-              justifyContent: "space-between",
-              gap: isMobile ? 16 : 60,
-              marginBottom: 52,
-            }}
-          >
-            <h2
-              style={{
-                margin: 0,
-                flex: "0 0 44%",
-                fontSize: isMobile
-                  ? "clamp(24px, 7vw, 34px)"
-                  : "clamp(28px, 3vw, 40px)",
-                fontWeight: 700,
-                lineHeight: 1.1,
-                letterSpacing: "-0.025em",
-                color: "#0d0d0d",
-                fontFamily: FH,
-              }}
-            >
-              {cs.designApproach.headline}
-            </h2>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: isMobile ? "column" : "row-reverse",
+            gap: isMobile ? 48 : 72,
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          {/* Text column on right (using row-reverse) */}
+          <div style={{ flex: "0 0 48%" }}>
+            <motion.div {...fadeUp()}>
+              <SectionLabel number="02" title="Design Approach" />
+              <h2
+                style={{
+                  margin: "0 0 28px",
+                  fontSize: isMobile
+                    ? "clamp(24px, 7vw, 34px)"
+                    : "clamp(28px, 3vw, 40px)",
+                  fontWeight: 700,
+                  lineHeight: 1.1,
+                  letterSpacing: "-0.025em",
+                  color: "#0d0d0d",
+                  fontFamily: FH,
+                }}
+              >
+                {cs.designApproach.headline}
+              </h2>
+            </motion.div>
             <div
               style={{
-                flex: 1,
                 display: "flex",
                 flexDirection: "column",
                 gap: 16,
-                justifyContent: "center",
               }}
             >
               {cs.designApproach.body.map((p, i) => (
@@ -668,50 +684,53 @@ export function CaseStudy({
               ))}
             </div>
           </div>
-        </motion.div>
 
-        {(() => {
-          const imgs = cs.designApproach.images && cs.designApproach.images.length > 0
-            ? cs.designApproach.images.filter(Boolean)
-            : [cs.designImage];
+          {/* Image column on left (rendered after due to row-reverse) */}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            {(() => {
+              const imgs = cs.designApproach.images && cs.designApproach.images.length > 0
+                ? cs.designApproach.images.filter(Boolean)
+                : [cs.designImage];
 
-          return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-              {imgs.map((img, i) => (
-                <motion.div
-                  key={i}
-                  {...fadeUp(0.2 + i * 0.1)}
-                  onClick={() => handleImageClick(img, `Design approach ${i + 1}`)}
-                  style={{
-                    width: "100%",
-                    height: isMobile ? 260 : 600,
-                    borderRadius: 16,
-                    overflow: "hidden",
-                    border: "1px solid #e8e8e8",
-                    boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
-                    background: "#f5f5f5",
-                    flexShrink: 0,
-                    cursor: "zoom-in",
-                    transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
-                  }}
-                  className="hover:scale-[1.015] active:scale-[0.99] hover:brightness-[1.02]"
-                >
-                  <ImageWithFallback
-                    src={img}
-                    alt={`Design approach ${i + 1}`}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      display: "block",
-                      objectFit: "cover",
-                      objectPosition: "top center",
-                    }}
-                  />
-                </motion.div>
-              ))}
-            </div>
-          );
-        })()}
+              return (
+                <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+                  {imgs.map((img, i) => (
+                    <motion.div
+                      key={i}
+                      {...fadeUp(0.2 + i * 0.1)}
+                      onClick={() => handleImageClick(img, `Design approach ${i + 1}`)}
+                      style={{
+                        width: "100%",
+                        height: isMobile ? 260 : "clamp(300px, 45vh, 460px)",
+                        borderRadius: 16,
+                        overflow: "hidden",
+                        border: "1px solid #e8e8e8",
+                        boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
+                        background: "#f5f5f5",
+                        flexShrink: 0,
+                        cursor: "zoom-in",
+                        transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+                      }}
+                      className="hover:scale-[1.015] active:scale-[0.99] hover:brightness-[1.02]"
+                    >
+                      <ImageWithFallback
+                        src={img}
+                        alt={`Design approach ${i + 1}`}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          display: "block",
+                          objectFit: "cover",
+                          objectPosition: "top center",
+                        }}
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+              );
+            })()}
+          </div>
+        </div>
       </section>
 
       {/* ── 03 MY ROLE ────────────────────────────────────────────────────── */}
@@ -719,7 +738,13 @@ export function CaseStudy({
         style={{
           background: "#fff",
           borderTop: "1px solid #eee",
-          padding: isMobile ? "72px 24px" : "96px 60px",
+          padding: isMobile ? "72px 24px" : "40px 60px",
+          minHeight: isMobile ? "auto" : "calc(100vh - 64px)",
+          display: isMobile ? "block" : "flex",
+          alignItems: "center",
+          boxSizing: "border-box",
+          scrollSnapAlign: isMobile ? "none" : "start",
+          scrollMarginTop: 64,
         }}
       >
         <div
@@ -727,6 +752,8 @@ export function CaseStudy({
             display: "flex",
             flexDirection: isMobile ? "column" : "row",
             gap: isMobile ? 36 : 80,
+            alignItems: "center",
+            width: "100%",
           }}
         >
           <div style={{ flex: "0 0 38%" }}>
@@ -813,170 +840,202 @@ export function CaseStudy({
       </section>
 
       {/* ── 04 IMPACT ─────────────────────────────────────────────────────── */}
+      {/* ── 04 IMPACT (A): DESCRIPTION & METRICS ──────────────────────────── */}
       <section
         style={{
           background: "#F7F7F5",
           borderTop: "1px solid #eee",
-          padding: isMobile ? "72px 24px" : "96px 60px",
+          padding: isMobile ? "72px 24px" : "40px 60px",
+          minHeight: isMobile ? "auto" : "calc(100vh - 64px)",
+          display: isMobile ? "block" : "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          boxSizing: "border-box",
+          scrollSnapAlign: isMobile ? "none" : "start",
+          scrollMarginTop: 64,
         }}
       >
-        <motion.div {...fadeUp()} style={{ marginBottom: 52 }}>
-          <SectionLabel number="04" title="Impact" />
-          <div
-            style={{
-              display: "flex",
-              flexDirection: isMobile ? "column" : "row",
-              justifyContent: "space-between",
-              gap: isMobile ? 16 : 48,
-              alignItems: isMobile ? "flex-start" : "flex-end",
-            }}
-          >
-            <h2
+        <div style={{ width: "100%" }}>
+          <motion.div {...fadeUp()} style={{ marginBottom: 52 }}>
+            <SectionLabel number="04" title="Impact" />
+            <div
               style={{
-                margin: 0,
-                flex: "0 0 40%",
-                fontSize: isMobile
-                  ? "clamp(24px, 7vw, 34px)"
-                  : "clamp(28px, 3vw, 40px)",
-                fontWeight: 700,
-                lineHeight: 1.1,
-                letterSpacing: "-0.025em",
-                color: "#0d0d0d",
-                fontFamily: FH,
+                display: "flex",
+                flexDirection: isMobile ? "column" : "row",
+                justifyContent: "space-between",
+                gap: isMobile ? 16 : 48,
+                alignItems: isMobile ? "flex-start" : "flex-end",
               }}
             >
-              {cs.impact.headline}
-            </h2>
-            <p
-              style={{
-                margin: 0,
-                flex: 1,
-                fontSize: 13.5,
-                color: "#777",
-                lineHeight: 1.8,
-                fontFamily: FB,
-              }}
-            >
-              {cs.impact.body}
-            </p>
-          </div>
-        </motion.div>
-
-        {/* Metrics */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: isMobile ? "column" : "row",
-            gap: 16,
-            marginBottom: 52,
-          }}
-        >
-          {cs.impact.metrics.map((m, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 32 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{
-                duration: 0.65,
-                ease: [0.22, 1, 0.36, 1],
-                delay: i * 0.1,
-              }}
-              style={{
-                flex: 1,
-                padding: isMobile ? "28px 24px" : "36px 32px",
-                background: "#fff",
-                borderRadius: 14,
-                border: "1px solid #eee",
-              }}
-            >
-              <p
+              <h2
                 style={{
-                  margin: "0 0 8px",
-                  fontSize: isMobile ? 44 : 56,
+                  margin: 0,
+                  flex: "0 0 40%",
+                  fontSize: isMobile
+                    ? "clamp(24px, 7vw, 34px)"
+                    : "clamp(28px, 3vw, 40px)",
                   fontWeight: 700,
-                  lineHeight: 1,
-                  letterSpacing: "-0.04em",
+                  lineHeight: 1.1,
+                  letterSpacing: "-0.025em",
                   color: "#0d0d0d",
                   fontFamily: FH,
                 }}
               >
-                {m.value}
-              </p>
+                {cs.impact.headline}
+              </h2>
               <p
                 style={{
                   margin: 0,
-                  fontSize: 13,
-                  color: "#888",
+                  flex: 1,
+                  fontSize: 13.5,
+                  color: "#777",
+                  lineHeight: 1.8,
                   fontFamily: FB,
-                  lineHeight: 1.5,
                 }}
               >
-                {m.label}
+                {cs.impact.body}
               </p>
-            </motion.div>
-          ))}
-        </div>
+            </div>
+          </motion.div>
 
-        {/* Impact images — stacked full-width (same style as Design Approach) */}
-        {(() => {
-          const imgs = (cs.impact.images || []).filter(Boolean);
-          const fallback = imgs.length === 0 ? [cs.designImage] : imgs;
-          return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-              {fallback.map((img, i) => (
-                <motion.div
-                  key={i}
-                  {...fadeUp(0.15 + i * 0.08)}
-                  onClick={() => handleImageClick(img, `Impact visual ${i + 1}`)}
+          {/* Metrics */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: isMobile ? "column" : "row",
+              gap: 16,
+            }}
+          >
+            {cs.impact.metrics.map((m, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 32 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{
+                  duration: 0.65,
+                  ease: [0.22, 1, 0.36, 1],
+                  delay: i * 0.1,
+                }}
+                style={{
+                  flex: 1,
+                  padding: isMobile ? "28px 24px" : "36px 32px",
+                  background: "#fff",
+                  borderRadius: 14,
+                  border: "1px solid #eee",
+                }}
+              >
+                <p
                   style={{
-                    width: "100%",
-                    height: isMobile ? 260 : 600,
-                    borderRadius: 16,
-                    overflow: "hidden",
-                    border: "1px solid #e8e8e8",
-                    boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
-                    background: "#f5f5f5",
-                    flexShrink: 0,
-                    cursor: "zoom-in",
-                    transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+                    margin: "0 0 8px",
+                    fontSize: isMobile ? 44 : 56,
+                    fontWeight: 700,
+                    lineHeight: 1,
+                    letterSpacing: "-0.04em",
+                    color: "#0d0d0d",
+                    fontFamily: FH,
                   }}
-                  className="hover:scale-[1.015] active:scale-[0.99] hover:brightness-[1.02]"
                 >
-                  <ImageWithFallback
-                    src={img}
-                    alt={`Impact visual ${i + 1}`}
+                  {m.value}
+                </p>
+                <p
+                  style={{
+                    margin: 0,
+                    fontSize: 13,
+                    color: "#888",
+                    fontFamily: FB,
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {m.label}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 04 IMPACT (B): VISUAL SHOWCASE ────────────────────────────────── */}
+      <section
+        style={{
+          background: "#F7F7F5",
+          padding: isMobile ? "48px 24px 72px" : "40px 60px",
+          minHeight: isMobile ? "auto" : "calc(100vh - 64px)",
+          display: isMobile ? "block" : "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          boxSizing: "border-box",
+          scrollSnapAlign: isMobile ? "none" : "start",
+          scrollMarginTop: 64,
+          borderTop: isMobile ? "none" : "1px solid #f0f0f0",
+        }}
+      >
+        <div style={{ width: "100%" }}>
+          {(() => {
+            const imgs = (cs.impact.images || []).filter(Boolean);
+            const fallback = imgs.length === 0 ? [cs.designImage] : imgs;
+            return (
+              <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+                {fallback.map((img, i) => (
+                  <motion.div
+                    key={i}
+                    {...fadeUp(0.15 + i * 0.08)}
+                    onClick={() => handleImageClick(img, `Impact visual ${i + 1}`)}
                     style={{
                       width: "100%",
-                      height: "100%",
-                      display: "block",
-                      objectFit: "cover",
-                      objectPosition: "top center",
+                      height: isMobile ? 260 : "clamp(350px, 58vh, 520px)",
+                      borderRadius: 16,
+                      overflow: "hidden",
+                      border: "1px solid #e8e8e8",
+                      boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
+                      background: "#f5f5f5",
+                      flexShrink: 0,
+                      cursor: "zoom-in",
+                      transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
                     }}
-                  />
-                </motion.div>
-              ))}
-            </div>
-          );
-        })()}
+                    className="hover:scale-[1.015] active:scale-[0.99] hover:brightness-[1.02]"
+                  >
+                    <ImageWithFallback
+                      src={img}
+                      alt={`Impact visual ${i + 1}`}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        display: "block",
+                        objectFit: "cover",
+                        objectPosition: "top center",
+                      }}
+                    />
+                  </motion.div>
+                ))}
+              </div>
+            );
+          })()}
+        </div>
       </section>
 
       {/* ── 05 OUTCOME ────────────────────────────────────────────────────── */}
+      {/* ── 05 OUTCOME (A): SUMMARY ───────────────────────────────────────── */}
       <section
         style={{
           background: "#fff",
           borderTop: "1px solid #eee",
-          padding: isMobile ? "72px 24px" : "96px 60px",
+          padding: isMobile ? "72px 24px" : "40px 60px",
+          minHeight: isMobile ? "auto" : "calc(100vh - 64px)",
+          display: isMobile ? "block" : "flex",
+          alignItems: "center",
+          boxSizing: "border-box",
+          scrollSnapAlign: isMobile ? "none" : "start",
+          scrollMarginTop: 64,
         }}
       >
-        {/* Text + CTAs */}
         <div
           style={{
             display: "flex",
             flexDirection: isMobile ? "column" : "row",
             gap: isMobile ? 36 : 80,
-            alignItems: isMobile ? "flex-start" : "flex-end",
-            marginBottom: isMobile ? 52 : 72,
+            alignItems: "center",
+            width: "100%",
           }}
         >
           <div style={{ flex: "0 0 46%" }}>
@@ -1155,214 +1214,250 @@ export function CaseStudy({
             </motion.div>
           )}
         </div>
-
-        {/* Outcome image grid — original 3-image editorial grid + full-width overflow */}
-        {(() => {
-          const imgs = (cs.outcome.images || []).filter(Boolean);
-          if (imgs.length === 0) return null;
-
-          const gridImgs = imgs.slice(0, 3);
-          const extraImgs = imgs.slice(3);
-
-          const img1 = gridImgs[0] || cs.contextImage;
-          const img2 = gridImgs[1] || cs.designImage;
-          const img3 = gridImgs[2] || cs.designImage;
-
-          return (
-            <>
-              {/* Original editorial grid — big left + 2 stacked right */}
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: isMobile ? "1fr" : "1.6fr 1fr",
-                  gridTemplateRows: isMobile ? "auto" : "auto auto",
-                  gap: 16,
-                  marginBottom: extraImgs.length > 0 ? 24 : 0,
-                }}
-              >
-                {/* Large image — spans 2 rows on desktop */}
-                <motion.div
-                  {...fadeUp()}
-                  onClick={() => handleImageClick(img1, "Final screens")}
-                  style={{
-                    gridRow: isMobile ? "auto" : "span 2",
-                    height: isMobile ? 280 : "auto",
-                    borderRadius: 14,
-                    overflow: "hidden",
-                    border: "1px solid #e8e8e8",
-                    boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
-                    background: "#f5f5f5",
-                    cursor: "zoom-in",
-                    transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
-                  }}
-                  className="hover:scale-[1.015] active:scale-[0.99] hover:brightness-[1.02]"
-                >
-                  <ImageWithFallback
-                    src={img1}
-                    alt="Final screens"
-                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block", minHeight: isMobile ? 280 : 460 }}
-                  />
-                </motion.div>
-
-                {/* Top-right image */}
-                <motion.div
-                  {...fadeUp(0.1)}
-                  onClick={() => handleImageClick(img2, "Design detail")}
-                  style={{
-                    borderRadius: 14,
-                    overflow: "hidden",
-                    border: "1px solid #e8e8e8",
-                    boxShadow: "0 4px 16px rgba(0,0,0,0.06)",
-                    background: "#f5f5f5",
-                    cursor: "zoom-in",
-                    transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
-                  }}
-                  className="hover:scale-[1.02] active:scale-[0.98] hover:brightness-[1.02]"
-                >
-                  <ImageWithFallback
-                    src={img2}
-                    alt="Design detail"
-                    style={{ width: "100%", display: "block", objectFit: "cover", objectPosition: "top center", height: isMobile ? 200 : 222 }}
-                  />
-                </motion.div>
-
-                {/* Bottom-right image */}
-                <motion.div
-                  {...fadeUp(0.18)}
-                  onClick={() => handleImageClick(img3, "Design detail")}
-                  style={{
-                    borderRadius: 14,
-                    overflow: "hidden",
-                    border: "1px solid #e8e8e8",
-                    boxShadow: "0 4px 16px rgba(0,0,0,0.06)",
-                    background: "#f5f5f5",
-                    cursor: "zoom-in",
-                    transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
-                  }}
-                  className="hover:scale-[1.02] active:scale-[0.98] hover:brightness-[1.02]"
-                >
-                  <ImageWithFallback
-                    src={img3}
-                    alt="Design detail"
-                    style={{ width: "100%", display: "block", objectFit: "cover", objectPosition: "top center", height: isMobile ? 200 : 222 }}
-                  />
-                </motion.div>
-              </div>
-
-              {/* Extra images (4th, 5th, 6th…) — full-width stacked */}
-              {extraImgs.length > 0 && (
-                <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-                  {extraImgs.map((img, i) => (
-                    <motion.div
-                      key={i}
-                      {...fadeUp(0.1 + i * 0.08)}
-                      onClick={() => handleImageClick(img, `Outcome extra ${i + 4}`)}
-                      style={{
-                        width: "100%",
-                        height: isMobile ? 260 : 600,
-                        borderRadius: 16,
-                        overflow: "hidden",
-                        border: "1px solid #e8e8e8",
-                        boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
-                        background: "#f5f5f5",
-                        flexShrink: 0,
-                        cursor: "zoom-in",
-                        transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
-                      }}
-                      className="hover:scale-[1.015] active:scale-[0.99] hover:brightness-[1.02]"
-                    >
-                      <ImageWithFallback
-                        src={img}
-                        alt={`Outcome extra ${i + 4}`}
-                        style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block" }}
-                      />
-                    </motion.div>
-                  ))}
-                </div>
-              )}
-            </>
-          );
-        })()}
       </section>
 
-      {/* ── NEXT PROJECT ──────────────────────────────────────────────────── */}
-      {nextProject && (
-        <section
-          style={{
-            background: "#0d0d0d",
-            borderTop: `3px solid ${LIME}`,
-            padding: isMobile ? "60px 24px" : "80px 60px",
-            display: "flex",
-            flexDirection: isMobile ? "column" : "row",
-            alignItems: isMobile ? "flex-start" : "center",
-            justifyContent: "space-between",
-            gap: 32,
-          }}
-        >
-          <div>
-            <p
-              style={{
-                margin: "0 0 10px",
-                fontSize: 9.5,
-                letterSpacing: "0.18em",
-                color: "#555",
-                textTransform: "uppercase",
-                fontFamily: FB,
-              }}
-            >
-              Next Project
-            </p>
-            <h3
-              style={{
-                margin: 0,
-                fontSize: isMobile
-                  ? "clamp(40px, 12vw, 60px)"
-                  : "clamp(52px, 6vw, 76px)",
-                fontWeight: 700,
-                lineHeight: 1,
-                letterSpacing: "-0.04em",
-                color: "#fff",
-                fontFamily: FH,
-              }}
-            >
-              {nextProject.name}
-            </h3>
-            <p
-              style={{
-                margin: "10px 0 0",
-                fontSize: 13,
-                color: "#555",
-                fontFamily: FB,
-              }}
-            >
-              {nextProject.description.substring(0, 72)}…
-            </p>
-          </div>
-          <button
-            onClick={() => onNavigate(nextProject.id)}
+      {/* ── 05 OUTCOME (B): VISUAL SCREENS ────────────────────────────────── */}
+      <section
+        style={{
+          background: "#fff",
+          padding: isMobile ? "48px 24px 72px" : "40px 60px",
+          minHeight: isMobile ? "auto" : "calc(100vh - 64px)",
+          display: isMobile ? "block" : "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          boxSizing: "border-box",
+          scrollSnapAlign: isMobile ? "none" : "start",
+          scrollMarginTop: 64,
+          borderTop: isMobile ? "none" : "1px solid #f0f0f0",
+        }}
+      >
+        <div style={{ width: "100%" }}>
+          {(() => {
+            const imgs = (cs.outcome.images || []).filter(Boolean);
+            if (imgs.length === 0) return null;
+
+            const gridImgs = imgs.slice(0, 3);
+            const extraImgs = imgs.slice(3);
+
+            const img1 = gridImgs[0] || cs.contextImage;
+            const img2 = gridImgs[1] || cs.designImage;
+            const img3 = gridImgs[2] || cs.designImage;
+
+            return (
+              <>
+                {/* Original editorial grid — big left + 2 stacked right */}
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: isMobile ? "1fr" : "1.6fr 1fr",
+                    gridTemplateRows: isMobile ? "auto" : "1fr 1fr",
+                    gap: 16,
+                    height: isMobile ? "auto" : "clamp(380px, 60vh, 560px)",
+                    marginBottom: extraImgs.length > 0 ? 24 : 0,
+                  }}
+                >
+                  {/* Large image — spans 2 rows on desktop */}
+                  <motion.div
+                    {...fadeUp()}
+                    onClick={() => handleImageClick(img1, "Final screens")}
+                    style={{
+                      gridRow: isMobile ? "auto" : "span 2",
+                      height: "100%",
+                      borderRadius: 14,
+                      overflow: "hidden",
+                      border: "1px solid #e8e8e8",
+                      boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
+                      background: "#f5f5f5",
+                      cursor: "zoom-in",
+                      transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+                    }}
+                    className="hover:scale-[1.015] active:scale-[0.99] hover:brightness-[1.02]"
+                  >
+                    <ImageWithFallback
+                      src={img1}
+                      alt="Final screens"
+                      style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block", minHeight: isMobile ? 280 : "100%" }}
+                    />
+                  </motion.div>
+
+                  {/* Top-right image */}
+                  <motion.div
+                    {...fadeUp(0.1)}
+                    onClick={() => handleImageClick(img2, "Design detail")}
+                    style={{
+                      borderRadius: 14,
+                      overflow: "hidden",
+                      border: "1px solid #e8e8e8",
+                      boxShadow: "0 4px 16px rgba(0,0,0,0.06)",
+                      background: "#f5f5f5",
+                      cursor: "zoom-in",
+                      transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+                      height: "100%",
+                    }}
+                    className="hover:scale-[1.02] active:scale-[0.98] hover:brightness-[1.02]"
+                  >
+                    <ImageWithFallback
+                      src={img2}
+                      alt="Design detail"
+                      style={{ width: "100%", display: "block", objectFit: "cover", objectPosition: "top center", height: "100%", minHeight: isMobile ? 200 : "100%" }}
+                    />
+                  </motion.div>
+
+                  {/* Bottom-right image */}
+                  <motion.div
+                    {...fadeUp(0.18)}
+                    onClick={() => handleImageClick(img3, "Design detail")}
+                    style={{
+                      borderRadius: 14,
+                      overflow: "hidden",
+                      border: "1px solid #e8e8e8",
+                      boxShadow: "0 4px 16px rgba(0,0,0,0.06)",
+                      background: "#f5f5f5",
+                      cursor: "zoom-in",
+                      transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+                      height: "100%",
+                    }}
+                    className="hover:scale-[1.02] active:scale-[0.98] hover:brightness-[1.02]"
+                  >
+                    <ImageWithFallback
+                      src={img3}
+                      alt="Design detail"
+                      style={{ width: "100%", display: "block", objectFit: "cover", objectPosition: "top center", height: "100%", minHeight: isMobile ? 200 : "100%" }}
+                    />
+                  </motion.div>
+                </div>
+
+                {/* Extra images (4th, 5th, 6th…) — full-width stacked */}
+                {extraImgs.length > 0 && (
+                  <div style={{ display: "flex", flexDirection: "column", gap: 24, marginTop: 24 }}>
+                    {extraImgs.map((img, i) => (
+                      <motion.div
+                        key={i}
+                        {...fadeUp(0.1 + i * 0.08)}
+                        onClick={() => handleImageClick(img, `Outcome extra ${i + 4}`)}
+                        style={{
+                          width: "100%",
+                          height: isMobile ? 260 : "clamp(300px, 45vh, 460px)",
+                          borderRadius: 16,
+                          overflow: "hidden",
+                          border: "1px solid #e8e8e8",
+                          boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
+                          background: "#f5f5f5",
+                          flexShrink: 0,
+                          cursor: "zoom-in",
+                          transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+                        }}
+                        className="hover:scale-[1.015] active:scale-[0.99] hover:brightness-[1.02]"
+                      >
+                        <ImageWithFallback
+                          src={img}
+                          alt={`Outcome extra ${i + 4}`}
+                          style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block" }}
+                        />
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+              </>
+            );
+          })()}
+        </div>
+      </section>
+
+      {/* ── NEXT PROJECT & FOOTER COMBINED SNAP POINT ─────────────────────── */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          minHeight: isMobile ? "auto" : "calc(100vh - 64px)",
+          boxSizing: "border-box",
+          scrollSnapAlign: isMobile ? "none" : "start",
+          scrollMarginTop: 64,
+          background: "#0d0d0d",
+        }}
+      >
+        {nextProject ? (
+          <section
             style={{
-              flexShrink: 0,
-              background: LIME,
-              color: "#0d0d0d",
-              border: "none",
-              borderRadius: 100,
-              padding: "14px 28px",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              fontSize: 11,
-              fontWeight: 700,
-              fontFamily: FH,
-              letterSpacing: "0.1em",
+              background: "#0d0d0d",
+              borderTop: `3px solid ${LIME}`,
+              padding: isMobile ? "60px 24px" : "80px 60px",
+              display: "flex",
+              flexDirection: isMobile ? "column" : "row",
+              alignItems: isMobile ? "flex-start" : "center",
+              justifyContent: "space-between",
+              gap: 32,
+              flex: 1,
             }}
           >
-            VIEW CASE STUDY
-            <ArrowRight size={13} strokeWidth={2.5} />
-          </button>
-        </section>
-      )}
+            <div>
+              <p
+                style={{
+                  margin: "0 0 10px",
+                  fontSize: 9.5,
+                  letterSpacing: "0.18em",
+                  color: "#555",
+                  textTransform: "uppercase",
+                  fontFamily: FB,
+                }}
+              >
+                Next Project
+              </p>
+              <h3
+                style={{
+                  margin: 0,
+                  fontSize: isMobile
+                    ? "clamp(40px, 12vw, 60px)"
+                    : "clamp(52px, 6vw, 76px)",
+                  fontWeight: 700,
+                  lineHeight: 1,
+                  letterSpacing: "-0.04em",
+                  color: "#fff",
+                  fontFamily: FH,
+                }}
+              >
+                {nextProject.name}
+              </h3>
+              <p
+                style={{
+                  margin: "10px 0 0",
+                  fontSize: 13,
+                  color: "#555",
+                  fontFamily: FB,
+                }}
+              >
+                {nextProject.description.substring(0, 72)}…
+              </p>
+            </div>
+            <button
+              onClick={() => onNavigate(nextProject.id)}
+              style={{
+                flexShrink: 0,
+                background: LIME,
+                color: "#0d0d0d",
+                border: "none",
+                borderRadius: 100,
+                padding: "14px 28px",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                fontSize: 11,
+                fontWeight: 700,
+                fontFamily: FH,
+                letterSpacing: "0.1em",
+              }}
+            >
+              VIEW CASE STUDY
+              <ArrowRight size={13} strokeWidth={2.5} />
+            </button>
+          </section>
+        ) : (
+          <div style={{ flex: 1 }} />
+        )}
 
-      <Footer noBridge />
+        <Footer noBridge />
+      </div>
 
       {/* Lightbox Dialog */}
       <dialog
