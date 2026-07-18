@@ -10,7 +10,7 @@ import { motion } from "motion/react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { Footer } from "./Footer";
 import { useIsMobile } from "../utils/useIsMobile";
-import logoImg from "../../imports/Logo-1.png";
+import logoImg from "../../imports/Logo-dark.png";
 import type { ProjectData } from "../data/projects";
 
 const LIME = "#C5F135";
@@ -255,9 +255,9 @@ export function CaseStudy({
             src={typeof logoImg === 'string' ? logoImg : logoImg.src}
             alt="logo"
             style={{
-              width: 28,
-              height: 28,
-              borderRadius: "50%",
+              width: 36,
+              height: 36,
+              objectFit: 'contain',
             }}
           />
           {!isMobile && (

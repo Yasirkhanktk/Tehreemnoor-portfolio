@@ -1,7 +1,7 @@
 import { ArrowRight, ArrowUp } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useIsMobile } from '../utils/useIsMobile'
-import logoImg from '../../imports/Logo-1.png'
+import logoImg from '../../imports/Logo-dark.png'
 
 const LIME = '#C5F135'
 const FH = "'Space Grotesk', sans-serif"
@@ -15,7 +15,7 @@ function LogoMark() {
     <img
       src={typeof logoImg === 'string' ? logoImg : logoImg.src}
       alt="Tehreem Noor logo"
-      style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover', display: 'block' }}
+      style={{ width: 44, height: 44, objectFit: 'contain', display: 'block' }}
     />
   )
 }

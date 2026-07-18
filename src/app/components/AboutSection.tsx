@@ -1,8 +1,7 @@
 import { Download } from "lucide-react";
 import { motion } from "motion/react";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useIsMobile } from "../utils/useIsMobile";
-import tehreemAboutImg from "../../imports/tehreem-about.png";
+import logoLightImg from "../../imports/Logo-light.png";
 
 const FH = "'Space Grotesk', sans-serif";
 const FB = "'Inter', sans-serif";
@@ -30,7 +29,7 @@ export function AboutSection() {
         overflow: "hidden",
       }}
     >
-      {/* ── Photo ──────────────────────────────────── */}
+      {/* ── Logo Panel ──────────────────────────────── */}
       <motion.div
         initial={{ opacity: 0, scale: 1.06 }}
         whileInView={{ opacity: 1, scale: 1 }}
@@ -38,22 +37,39 @@ export function AboutSection() {
         transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         style={{
           flex: isMobile ? "none" : "0 0 42%",
-          height: isMobile ? 300 : undefined,
+          height: isMobile ? 280 : undefined,
           minHeight: isMobile ? undefined : 660,
           position: "relative",
           overflow: "hidden",
+          background: "#f5f5f3",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
-        <ImageWithFallback
-          src={typeof tehreemAboutImg === 'string' ? tehreemAboutImg : tehreemAboutImg.src}
-          alt="Tehreem Noor — UI/UX Designer"
+        {/* Subtle radial lime glow */}
+        <div
           style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: "center top",
-            display: "block",
-            filter: "grayscale(18%) contrast(1.05)",
+            position: "absolute",
+            inset: 0,
+            background:
+              "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(197,241,53,0.18) 0%, transparent 70%)",
+            pointerEvents: "none",
+          }}
+        />
+        <img
+          src={
+            typeof logoLightImg === "string"
+              ? logoLightImg
+              : logoLightImg.src
+          }
+          alt="Tehreem Noor logo mark"
+          style={{
+            width: isMobile ? 160 : 240,
+            height: isMobile ? 160 : 240,
+            objectFit: "contain",
+            position: "relative",
+            zIndex: 1,
           }}
         />
       </motion.div>

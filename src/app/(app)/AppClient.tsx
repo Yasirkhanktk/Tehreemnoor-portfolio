@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { ChevronRight, Globe, Menu, X, ArrowUpRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'motion/react'
-import logoImg from '../../imports/Logo-1.png'
+import logoImg from '../../imports/Logo-light.png'
 import { ProjectsSection } from '../components/ProjectsSection'
 import { AboutSection } from '../components/AboutSection'
 import { CapabilitiesSection } from '../components/CapabilitiesSection'
@@ -20,12 +20,12 @@ const FH = "'Space Grotesk', sans-serif"
 const FB = "'Inter', sans-serif"
 
 // ─── Logo mark ────────────────────────────────────────────────────────────────
-function LogoMark({ size = 32 }: { size?: number }) {
+function LogoMark({ size = 36 }: { size?: number }) {
   return (
     <img
       src={typeof logoImg === 'string' ? logoImg : logoImg.src}
       alt="Tehreem Noor logo"
-      style={{ width: size, height: size, borderRadius: '50%', objectFit: 'cover', flexShrink: 0, display: 'block' }}
+      style={{ width: size, height: size, objectFit: 'contain', flexShrink: 0, display: 'block' }}
     />
   )
 }

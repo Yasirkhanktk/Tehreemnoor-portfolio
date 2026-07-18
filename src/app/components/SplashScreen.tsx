@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import logoImg from '../../imports/Logo-1.png'
+import logoImg from '../../imports/Logo-dark.png'
 
 const LIME = '#C5F135'
 
