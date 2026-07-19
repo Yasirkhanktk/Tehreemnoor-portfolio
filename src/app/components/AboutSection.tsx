@@ -65,8 +65,8 @@ export function AboutSection() {
           }
           alt="Tehreem Noor logo mark"
           style={{
-            width: isMobile ? 160 : 240,
-            height: isMobile ? 160 : 240,
+            width: isMobile ? 220 : 360,
+            height: isMobile ? 220 : 360,
             objectFit: "contain",
             position: "relative",
             zIndex: 1,
